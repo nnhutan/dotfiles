@@ -25,6 +25,7 @@ lvim.plugins = {
   { 'junegunn/vim-easy-align' },
   { 'terryma/vim-multiple-cursors' },
   { 'neoclide/coc.nvim' },
+  { 'nvim-telescope/telescope-media-files.nvim' },
   {
     'folke/trouble.nvim',
     cmd = 'TroubleToggle',
@@ -96,11 +97,11 @@ lvim.plugins = {
           default_config = {
             cmd = { "emmet-ls", "--stdio" },
             filetypes = {
+              "eruby",
               "html",
               "css",
               "javascript",
               "typescript",
-              "eruby",
               "typescriptreact",
               "javascriptreact",
               "svelte",
@@ -115,6 +116,20 @@ lvim.plugins = {
         }
       end
       lspconfig.emmet_ls.setup({ capabilities = capabilities })
+    end,
+  },
+  {
+    "camspiers/snap",
+    rocks = "fzy",
+    config = function()
+      local snap = require "snap"
+      local layout = snap.get("layout").bottom
+      local file = snap.config.file:with { consumer = "fzy", layout = layout }
+      local vimgrep = snap.config.vimgrep:with { layout = layout }
+      snap.register.command("find_files", file { producer = "ripgrep.file" })
+      snap.register.command("buffers", file { producer = "vim.buffer" })
+      snap.register.command("oldfiles", file { producer = "vim.oldfile" })
+      snap.register.command("live_grep", vimgrep {})
     end,
   },
 }

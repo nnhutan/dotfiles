@@ -4,7 +4,7 @@
 lvim.log.level = "warn"
 lvim.format_on_save = true
 -- LunarVim themme
-lvim.colorscheme = "dracula"
+lvim.colorscheme = "nightfox"
 -- lvim.transparent_window = true
 -- lvim.use_icons = false
 lvim.leader = "space"
@@ -16,6 +16,15 @@ lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
+lvim.builtin.treesitter.ignore_install = { "haskell" }
+lvim.builtin.treesitter.highlight.enabled = true
+lvim.builtin.treesitter.rainbow.enable = true
+lvim.builtin.lualine.style = "default"
+lvim.builtin.lualine.options.theme = 'dracula'
+lvim.builtin.telescope.active = true
+lvim.builtin.telescope.on_config_done = function(telescope)
+  pcall(telescope.load_extension, "media_files")
+end
 lvim.builtin.treesitter.ensure_installed = {
   "bash",
   "c",
@@ -31,11 +40,6 @@ lvim.builtin.treesitter.ensure_installed = {
   "yaml",
   "ruby",
 }
-lvim.builtin.treesitter.ignore_install = { "haskell" }
-lvim.builtin.treesitter.highlight.enabled = true
-lvim.builtin.treesitter.rainbow.enable = true
-lvim.builtin.lualine.style = "default"
-lvim.builtin.lualine.options.theme = 'dracula'
 
 
 -----------------------------------------------------------
