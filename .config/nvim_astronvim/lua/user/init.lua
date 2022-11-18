@@ -26,6 +26,8 @@ local config = {
     pin_plugins = nil, -- nil, true, false (nil will pin plugins on stable only)
     skip_prompts = false, -- skip prompts about breaking changes
     show_changelog = true, -- show the changelog after performing an update
+    auto_reload = false, -- automatically reload and sync packer after a successful update
+    auto_quit = false, -- automatically quit the current session after a successful update
     -- remotes = { -- easily add new remotes to track
     --   ["remote_name"] = "https://remote_url.come/repo.git", -- full remote url
     --   ["remote2"] = "github_user/repo", -- GitHub user/repo shortcut,
@@ -37,10 +39,10 @@ local config = {
   -- colorscheme = "default_theme",
   -- colorscheme = "tokyonight",
   --[[ colorscheme = "material", ]]
-  --[[ colorscheme = "nightfly", ]]
+  colorscheme = "nightfly",
   -- colorscheme = "catppuccin",
   --[[ colorscheme = "duskfox", ]]
-  colorscheme = "catppuccin",
+  -- colorscheme = "catppuccin",
 
   -- Override highlight groups in any theme
   highlights = {
@@ -49,6 +51,12 @@ local config = {
     -- },
     default_theme = function(highlights) -- or a function that returns one
       local C = require "default_theme.colors"
+
+      -- New approach instead of diagnostic_style
+      highlights.DiagnosticError.italic = true
+      highlights.DiagnosticHint.italic = true
+      highlights.DiagnosticInfo.italic = true
+      highlights.DiagnosticWarn.italic = true
 
       highlights.Normal = { fg = C.fg, bg = C.bg }
       return highlights
@@ -62,23 +70,32 @@ local config = {
       hlsearch = false,
       wrap = true,
       title = true,
+      cmdheight = 1,
+      redrawtime = 10000,
+      -- shell = "/bin/bash",
+      synmaxcol = 128,
+      -- foldmethod = "syntax",
+      foldlevel = 20,
+      foldmethod = "expr",
+      foldexpr = "nvim_treesitter#foldexpr()",
+      linebreak = true,
     },
     g = {
       mapleader = " ", -- sets vim.g.mapleader
-      catppuccin_flavour = "macchiato", -- latte, frappe, macchiato, mocha
+      -- catppuccin_flavour = "macchiato", -- latte, frappe, macchiato, mocha
 
       --[[ neon_style = "doom", -- default, dark, doom, light ]]
       --[[ neon_italic_keyword = true, ]]
       --[[ neon_italic_function = true, ]]
       -- neon_transparent = true,
 
-      -- nightflyCursorColor = true,
-      --[[ nightflyItalics = true, ]]
-      -- nightflyNormalFloat = true,
-      -- nightflyTerminalColors = true,
-      --[[ nightflyTransparent = true, ]]
-      -- nightflyUndercurls = true,
-      -- nightflyUnderlineMatchParen = true,
+      nightflyCursorColor = true,
+      nightflyItalics = true,
+      nightflyNormalFloat = true,
+      nightflyTerminalColors = true,
+      -- [[ nightflyTransparent = true, ]]
+      nightflyUndercurls = true,
+      nightflyUnderlineMatchParen = true,
 
       --[[ moonlight_italic_comments = true, ]]
       --[[ moonlight_italic_keywords = true, ]]
@@ -95,9 +112,14 @@ local config = {
       copilot_no_tab_map = true,
       -- copilot_assume_mapped = true,
       -- copilot_tab_fallback = "",
+      vimtex_view_method = "zathura",
+      vimtex_view_general_viewer = "okular",
+      vimtex_view_general_options = "--unique file:@pdf#src:@line@tex",
+      vimtex_compiler_method = "latexrun",
     },
     o = {
       lazyredraw = true,
+      cmdheight = 1,
     },
   },
 
@@ -143,9 +165,13 @@ local config = {
       -- ["goolord/alpha-nvim"] = { disable = true },
       --[[ ["nvim-neo-tree/neo-tree.nvim"] = { disable = true }, ]]
       ["feline-nvim/feline.nvi"] = { disable = true },
+      -- ["lewis6991/gitsigns.nvim"] = { disable = true },
 
       -- You can also add new plugins here as well:
       -- { "andweeb/presence.nvim" },
+      { "junegunn/vim-easy-align" },
+      { "tpope/vim-rails" },
+      { "preservim/tagbar" },
       { "mattn/emmet-vim" },
       { "github/copilot.vim" },
       { "folke/tokyonight.nvim" },
@@ -167,6 +193,14 @@ local config = {
       --[[     } ]]
       --[[   end, ]]
       --[[ }, ]]
+      {
+        "phaazon/hop.nvim",
+        branch = "v2", -- optional but strongly recommended
+        config = function()
+          -- you can configure Hop the way you like here; see :h hop-config
+          require("hop").setup { keys = "etovxqpdygfblzhckisuran" }
+        end,
+      },
       {
         "ray-x/lsp_signature.nvim",
         event = "BufRead",
@@ -192,7 +226,8 @@ local config = {
         requires = { "kyazdani42/nvim-web-devicons", opt = true },
         config = function()
           require("lualine").setup {
-            options = { theme = "catppuccin" },
+            -- options = { theme = "catppuccin" },
+            options = { theme = "nightfly" },
             sections = {
               lualine_a = { "mode" },
               lualine_b = { "branch", "diff", "diagnostics" },
@@ -236,7 +271,6 @@ local config = {
           }
         end,
       },
-
       {
         "catppuccin/nvim",
         as = "catppuccin",
@@ -252,6 +286,8 @@ local config = {
           }
         end,
       },
+      { "mg979/vim-visual-multi" },
+      { "lervag/vimtex" },
     },
     -- All other entries override the setup() call for default plugins
     ["null-ls"] = function(config)
@@ -265,14 +301,13 @@ local config = {
         null_ls.builtins.formatting.prettier,
         -- null_ls.builtins.formatting.rufo,
         -- null_ls.builtins.formatting.rubocop,
-        -- null_ls.builtins.diagnostics.rubocop,
         -- null_ls.builtins.diagnostics.standardrb,
       }
       -- set up null-ls's on_attach function
       config.on_attach = function(client)
         -- NOTE: You can remove this on attach function to disable format on save
-        if client.resolved_capabilities.document_formatting then
-          -- if client.server_capabilities.documentFormattingProvider then
+        -- if client.resolved_capabilities.document_formatting then
+        if client.server_capabilities.documentFormattingProvider then
           --[[ vim.api.nvim_create_autocmd("BufWritePre", { ]]
           --[[   desc = "Auto format before save", ]]
           --[[   pattern = "<buffer>", ]]
@@ -287,7 +322,8 @@ local config = {
               callback = function()
                 -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
                 -- vim.lsp.buf.formatting_sync(nil, 2000)
-                vim.lsp.buf.formatting_sync()
+                -- vim.lsp.buf.formatting_sync()
+                vim.lsp.buf.format { bufnr = bufnr }
               end,
             })
           end
@@ -411,6 +447,8 @@ local config = {
       ["<leader>bt"] = { "<cmd>BufferLineSortByTabs<cr>", desc = "Sort by tabs" },
       ["<leader>bd"] = { "<cmd>bufdo Bwipeout<cr>", desc = "Close all" },
       ["<leader>bp"] = { "<cmd>let @+ = expand('%:p')<cr>", desc = "Copy path" },
+      ["<leader>bh"] = { "<cmd>BufferLineMovePrev<cr>", desc = "Move buffer left" },
+      ["<leader>bl"] = { "<cmd>BufferLineMoveNext<cr>", desc = "Move buffer right" },
       --[[ ["<leader>e"] = { "<cmd>NvimTreeToggle<cr>", desc = "Toggle explore" }, ]]
       --[[ ["<leader>e"] = { "<cmd>NvimTreeFindFileToggle<cr>", desc = "Toggle explore" }, ]]
       --[[ ["<leader>o"] = { "<cmd>NvimTreeFocus<cr>", desc = "Focus of explore" }, ]]
@@ -418,6 +456,12 @@ local config = {
 
       ["<leader>ms"] = { "<cmd>MarkdownPreview<cr>", desc = "Start markdown preview" },
       ["<leader>me"] = { "<cmd>MarkdownPreviewStop<cr>", desc = "Stop markdown preview" },
+      ["<leader>a"] = { "<cmd>SessionManager! load_current_dir_session<cr>", desc = "Load current directory session" },
+      ["<leader>j"] = { "<cmd>HopWord<cr>", desc = "Jump to word" },
+      ["<leader>k"] = { "<cmd>TagbarOpenAutoClose<cr>", desc = "Show tagbar" },
+      ["<leader>ll"] = { "<cmd>LspRestart<cr>", desc = "Reload workspace" },
+      ["<leader>ee"] = { "<cmd>Neotree toggle<cr>", desc = "Toggle explorer" },
+      ["<leader>eb"] = { "<cmd>Neotree buffers<cr>", desc = "Toggle explorer buffers" },
       -- quick save
       -- ["<C-s>"] = { ":w!<cr>", desc = "Save File" },  -- change description but the same command
       --[[ ["<C-t"] = { "<Cmd>exe v:count1 . 'ToggleTerm'<CR>" }, ]]
@@ -435,7 +479,7 @@ local config = {
   -- Modify which-key registration (Use this with mappings table in the above.)
   ["which-key"] = {
     -- Add bindings which show up as group name
-    register_mappings = {
+    register = {
       -- first key is the mode, n == normal mode
       n = {
         -- second key is the prefix, <leader> prefixes
@@ -444,6 +488,8 @@ local config = {
           -- group name in which-key top level menu
           ["b"] = { name = "Buffer" },
           ["m"] = { name = "Markdown" },
+          ["r"] = { name = "Align" },
+          ["e"] = { name = "Explorer" },
         },
       },
     },
@@ -455,6 +501,13 @@ local config = {
     -- Set key binding
     -- Set autocommands
     vim.api.nvim_create_augroup("packer_conf", { clear = true })
+    vim.api.nvim_create_autocmd("User", {
+      desc = "Enable fold",
+      group = "packer_conf",
+      pattern = "SessionLoadPost",
+      command = "set foldmethod=expr | set foldexpr=nvim_treesitter#foldexpr() | set foldlevel=20 | Copilot enable",
+    })
+
     vim.api.nvim_create_autocmd("BufWritePost", {
       desc = "Sync packer after modifying plugins.lua",
       group = "packer_conf",
@@ -464,7 +517,7 @@ local config = {
 
     vim.api.nvim_set_keymap("i", "<C-e>", 'copilot#Accept("<CR>")', { expr = true, silent = true })
     vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.formatting_sync()]]
-
+    vim.cmd "set foldmethod=expr"
     -- Set up custom filetypes
     -- vim.filetype.add {
     --   extension = {
@@ -484,6 +537,7 @@ local config = {
           vim.cmd(cmd)
           if require("core.utils").is_available "alpha-nvim" and not bufs[2] then require("alpha").start(true) end
         end
+
         vim.keymap.del("n", "<leader>c")
         if require("core.utils").is_available "bufdelete.nvim" then
           vim.keymap.set("n", "<leader>c", function() alpha_on_bye "Bdelete!" end, { desc = "Close buffer" })
