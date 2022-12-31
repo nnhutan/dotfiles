@@ -174,6 +174,9 @@ plugins+=(tmux)
 plugins+=(tmuxinator)
 plugins+=(rails)
 plugins+=(zsh-syntax-highlighting)
+plugins+=(ruby)
+plugins+=(rails)
+plugins+=(python)
 
 
 source $ZSH/oh-my-zsh.sh
@@ -202,19 +205,23 @@ fi
 #
 # Example aliases
 alias mux=tmuxinator
+alias cls=clear
+alias v=nvim
+alias va="nvim ."
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
-
-. ~/.nvm/nvm.sh
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-
-
+eval "$(rbenv init - zsh)"
+# . ~/.nvm/nvm.sh
+# export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
+#
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export GPG_TTY=$(tty)
+# export GPG_TTY=$(tty)
+export GPG_TTY=$TTY
+export PATH=/usr/local/bin:$PATH
 source ~/powerlevel10k/powerlevel10k.zsh-theme
