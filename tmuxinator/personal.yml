@@ -1,7 +1,7 @@
-# /Users/lixibox/.config/tmuxinator/go.yml
+# /Users/lixibox/.config/tmuxinator/personal.yml
 
-name: go
-root: ~/study/go
+name: personal
+root: ~/personal-blog-server
 
 # Optional tmux socket
 # socket_name: foo
@@ -47,3 +47,5 @@ root: ~/study/go
 windows:
   - neovim: va
   - terminal:
+  - server: cd cmd/main && air
+  - lazygit: lazygit

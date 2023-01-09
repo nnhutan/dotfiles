@@ -1,7 +1,7 @@
-# /Users/lixibox/.config/tmuxinator/go.yml
+# /Users/lixibox/.config/tmuxinator/airbnb.yml
 
-name: go
-root: ~/study/go
+name: airbnb
+root: ~/airbnb-clone
 
 # Optional tmux socket
 # socket_name: foo
@@ -47,3 +47,6 @@ root: ~/study/go
 windows:
   - neovim: va
   - terminal:
+  - server: bundle exec rails s
+  - logs: tail -f log/development.log
+  - lazygit: lazygit

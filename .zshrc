@@ -225,3 +225,6 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 export GPG_TTY=$TTY
 export PATH=/usr/local/bin:$PATH
 source ~/powerlevel10k/powerlevel10k.zsh-theme
+export PATH=/usr/local/go/bin:$PATH
+export PATH=/Users/lixibox/go/bin:$PATH
+

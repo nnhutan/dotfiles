@@ -1,10 +1,10 @@
-local catppuccin = require "user.plugins.catppuccin"
-local nightfox = require "user.plugins.nightfox"
-local lualine = require "user.plugins.lualine"
-local markdown_preview = require "user.plugins.markdown_preview"
-local nvim_surround = require "user.plugins.nvim_surround"
-local hop = require "user.plugins.hop"
-local lsp_signature = require "user.plugins.lsp_signature"
+local catppuccin = require("user.plugins.catppuccin")
+local nightfox = require("user.plugins.nightfox")
+local lualine = require("user.plugins.lualine")
+local markdown_preview = require("user.plugins.markdown_preview")
+local nvim_surround = require("user.plugins.nvim_surround")
+local hop = require("user.plugins.hop")
+local lsp_signature = require("user.plugins.lsp_signature")
 -- local material = require "user.plugins.material"
 local init = {
   -- You can disable default plugins: ["plugin_name"] = { disable = true },
@@ -16,6 +16,7 @@ local init = {
   { "rafamadriz/neon" },
   { "preservim/tagbar" },
   { "github/copilot.vim" },
+  { "thoughtbot/vim-rspec" },
   { "folke/tokyonight.nvim" },
   { "mg979/vim-visual-multi" },
   { "junegunn/vim-easy-align" },

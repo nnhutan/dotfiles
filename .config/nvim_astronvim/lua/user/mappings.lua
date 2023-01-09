@@ -25,6 +25,8 @@ local mappings = {
     ["<leader>k"] = { "<cmd>TagbarOpenAutoClose<cr>", desc = "Show tagbar" },
     ["<leader>ll"] = { "<cmd>LspRestart<cr>", desc = "Reload workspace" },
     ["<leader>ue"] = { "<cmd>Telescope colorscheme<cr>", desc = "Explore colorschemes" },
+    ["<leader>H"] = { "<cmd>nohlsearch<cr>", desc = "No Highlight" }, -- TODO: REMOVE IN v3
+    ["<leader>h"] = { "<cmd>Copilot<cr>", desc = "Copilot hints" }, -- TODO: REMOVE IN v3
     --[[ ["<leader>e"] = { "<cmd>NvimTreeToggle<cr>", desc = "Toggle explore" }, ]]
     --[[ ["<leader>e"] = { "<cmd>NvimTreeFindFileToggle<cr>", desc = "Toggle explore" }, ]]
     --[[ ["<leader>o"] = { "<cmd>NvimTreeFocus<cr>", desc = "Focus of explore" }, ]]
