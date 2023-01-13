@@ -9,6 +9,7 @@ local lsp_signature = require("user.plugins.lsp_signature")
 local init = {
   -- You can disable default plugins: ["plugin_name"] = { disable = true },
   ["feline-nvim/feline.nvi"] = { disable = true },
+  ["rebelot/heirline.nvim"] = { disable = true },
 
   -- You can also add new plugins here as well:
   { "tpope/vim-rails" },
