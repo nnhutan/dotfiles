@@ -1,7 +1,7 @@
-# /Users/lixibox/.config/tmuxinator/lixi.yml
+# /Users/lixibox/.config/tmuxinator/lixibox.yml
 
-name: lixi
-root: ~/work/lixibox
+name: lixibox
+root: ~/
 
 # Optional tmux socket
 # socket_name: foo
@@ -27,7 +27,7 @@ root: ~/work/lixibox
 # on_project_stop: command
 
 # Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
-# pre_window: rbenv shell 2.3.3
+# pre_window: rbenv shell 2.0.0-p247
 
 # Pass command line options to tmux. Useful for specifying a different tmux.conf.
 # tmux_options: -f ~/.tmux.mac.conf
@@ -45,14 +45,13 @@ root: ~/work/lixibox
 # attach: false
 
 windows:
-  - neovim: v
-  - terminal:
-      layout: even-horizontal
+  - editor:
+      layout: main-vertical
+      # Synchronize all panes of this window, can be enabled before or after the pane commands run.
+      # 'before' represents legacy functionality and will be deprecated in a future release, in favour of 'after'
+      # synchronize: after
       panes:
-        -
-        -
-  - server: rails s -p 4000
-  # - docker: if [ "$( docker container inspect -f '{{.State.Status}}' lixibox )" = "exited" ]; then docker start lixibox;fi && docker attach lixibox
-  # - sidekiq: if [ "$( docker container inspect -f '{{.State.Status}}' sidekiq )" = "exited" ]; then docker start sidekiq;fi && docker attach sidekiq
-  - sidekiq: bundle exec sidekiq
-  - lazygit: lazygit
+        - vim
+        - guard
+  - server: bundle exec rails s
+  - logs: tail -f log/development.log

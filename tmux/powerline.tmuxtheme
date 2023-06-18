@@ -6,30 +6,30 @@ set -g status-interval 2
 
 # Status bar colors
 set -g status-fg colour240
-set -g status-bg colour233
+set -g status-bg "#202434"
 
 # Left status bar
-set -g status-left-bg colour233
+set -g status-left-bg #202434
 set -g status-left-fg colour243
 set -g status-left-length 40
-set -g status-left "#{?client_prefix,#[fg=colour255]#[bg=colour32]#[bold] #S #[fg=colour32]#[bg=colour233],#[fg=colour232]#[bg=colour255]#[bold] #S #[fg=colour255]#[bg=colour233]}"
+set -g status-left "#{?client_prefix,#[fg=colour232]#[bg=#9CBC71]#[bold] #S #[fg=#9CBC71]#[bg=#202434],#[fg=colour232]#[bg=#7897DE]#[bold] #S #[fg=#7897DE]#[bg=#202434]}"
 
 # Right status bar
-set -g status-right-bg colour233
+set -g status-right-bg #202434
 set -g status-right-fg colour243
 set -g status-right-length 100
-set -g status-right "#{net_speed} #[fg=colour236,bg=colour233]#[fg=colour255,bg=colour236] %H:%M %Y-%m-%d #[fg=colour233,bg=colour236]#[fg=colour255,bg=colour233,bold] #{session_attached} #[fg=colour255,bg=colour233]#[fg=colour233,bg=colour255]  #(whoami)#[fg=colour232,bg=colour255,bold] "
+set -g status-right "#{net_speed} #[fg=#303C5E,bg=#202434]#[fg=#9EA4C4,bg=#303C5E] %H:%M %Y-%m-%d #[fg=#9EA4C4,bg=#303C5E]#[fg=#9EA4C4,bg=#303C5E,bold] #{session_attached} #[fg=#7897DE,bg=#303C5E]#[fg=#202434,bg=#7897DE]  #(whoami)#[fg=colour232,bg=#7897DE,bold] "
 
 # Window status
-set -g window-status-format "  #I#F  #W  "
-set -g window-status-current-format "#[fg=colour233,bg=colour32]#[fg=colour255,bg=colour32] #I#F  #W #[fg=colour32,bg=colour233,nobold]"
+set -g window-status-format "#[fg=#9EA4C4,bg=#202434] #I#F  #W "
+set -g window-status-current-format "#[fg=#202434,bg=#303C5E]#[fg=#9EA4C4,bg=#303C5E] #I#F  #W #[fg=#303C5E,bg=#202434,nobold]"
 
 # Selected window status
-set -g window-status-current-bg colour39
+set -g window-status-current-bg colour25
 set -g window-status-current-fg colour255
 
 # Window activity status
-set -g window-status-activity-bg colour233
+set -g window-status-activity-bg #202434
 set -g window-status-activity-fg colour245
 
 # Window separator
@@ -44,24 +44,24 @@ set -g pane-border-fg colour238
 
 # Active pane border
 set -g pane-active-border-bg default
-set -g pane-active-border-fg colour39
+set -g pane-active-border-fg colour25
 
 # Pane number indicator
-set -g display-panes-colour colour233
+set -g display-panes-colour #202434
 set -g display-panes-active-colour colour245
 
 # Clock mode
-set -g clock-mode-colour colour39
+set -g clock-mode-colour colour25
 set -g clock-mode-style 24
 
 # Message
-set -g message-bg colour39
-set -g message-fg black
+set -g message-bg colour25
+set -g message-fg #202434
 
 # Command message
-set -g message-command-bg colour233
-set -g message-command-fg black
+set -g message-command-bg #202434
+set -g message-command-fg #202434
 
 # Mode
-set -g mode-bg colour39
+set -g mode-bg colour25
 set -g mode-fg colour232

@@ -7,6 +7,27 @@ return function()
     end
   end
 
+  -- local map = vim.keymap.set
+  -- map(
+  --   "i",
+  --   "<C-l>",
+  --   "copilot#Accept('<CR>')",
+  --   { noremap = true, silent = true, expr = true, replace_keycodes = false }
+  -- )
+  -- map(
+  --   "i",
+  --   "<C-k>",
+  --   "copilot#Accept('<CR>')",
+  --   { noremap = true, silent = true, expr = true, replace_keycodes = false }
+  -- )
+  --
+  -- map(
+  --   "i",
+  --   "<C-e>",
+  --   "copilot#Accept('<CR>')",
+  --   { noremap = true, silent = true, expr = true, replace_keycodes = false }
+  -- )
+  --
   vim.keymap.del("n", "<leader>c")
   if require("core.utils").is_available("bufdelete.nvim") then
     vim.keymap.set("n", "<leader>c", function()

@@ -6,6 +6,7 @@
 -- true == 1000
 local cmp = {
   source_priority = {
+    copilot = true,
     nvim_lsp = 1000,
     luasnip = 750,
     buffer = 500,
