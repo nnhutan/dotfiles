@@ -1,4 +1,3 @@
-local utils = require("core.utils")
 local capabilities = require("plugins.configs.lspconfig").capabilities
 local lspconfig = require("lspconfig")
 local on_attach = function(client, bufnr)
