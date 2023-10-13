@@ -1,16 +1,9 @@
-local utils = require("core.utils")
 local capabilities = require("plugins.configs.lspconfig").capabilities
 local lspconfig = require("lspconfig")
 local on_attach = function(client, bufnr)
 	require("plugins.configs.lspconfig").on_attach(client, bufnr)
 	client.server_capabilities.documentFormattingProvider = true
 	client.server_capabilities.documentRangeFormattingProvider = true
-
-	utils.load_mappings("lspconfig", { buffer = bufnr })
-
-	if not utils.load_config().ui.lsp_semantic_tokens and client.supports_method("textDocument/semanticTokens") then
-		client.server_capabilities.semanticTokensProvider = nil
-	end
 
 	vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePre", "CursorHold", "InsertLeave", "TextChanged" }, {
 		buffer = bufnr,

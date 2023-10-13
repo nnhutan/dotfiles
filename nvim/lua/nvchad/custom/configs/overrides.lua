@@ -20,6 +20,13 @@ M.treesitter = {
 		--   "python"
 		-- },
 	},
+	rainbow = {
+		enable = true,
+		-- list of languages you want to disable the plugin for
+		disable = { "jsx", "cpp" },
+		-- Which query to use for finding delimiters
+		query = "rainbow-parens",
+	},
 	autotag = {
 		enable = true,
 	},
@@ -27,7 +34,7 @@ M.treesitter = {
 		enable = true,
 		additional_vim_regex_highlighting = false,
 		use_languagetree = false,
-		disable = function(lang, bufnr)
+		disable = function(_, bufnr)
 			if vim.bo.filetype == "help" then
 				return true
 			elseif vim.bo.filetype == "lua" then

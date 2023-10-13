@@ -57,7 +57,6 @@ local plugins = {
 	},
 
 	{ "nvim-tree/nvim-tree.lua", enabled = false },
-
 	{ "mg979/vim-visual-multi", event = "VeryLazy", branch = "master" },
 	{ "tpope/vim-rails", lazy = false },
 	{ "mattn/emmet-vim", lazy = false },
