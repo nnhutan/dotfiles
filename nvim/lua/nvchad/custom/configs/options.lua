@@ -1,19 +1,19 @@
 local opt = vim.opt
 local g = vim.g
+-- local go = vim.go
 
 opt.foldcolumn = "1"
-opt.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+opt.foldlevel = 99
 opt.foldlevelstart = 99
 opt.foldenable = true
 opt.relativenumber = true -- Show relative numberline
--- opt.fillchars = [[eob: ,fold: ,foldopen:⌄,foldsep: ,foldclose:>]]
--- opt.statuscolumn =
---   '%=%l%s%{foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? "⌄" : ">") : " " }'
 opt.statuscolumn =
-  '%=%l%s%{foldlevel(v:lnum) > 0 ? (foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? "-" : "+") : "│") : " " }'
-opt.cmdheight = 1
+	'%=%l%s%{foldlevel(v:lnum) > 0 ? (foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? "-" : "+") : "│") : " " }'
+opt.cmdheight = 0
 opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 opt.scrolloff = 8
+opt.termguicolors = true
+opt.updatetime = 200
 
 g.copilot_no_tab_map = true
 g.copilot_filetypes = { ["*"] = true }
@@ -27,11 +27,11 @@ g.regexpengine = 1
 g.ttyfast = true
 g.lazyredraw = true
 g["escape-time"] = 10
--- g.rspec_command = "!rspec --drb {spec}"
--- g.rspec_runner = "os_x_iterm2"
 g["test#neovim#start_normal"] = 1
 g["test#strategy"] = {
-  nearest = "neovim",
-  file = "neovim",
-  suite = "neovim",
+	nearest = "neovim",
+	file = "neovim",
+	suite = "neovim",
 }
+
+-- go.lazyredraw = true

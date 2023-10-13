@@ -1,9 +1,4 @@
 local overrides = require("custom.configs.overrides")
-local icons = require("custom.icons.icons")
-
-local get_icon = function(kind)
-	return icons[kind] or ""
-end
 
 ---@type NvPluginSpec[]
 local plugins = {
@@ -32,6 +27,8 @@ local plugins = {
 	{ "nvim-treesitter/nvim-treesitter", opts = overrides.treesitter },
 	{ "nvim-telescope/telescope.nvim", opts = overrides.telescope },
 	{ "nvim-tree/nvim-tree.lua", opts = overrides.nvimtree },
+	{ "lewis6991/gitsigns.nvim", opts = overrides.gitsigns },
+	{ "hrsh7th/nvim-cmp", opts = overrides.cmp },
 	-- Install a plugin
 	{
 		"max397574/better-escape.nvim",
@@ -40,7 +37,6 @@ local plugins = {
 			require("better_escape").setup()
 		end,
 	},
-
 	{
 		"folke/which-key.nvim",
 		config = function(_, opts)
@@ -60,23 +56,11 @@ local plugins = {
 		end,
 	},
 
-	-- To make a plugin not be loaded
-	-- {
-	--   "NvChad/nvim-colorizer.lua",
-	--   enabled = false
-	-- },
-	--
 	{ "nvim-tree/nvim-tree.lua", enabled = false },
-
-	-- All NvChad plugins are lazy-loaded by default
-	-- For a plugin to be loaded, you will need to set either `ft`, `cmd`, `keys`, `event`, or set `lazy = false`
-	-- If you want a plugin to load on startup, add `lazy = false` to a plugin spec, for example
-	{ "mg979/vim-visual-multi", lazy = false },
+	{ "mg979/vim-visual-multi", event = "VeryLazy", branch = "master" },
 	{ "tpope/vim-rails", lazy = false },
 	{ "mattn/emmet-vim", lazy = false },
 	{ "github/copilot.vim", lazy = false },
-	{ "junegunn/vim-easy-align" },
-	{ "folke/tokyonight.nvim" },
 	{
 		"kylechui/nvim-surround",
 		config = function()
@@ -108,7 +92,6 @@ local plugins = {
 	},
 	{
 		"kevinhwang91/nvim-ufo",
-		event = { "User AstroFile", "InsertEnter" },
 		dependencies = { "kevinhwang91/promise-async" },
 		lazy = false,
 		opts = {
@@ -120,6 +103,7 @@ local plugins = {
 					scrollD = "<C-d>",
 				},
 			},
+			open_fold_hl_timeout = 150,
 			provider_selector = function(_, filetype, buftype)
 				local function handleFallbackException(bufnr, err, providerName)
 					if type(err) == "string" and err:match("UfoFallbackException") then
@@ -147,11 +131,41 @@ local plugins = {
 		"phaazon/hop.nvim",
 		branch = "v2",
 		config = function()
+			dofile(vim.g.base46_cache .. "hop")
 			require("hop").setup({ keys = "etovxqpdygfblzhckisuran" })
 		end,
 		lazy = false,
 	},
-	{ "HiPhish/nvim-ts-rainbow2", lazy = false },
+	{
+		"HiPhish/rainbow-delimiters.nvim",
+		lazy = false,
+		setup = function()
+			dofile(vim.g.base46_cache .. "rainbowdelimiters")
+			local rainbow_delimiters = require("rainbow-delimiters")
+
+			vim.g.rainbow_delimiters = {
+				strategy = {
+					[""] = rainbow_delimiters.strategy["global"],
+					commonlisp = rainbow_delimiters.strategy["local"],
+				},
+				query = {
+					[""] = "rainbow-delimiters",
+					lua = "rainbow-blocks",
+				},
+				highlight = {
+					"RainbowDelimiterRed",
+					"RainbowDelimiterYellow",
+					"RainbowDelimiterBlue",
+					"RainbowDelimiterOrange",
+					"RainbowDelimiterGreen",
+					"RainbowDelimiterViolet",
+					"RainbowDelimiterCyan",
+				},
+				blacklist = { "c", "cpp" },
+			}
+		end,
+	},
+	{ "windwp/nvim-ts-autotag", lazy = false },
 	{
 		"andymass/vim-matchup",
 		setup = function()
@@ -159,13 +173,12 @@ local plugins = {
 		end,
 		lazy = false,
 	},
-	{ "nvim-pack/nvim-spectre", lazy = false },
-	{ "tpope/vim-haml", lazy = false },
+	{ "nvim-pack/nvim-spectre", cmd = "Spectre" },
+	{ "tpope/vim-haml", event = "VeryLazy" },
 	{ "ellisonleao/glow.nvim", config = true, cmd = "Glow" },
-	{ "thoughtbot/vim-rspec", lazy = false },
-	-- { 'dense-analysis/ale',       lazy = false },
-	-- { 'sindrets/diffview.nvim',   requires = 'nvim-lua/plenary.nvim', lazy = false },
-	{ "vim-test/vim-test", lazy = false },
+	{ "thoughtbot/vim-rspec", event = "VeryLazy" },
+	{ "sindrets/diffview.nvim", event = "VeryLazy" },
+	{ "vim-test/vim-test", event = "VeryLazy" },
 	{ "rhysd/clever-f.vim", lazy = false },
 	{ "wakatime/vim-wakatime", lazy = false },
 	{
@@ -178,6 +191,7 @@ local plugins = {
 	{ "vim-ruby/vim-ruby", lazy = false },
 	{
 		"nvim-neo-tree/neo-tree.nvim",
+		branch = "v3.x",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
@@ -187,181 +201,17 @@ local plugins = {
 		init = function()
 			vim.g.neo_tree_remove_legacy_commands = true
 		end,
-		opts = {
-			auto_clean_after_session_restore = true,
-			close_if_last_window = true,
-			sources = { "filesystem", "buffers", "git_status" },
-			source_selector = {
-				winbar = true,
-				content_layout = "center",
-				sources = {
-					{ source = "filesystem", display_name = " 󰉓  File" },
-					{ source = "buffers", display_name = " 󰈙 Bufs" },
-					{ source = "git_status", display_name = " 󰊢 Git" },
-					{ source = "diagnostics", display_name = " 󰒡 Diagnostic" },
-				},
-			},
-			document_symbols = {
-				kinds = {
-					File = { icon = "󰈙", hl = "Tag" },
-					Namespace = { icon = "󰌗", hl = "Include" },
-					Package = { icon = "󰏖", hl = "Label" },
-					Class = { icon = "󰌗", hl = "Include" },
-					Property = { icon = "󰆧", hl = "@property" },
-					Enum = { icon = "󰒻", hl = "@number" },
-					Function = { icon = "󰊕", hl = "Function" },
-					String = { icon = "󰀬", hl = "String" },
-					Number = { icon = "󰎠", hl = "Number" },
-					Array = { icon = "󰅪", hl = "Type" },
-					Object = { icon = "󰅩", hl = "Type" },
-					Key = { icon = "󰌋", hl = "" },
-					Struct = { icon = "󰌗", hl = "Type" },
-					Operator = { icon = "󰆕", hl = "Operator" },
-					TypeParameter = { icon = "󰊄", hl = "Type" },
-					StaticMethod = { icon = "󰠄 ", hl = "Function" },
-				},
-			},
-			default_component_configs = {
-				indent = { padding = 0 },
-				icon = {
-					folder_closed = get_icon("FolderClosed"),
-					folder_open = get_icon("FolderOpen"),
-					folder_empty = get_icon("FolderEmpty"),
-					folder_empty_open = get_icon("FolderEmpty"),
-					default = get_icon("DefaultFile"),
-				},
-				modified = { symbol = get_icon("FileModified") },
-				git_status = {
-					symbols = {
-						added = get_icon("GitAdd"),
-						deleted = get_icon("GitDelete"),
-						modified = get_icon("GitChange"),
-						renamed = get_icon("GitRenamed"),
-						untracked = get_icon("GitUntracked"),
-						ignored = get_icon("GitIgnored"),
-						unstaged = get_icon("GitUnstaged"),
-						staged = get_icon("GitStaged"),
-						conflict = get_icon("GitConflict"),
-					},
-				},
-			},
-			commands = {
-				system_open = function(state)
-					local path = state.tree:get_node():get_id()
-					local cmd
-					if vim.fn.has("win32") == 1 and vim.fn.executable("explorer") == 1 then
-						cmd = { "cmd.exe", "/K", "explorer" }
-					elseif vim.fn.has("unix") == 1 and vim.fn.executable("xdg-open") == 1 then
-						cmd = { "xdg-open" }
-					elseif (vim.fn.has("mac") == 1 or vim.fn.has("unix") == 1) and vim.fn.executable("open") == 1 then
-						cmd = { "open" }
-					end
-					vim.fn.jobstart(vim.fn.extend(cmd, { path or vim.fn.expand("<cfile>") }), { detach = true })
-				end,
-				parent_or_close = function(state)
-					local node = state.tree:get_node()
-					if (node.type == "directory" or node:has_children()) and node:is_expanded() then
-						state.commands.toggle_node(state)
-					else
-						require("neo-tree.ui.renderer").focus_node(state, node:get_parent_id())
-					end
-				end,
-				child_or_open = function(state)
-					local node = state.tree:get_node()
-					if node.type == "directory" or node:has_children() then
-						if not node:is_expanded() then -- if unexpanded, expand
-							state.commands.toggle_node(state)
-						else -- if expanded and has children, seleect the next child
-							require("neo-tree.ui.renderer").focus_node(state, node:get_child_ids()[1])
-						end
-					else -- if not a directory just open it
-						state.commands.open(state)
-					end
-				end,
-				copy_selector = function(state)
-					local node = state.tree:get_node()
-					local filepath = node:get_id()
-					local filename = node.name
-					local modify = vim.fn.fnamemodify
-
-					local results = {
-						e = { val = modify(filename, ":e"), msg = "Extension only" },
-						f = { val = filename, msg = "Filename" },
-						F = { val = modify(filename, ":r"), msg = "Filename w/o extension" },
-						h = { val = modify(filepath, ":~"), msg = "Path relative to Home" },
-						p = { val = modify(filepath, ":."), msg = "Path relative to CWD" },
-						P = { val = filepath, msg = "Absolute path" },
-					}
-
-					local messages = {
-						{ "\nChoose to copy to clipboard:\n", "Normal" },
-					}
-					for i, result in pairs(results) do
-						if result.val and result.val ~= "" then
-							vim.list_extend(messages, {
-								{ ("%s."):format(i), "Identifier" },
-								{ (" %s: "):format(result.msg) },
-								{ result.val, "String" },
-								{ "\n" },
-							})
-						end
-					end
-					vim.api.nvim_echo(messages, false, {})
-					local result = results[vim.fn.getcharstr()]
-					if result and result.val and result.val ~= "" then
-						vim.notify("Copied: " .. result.val)
-						vim.fn.setreg("+", result.val)
-					end
-				end,
-			},
-			window = {
-				width = 40,
-				mappings = {
-					["<space>"] = false, -- disable space until we figure out which-key disabling
-					o = "open",
-					O = "system_open",
-					h = "parent_or_close",
-					l = "child_or_open",
-					Y = "copy_selector",
-				},
-			},
-			filesystem = {
-				follow_current_file = true,
-				hijack_netrw_behavior = "open_current",
-				use_libuv_file_watcher = true,
-			},
-			event_handlers = {
-				{
-					event = "neo_tree_buffer_enter",
-					handler = function(_)
-						vim.opt_local.signcolumn = "auto"
-					end,
-				},
-			},
-		},
-		lazy = false,
-	},
-	{
-		"mickael-menu/zk-nvim",
-		config = function()
-			require("zk").setup({})
+		opts = function()
+			return require("custom.configs.neotree")
 		end,
-		lazy = false,
 	},
+	{ "mrbjarksen/neo-tree-diagnostics.nvim", dependencies = { "nvim-neo-tree/neo-tree.nvim" }, lazy = false },
 	{
 		"folke/flash.nvim",
 		event = "VeryLazy",
 		---@type Flash.Config
 		opts = {},
 		keys = {
-			{
-				"s",
-				mode = { "n", "x", "o" },
-				function()
-					require("flash").jump()
-				end,
-				desc = "Flash",
-			},
 			{
 				"S",
 				mode = { "n", "o", "x" },
@@ -397,28 +247,63 @@ local plugins = {
 		},
 	},
 	{
-		"jackMort/ChatGPT.nvim",
-		event = "VeryLazy",
+		"folke/trouble.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		opts = {},
+		cmd = "Trouble",
 		config = function()
-			require("chatgpt").setup()
+			dofile(vim.g.base46_cache .. "trouble")
+			require("trouble").setup()
 		end,
-		dependencies = {
-			"MunifTanjim/nui.nvim",
-			"nvim-lua/plenary.nvim",
-			"nvim-telescope/telescope.nvim",
-		},
 	},
 	{
-		"pwntester/octo.nvim",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-telescope/telescope.nvim",
-			"nvim-tree/nvim-web-devicons",
-		},
-		config = function()
-			require("octo").setup()
-		end,
+		"rcarriga/nvim-notify",
 		lazy = false,
+		config = function()
+			dofile(vim.g.base46_cache .. "notify")
+			vim.notify = require("notify")
+		end,
+	},
+	{
+		"utilyre/barbecue.nvim",
+		name = "barbecue",
+		version = "*",
+		dependencies = {
+			"SmiteshP/nvim-navic",
+			"nvim-tree/nvim-web-devicons", -- optional dependency
+		},
+		opts = {},
+		config = function()
+			require("barbecue").setup({
+				create_autocmd = false, -- prevent barbecue from updating itself automatically
+			})
+		end,
+	},
+	{
+		"folke/noice.nvim",
+		event = "VeryLazy",
+		opts = {},
+		dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify" },
+		config = function()
+			require("noice").setup({
+				lsp = {
+					-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+					override = {
+						["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+						["vim.lsp.util.stylize_markdown"] = true,
+						["cmp.entry.get_documentation"] = true,
+					},
+				},
+				-- you can enable a preset for easier configuration
+				presets = {
+					bottom_search = false, -- use a classic bottom cmdline for search
+					command_palette = false, -- position the cmdline and popupmenu together
+					long_message_to_split = true, -- long messages will be sent to a split
+					inc_rename = false, -- enables an input dialog for inc-rename.nvim
+					lsp_doc_border = false, -- add a border to hover docs and signature help
+				},
+			})
+		end,
 	},
 }
 

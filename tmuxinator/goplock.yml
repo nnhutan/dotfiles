@@ -1,7 +1,7 @@
-# /Users/lixibox/.config/tmuxinator/wms.yml
+# /Users/lixibox/.config/tmuxinator/goplock.yml
 
-name: wms
-root: ~/work/lixibox-wms
+name: goplock
+root: ~/goplock
 
 # Optional tmux socket
 # socket_name: foo
@@ -46,14 +46,5 @@ root: ~/work/lixibox-wms
 
 windows:
   - neovim: v
-  - termial:
-      layout: even-horizontal
-      panes:
-        - console: bundle exec rails c
-        - other:
+  - terminal:
   - server:
-      layout: even-horizontal
-      panes:
-        - rails: bundle exec rails s
-        - sidekiq: bundle exec sidekiq
-  - lazygit: lazygit

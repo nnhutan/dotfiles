@@ -1,7 +1,7 @@
-# /Users/lixibox/.config/tmuxinator/wms.yml
+# /Users/lixibox/.config/tmuxinator/spammer.yml
 
-name: wms
-root: ~/work/lixibox-wms
+name: spammer
+root: ~/spammer
 
 # Optional tmux socket
 # socket_name: foo
@@ -45,15 +45,6 @@ root: ~/work/lixibox-wms
 # attach: false
 
 windows:
-  - neovim: v
-  - termial:
-      layout: even-horizontal
-      panes:
-        - console: bundle exec rails c
-        - other:
+  - editor: v
+  - terminal:
   - server:
-      layout: even-horizontal
-      panes:
-        - rails: bundle exec rails s
-        - sidekiq: bundle exec sidekiq
-  - lazygit: lazygit
