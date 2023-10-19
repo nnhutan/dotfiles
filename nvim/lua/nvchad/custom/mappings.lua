@@ -36,27 +36,6 @@ M.general = {
 		["<C-b>"] = { "<ESC>^i", "Beginning of line" },
 		["<C-e>"] = { "<End>", "End of line" },
 
-		["<C-l>"] = {
-			'copilot#Accept("<CR>")',
-			"Copilot accept",
-			opts = { silent = true, expr = true, replace_keycodes = false },
-		},
-		["<C-k>"] = {
-			'copilot#Accept("<CR>")',
-			"Copilot accept",
-			opts = { silent = true, expr = true, replace_keycodes = false },
-		},
-		["<C-j>"] = {
-			'copilot#Accept("<CR>")',
-			"Copilot accept",
-			opts = { silent = true, expr = true, replace_keycodes = false },
-		},
-		["<C-h>"] = {
-			'copilot#Accept("<CR>")',
-			"Copilot accept",
-			opts = { silent = true, expr = true, replace_keycodes = false },
-		},
-
 		-- navigate within insert mode
 		-- ["<C-h>"] = { "<Left>", "Move left" },
 		-- ["<C-l>"] = { "<Right>", "Move right" },
@@ -70,7 +49,7 @@ M.general = {
 
 		[";"] = { ":", "enter command mode", opts = { nowait = true } },
 		["<leader>w"] = { "<cmd> w <CR>", "Save file" },
-		["<Esc>"] = { ":noh <CR>", "Clear highlights" },
+		["<Esc>"] = { ":noh <CR>", "Clear highlights", opts = { silent = true } },
 		-- switch between windows
 		["<C-h>"] = { "<C-w>h", "Window left" },
 		["<C-l>"] = { "<C-w>l", "Window right" },
@@ -80,6 +59,7 @@ M.general = {
 		-- save
 		["<C-s>"] = { "<cmd> w <CR>", "Save file" },
 		["<leader>q"] = { "<cmd> q <CR>", "Quit" },
+		["<leader>Q"] = { "<cmd> qa <CR>", "Quit all" },
 
 		-- Copy all
 		["<C-c>"] = { "<cmd> %y+ <CR>", "Copy whole file" },
@@ -105,6 +85,18 @@ M.general = {
 		["<leader>fP"] = { "<cmd>lua CopyFilePath('P')<CR>", "Absolute path" },
 		["<leader>fe"] = { "<cmd>lua CopyFilePath('e')<CR>", "Extension only" },
 		["<leader>fn"] = { "<cmd>lua CopyFilePath('f')<CR>", "Filename" },
+		["zR"] = {
+			function()
+				require("ufo").openAllFolds()
+			end,
+			"Open all Folds v2",
+		},
+		["zM"] = {
+			function()
+				require("ufo").closeAllFolds()
+			end,
+			"Close all Folds v2",
+		},
 	},
 
 	t = {
@@ -548,6 +540,100 @@ M.trouble = {
 }
 require("core.utils").load_mappings("trouble")
 
+M.persistence = {
+
+	plugin = true,
+	n = {
+		["<leader>Ss"] = { '<cmd>lua require("persistence").load()<cr>', "Load current session" },
+		["<leader>a"] = { '<cmd>lua require("persistence").load()<cr>', "Load current session" },
+		["<leader>Sl"] = { '<cmd>lua require("persistence").load({ last = true })<cr>', "Load last session" },
+		["<leader>Sq"] = { '<cmd>lua require("persistence").stop()<cr>', "Stop persistence" },
+	},
+}
+require("core.utils").load_mappings("persistence")
+
+M.notify = {
+
+	plugin = true,
+	n = {
+		["<leader>un"] = {
+			function()
+				require("notify").dismiss({ silent = true, pending = true })
+			end,
+			"Dismiss all Notifications",
+		},
+	},
+}
+require("core.utils").load_mappings("notify")
+
+M.GPT = {
+
+	plugin = true,
+	n = {
+		["<leader>G"] = { "<cmd>ChatGPT<CR>", "ChatGPT" },
+		["<leader>kc"] = { "<cmd>ChatGPT<CR>", "ChatGPT" },
+		["<leader>ke"] = { "<cmd>ChatGPTEditWithInstruction<CR>", "Edit with instruction" },
+		["<leader>kg"] = { "<cmd>ChatGPTRun grammar_correction<CR>", "Grammar Correction" },
+		["<leader>kt"] = { "<cmd>ChatGPTRun translate<CR>", "Translate" },
+		["<leader>kk"] = { "<cmd>ChatGPTRun keywords<CR>", "Keywords" },
+		["<leader>kd"] = { "<cmd>ChatGPTRun docstring<CR>", "Docstring" },
+		["<leader>ka"] = { "<cmd>ChatGPTRun add_tests<CR>", "Add Tests" },
+		["<leader>ko"] = { "<cmd>ChatGPTRun optimize_code<CR>", "Optimize Code" },
+		["<leader>ks"] = { "<cmd>ChatGPTRun summarize<CR>", "Summarize" },
+		["<leader>kf"] = { "<cmd>ChatGPTRun fix_bugs<CR>", "Fix Bugs" },
+		["<leader>kx"] = { "<cmd>ChatGPTRun explain_code<CR>", "Explain Code" },
+		["<leader>kr"] = { "<cmd>ChatGPTRun roxygen_edit<CR>", "Roxygen Edit" },
+		["<leader>kl"] = { "<cmd>ChatGPTRun code_readability_analysis<CR>", "Code Readability Analysis" },
+	},
+
+	v = {
+		["<leader>ke"] = { "<cmd>ChatGPTEditWithInstruction<CR>", "Edit with instruction" },
+		["<leader>kg"] = { "<cmd>ChatGPTRun grammar_correction<CR>", "Grammar Correction" },
+		["<leader>kt"] = { "<cmd>ChatGPTRun translate<CR>", "Translate" },
+		["<leader>kk"] = { "<cmd>ChatGPTRun keywords<CR>", "Keywords" },
+		["<leader>kd"] = { "<cmd>ChatGPTRun docstring<CR>", "Docstring" },
+		["<leader>ka"] = { "<cmd>ChatGPTRun add_tests<CR>", "Add Tests" },
+		["<leader>ko"] = { "<cmd>ChatGPTRun optimize_code<CR>", "Optimize Code" },
+		["<leader>ks"] = { "<cmd>ChatGPTRun summarize<CR>", "Summarize" },
+		["<leader>kf"] = { "<cmd>ChatGPTRun fix_bugs<CR>", "Fix Bugs" },
+		["<leader>kx"] = { "<cmd>ChatGPTRun explain_code<CR>", "Explain Code" },
+		["<leader>kr"] = { "<cmd>ChatGPTRun roxygen_edit<CR>", "Roxygen Edit" },
+		["<leader>kl"] = { "<cmd>ChatGPTRun code_readability_analysis<CR>", "Code Readability Analysis" },
+	},
+}
+require("core.utils").load_mappings("GPT")
+
+M.copilot = {
+
+	plugin = true,
+	i = {
+		["<C-l>"] = {
+			'copilot#Accept("<CR>")',
+			"Copilot accept",
+			opts = { silent = true, expr = true, replace_keycodes = false },
+		},
+		["<C-k>"] = {
+			'copilot#Accept("<CR>")',
+			"Copilot accept",
+			opts = { silent = true, expr = true, replace_keycodes = false },
+		},
+		["<C-j>"] = {
+			'copilot#Accept("<CR>")',
+			"Copilot accept",
+			opts = { silent = true, expr = true, replace_keycodes = false },
+		},
+		["<C-h>"] = {
+			'copilot#Accept("<CR>")',
+			"Copilot accept",
+			opts = { silent = true, expr = true, replace_keycodes = false },
+		},
+	},
+}
+if vim.fn.exists(":Copilot") == 2 then
+	vim.cmd([[autocmd User CopilotEnter :lua require("core.utils").load_mappings("copilot")]])
+	-- require("core.utils").load_mappings("copilot")
+end
+
 M.disabled = {
 	n = {
 		["<leader>wK"] = "",
@@ -579,6 +665,8 @@ M.disabled = {
 		["<leader>e"] = "",
 		["<leader>o"] = "",
 		["<leader>fh"] = "",
+		["zR"] = "",
+		["zM"] = "",
 	},
 }
 

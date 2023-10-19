@@ -18,6 +18,9 @@ M.override = {
 		bg = "none",
 		fg = "light_grey",
 	},
+	FoldColumn = {
+		bg = "none",
+	},
 }
 
 -- -@type HLTable

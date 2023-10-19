@@ -36,7 +36,7 @@ autocmd("BufWritePre", {
 autocmd("BufWritePost", {
 	pattern = "*",
 	callback = function()
-		vim.cmd([[ :loadview ]])
+		vim.cmd(":silent! loadview")
 	end,
 })
 

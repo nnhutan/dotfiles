@@ -104,7 +104,6 @@ M.telescope = {
 			},
 		},
 	},
-
 	extensions = {},
 }
 
@@ -130,6 +129,25 @@ M.cmp = {
 	preselect = cmp.PreselectMode.None,
 	completion = {
 		completeopt = "menu,menuone,noinsert,noselect",
+	},
+}
+
+M.blankline = {
+	filetype_exclude = {
+		"help",
+		"terminal",
+		"lazy",
+		"lspinfo",
+		"TelescopePrompt",
+		"TelescopeResults",
+		"mason",
+		"nvdash",
+		"nvcheatsheet",
+		"neo-tree",
+		"notify",
+		"dashboard",
+		"noice",
+		"",
 	},
 }
 

@@ -85,7 +85,7 @@ local options = {
 		end,
 	},
 	window = {
-		width = 60,
+		width = 40,
 		-- auto_expand_width = true,
 		mappings = {
 			["<space>"] = false, -- disable space until we figure out which-key disabling

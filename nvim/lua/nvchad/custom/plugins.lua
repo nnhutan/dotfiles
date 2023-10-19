@@ -3,12 +3,9 @@ local overrides = require("custom.configs.overrides")
 ---@type NvPluginSpec[]
 local plugins = {
 
-	-- Override plugin definition options
-
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
-			-- format & linting
 			{
 				"jose-elias-alvarez/null-ls.nvim",
 				config = function()
@@ -19,17 +16,24 @@ local plugins = {
 		config = function()
 			require("plugins.configs.lspconfig")
 			require("custom.configs.lspconfig")
-		end, -- Override to setup mason-lspconfig
+		end,
 	},
-
-	-- override plugin configs
+	{ "vimpostor/vim-tpipeline", event = "BufReadPre" },
+	{ "nvim-pack/nvim-spectre", cmd = "Spectre" },
+	{ "tpope/vim-haml", event = "VeryLazy" },
+	{ "ellisonleao/glow.nvim", config = true, cmd = "Glow" },
+	{ "thoughtbot/vim-rspec", event = "VeryLazy" },
+	{ "sindrets/diffview.nvim", event = "VeryLazy" },
+	{ "vim-test/vim-test", event = "VeryLazy" },
+	{ "rhysd/clever-f.vim", event = "VeryLazy" },
+	{ "wakatime/vim-wakatime", lazy = false },
 	{ "williamboman/mason.nvim", opts = overrides.mason },
 	{ "nvim-treesitter/nvim-treesitter", opts = overrides.treesitter },
 	{ "nvim-telescope/telescope.nvim", opts = overrides.telescope },
 	{ "nvim-tree/nvim-tree.lua", opts = overrides.nvimtree },
 	{ "lewis6991/gitsigns.nvim", opts = overrides.gitsigns },
 	{ "hrsh7th/nvim-cmp", opts = overrides.cmp },
-	-- Install a plugin
+	{ "lukas-reineke/indent-blankline.nvim", opts = overrides.blankline },
 	{
 		"max397574/better-escape.nvim",
 		event = "InsertEnter",
@@ -52,48 +56,153 @@ local plugins = {
 				l = { name = "LSP" },
 				T = { name = "Test" },
 				p = { name = "Others" },
+				S = { name = "Session" },
+				k = { name = "GPT" },
 			}, { prefix = "<leader>" })
 		end,
 	},
-
 	{ "nvim-tree/nvim-tree.lua", enabled = false },
 	{ "mg979/vim-visual-multi", event = "VeryLazy", branch = "master" },
-	{ "tpope/vim-rails", lazy = false },
-	{ "mattn/emmet-vim", lazy = false },
-	{ "github/copilot.vim", lazy = false },
+	{ "tpope/vim-rails", event = "VeryLazy" },
+	{ "mattn/emmet-vim", event = "VeryLazy" },
+	{ "folke/persistence.nvim", event = "BufReadPre", opts = {} },
+	{ "gsuuon/note.nvim", cmd = "Note" },
+	-- { "github/copilot.vim", lazy = false },
 	{
 		"kylechui/nvim-surround",
 		config = function()
 			require("nvim-surround").setup({})
 		end,
-		lazy = false,
+		event = "BufReadPre",
+	},
+	{
+		"phaazon/hop.nvim",
+		branch = "v2",
+		config = function()
+			dofile(vim.g.base46_cache .. "hop")
+			require("hop").setup({ keys = "etovxqpdygfblzhckisuran" })
+		end,
+		cmd = "HopWord",
+	},
+	{
+		"HiPhish/rainbow-delimiters.nvim",
+		event = "BufReadPre",
+		setup = function()
+			dofile(vim.g.base46_cache .. "rainbowdelimiters")
+			local rainbow_delimiters = require("rainbow-delimiters")
+
+			vim.g.rainbow_delimiters = {
+				strategy = {
+					[""] = rainbow_delimiters.strategy["global"],
+					commonlisp = rainbow_delimiters.strategy["local"],
+				},
+				query = {
+					[""] = "rainbow-delimiters",
+					lua = "rainbow-blocks",
+				},
+				highlight = {
+					"RainbowDelimiterRed",
+					"RainbowDelimiterYellow",
+					"RainbowDelimiterBlue",
+					"RainbowDelimiterOrange",
+					"RainbowDelimiterGreen",
+					"RainbowDelimiterViolet",
+					"RainbowDelimiterCyan",
+				},
+				blacklist = { "c", "cpp" },
+			}
+		end,
+	},
+	{ "windwp/nvim-ts-autotag", event = "VeryLazy" },
+	{ "andymass/vim-matchup", event = "VeryLazy" },
+	{ "vim-ruby/vim-ruby", event = "BufReadPre" },
+	{
+		"rcarriga/nvim-notify",
+		config = function()
+			dofile(vim.g.base46_cache .. "notify")
+			local stages = require("notify.stages.slide")("bottom_up")
+			local notify = require("notify")
+			notify.setup({
+				timeout = 1500,
+				background_colour = "Normal",
+				max_height = function()
+					return math.floor(vim.o.lines * 0.75)
+				end,
+				max_width = function()
+					return math.floor(vim.o.columns * 0.75)
+				end,
+				on_open = function(win)
+					vim.api.nvim_win_set_config(win, { zindex = 100 })
+				end,
+				render = "compact",
+				fps = 60,
+
+				stages = {
+					function(...)
+						local opts = stages[1](...)
+						if opts then
+							opts.border = "none"
+						end
+						return opts
+					end,
+					unpack(stages, 2),
+				},
+			})
+			vim.notify = notify
+		end,
+	},
+	{ "mrbjarksen/neo-tree-diagnostics.nvim", dependencies = { "nvim-neo-tree/neo-tree.nvim" }, event = "VeryLazy" },
+	{
+		"Exafunction/codeium.vim",
+		event = "BufEnter",
+		config = function()
+			vim.keymap.set("i", "<C-h>", function()
+				return vim.fn["codeium#Accept"]()
+			end, { expr = true, silent = true })
+			vim.keymap.set("i", "<C-l>", function()
+				return vim.fn["codeium#Accept"]()
+			end, { expr = true, silent = true })
+			vim.keymap.set("i", "<c-j>", function()
+				return vim.fn["codeium#CycleCompletions"](1)
+			end, { expr = true, silent = true })
+			vim.keymap.set("i", "<c-k>", function()
+				return vim.fn["codeium#CycleCompletions"](-1)
+			end, { expr = true, silent = true })
+			vim.keymap.set("i", "<c-x>", function()
+				return vim.fn["codeium#Clear"]()
+			end, { expr = true, silent = true })
+		end,
 	},
 	{
 		"stevearc/aerial.nvim",
 		opts = {},
-		-- Optional dependencies
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
-			"nvim-tree/nvim-web-devicons",
-		},
-	},
-	{
-		"rmagatti/auto-session",
-		cmd = { "SaveSession", "RestoreSession" },
-		config = function()
-			require("auto-session").setup({
-				log_level = "info",
-				auto_session_enabled = true,
-				auto_save_enabled = true,
-				auto_restore_enabled = true,
-			})
-		end,
-		lazy = false,
+		dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
 	},
 	{
 		"kevinhwang91/nvim-ufo",
-		dependencies = { "kevinhwang91/promise-async" },
-		lazy = false,
+		event = "VeryLazy",
+		dependencies = {
+			"kevinhwang91/promise-async",
+			{
+				"luukvbaal/statuscol.nvim",
+				config = function()
+					local builtin = require("statuscol.builtin")
+					require("statuscol").setup({
+						relculright = true,
+						fillcharhl = "",
+						segments = {
+							{ text = { "%s" }, click = "v:lua.ScSa" },
+							{ text = { builtin.lnumfunc }, click = "v:lua.ScLa" },
+							{
+								text = { " ", builtin.foldfunc, " " },
+								condition = { builtin.not_empty, true, builtin.not_empty },
+								click = "v:lua.ScFa",
+							},
+						},
+					})
+				end,
+			},
+		},
 		opts = {
 			preview = {
 				mappings = {
@@ -128,67 +237,12 @@ local plugins = {
 		},
 	},
 	{
-		"phaazon/hop.nvim",
-		branch = "v2",
-		config = function()
-			dofile(vim.g.base46_cache .. "hop")
-			require("hop").setup({ keys = "etovxqpdygfblzhckisuran" })
-		end,
-		lazy = false,
-	},
-	{
-		"HiPhish/rainbow-delimiters.nvim",
-		lazy = false,
-		setup = function()
-			dofile(vim.g.base46_cache .. "rainbowdelimiters")
-			local rainbow_delimiters = require("rainbow-delimiters")
-
-			vim.g.rainbow_delimiters = {
-				strategy = {
-					[""] = rainbow_delimiters.strategy["global"],
-					commonlisp = rainbow_delimiters.strategy["local"],
-				},
-				query = {
-					[""] = "rainbow-delimiters",
-					lua = "rainbow-blocks",
-				},
-				highlight = {
-					"RainbowDelimiterRed",
-					"RainbowDelimiterYellow",
-					"RainbowDelimiterBlue",
-					"RainbowDelimiterOrange",
-					"RainbowDelimiterGreen",
-					"RainbowDelimiterViolet",
-					"RainbowDelimiterCyan",
-				},
-				blacklist = { "c", "cpp" },
-			}
-		end,
-	},
-	{ "windwp/nvim-ts-autotag", lazy = false },
-	{
-		"andymass/vim-matchup",
-		setup = function()
-			vim.g.matchup_matchparen_offscreen = { method = "popup" }
-		end,
-		lazy = false,
-	},
-	{ "nvim-pack/nvim-spectre", cmd = "Spectre" },
-	{ "tpope/vim-haml", event = "VeryLazy" },
-	{ "ellisonleao/glow.nvim", config = true, cmd = "Glow" },
-	{ "thoughtbot/vim-rspec", event = "VeryLazy" },
-	{ "sindrets/diffview.nvim", event = "VeryLazy" },
-	{ "vim-test/vim-test", event = "VeryLazy" },
-	{ "rhysd/clever-f.vim", lazy = false },
-	{ "wakatime/vim-wakatime", lazy = false },
-	{
 		"declancm/cinnamon.nvim",
 		config = function()
 			require("cinnamon").setup()
 		end,
-		lazy = false,
+		event = "VeryLazy",
 	},
-	{ "vim-ruby/vim-ruby", lazy = false },
 	{
 		"nvim-neo-tree/neo-tree.nvim",
 		branch = "v3.x",
@@ -205,11 +259,9 @@ local plugins = {
 			return require("custom.configs.neotree")
 		end,
 	},
-	{ "mrbjarksen/neo-tree-diagnostics.nvim", dependencies = { "nvim-neo-tree/neo-tree.nvim" }, lazy = false },
 	{
 		"folke/flash.nvim",
 		event = "VeryLazy",
-		---@type Flash.Config
 		opts = {},
 		keys = {
 			{
@@ -257,27 +309,35 @@ local plugins = {
 		end,
 	},
 	{
-		"rcarriga/nvim-notify",
-		lazy = false,
-		config = function()
-			dofile(vim.g.base46_cache .. "notify")
-			vim.notify = require("notify")
-		end,
-	},
-	{
 		"utilyre/barbecue.nvim",
 		name = "barbecue",
 		version = "*",
 		dependencies = {
 			"SmiteshP/nvim-navic",
-			"nvim-tree/nvim-web-devicons", -- optional dependency
+			"nvim-tree/nvim-web-devicons",
 		},
 		opts = {},
 		config = function()
 			require("barbecue").setup({
-				create_autocmd = false, -- prevent barbecue from updating itself automatically
+				create_autocmd = false,
 			})
 		end,
+	},
+	{
+		"glepnir/dashboard-nvim",
+		event = "VimEnter",
+		config = require("custom.configs.dashboard"),
+		dependencies = { { "nvim-tree/nvim-web-devicons" } },
+	},
+	{
+		"jackMort/ChatGPT.nvim",
+		event = "VeryLazy",
+		config = require("custom.configs.gpt"),
+		dependencies = {
+			"MunifTanjim/nui.nvim",
+			"nvim-lua/plenary.nvim",
+			"nvim-telescope/telescope.nvim",
+		},
 	},
 	{
 		"folke/noice.nvim",
@@ -293,15 +353,49 @@ local plugins = {
 						["vim.lsp.util.stylize_markdown"] = true,
 						["cmp.entry.get_documentation"] = true,
 					},
+					signature = {
+						enabled = false,
+					},
+					hover = {
+						enabled = false,
+					},
 				},
 				-- you can enable a preset for easier configuration
 				presets = {
 					bottom_search = false, -- use a classic bottom cmdline for search
-					command_palette = false, -- position the cmdline and popupmenu together
+					command_palette = true, -- position the cmdline and popupmenu together
 					long_message_to_split = true, -- long messages will be sent to a split
 					inc_rename = false, -- enables an input dialog for inc-rename.nvim
 					lsp_doc_border = false, -- add a border to hover docs and signature help
 				},
+			})
+		end,
+	},
+	{
+		"echasnovski/mini.indentscope",
+		version = "*",
+		event = "BufEnter",
+		opts = {
+			symbol = "│",
+			options = { try_as_border = true },
+		},
+		init = function()
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = {
+					"help",
+					"alpha",
+					"dashboard",
+					"neo-tree",
+					"Trouble",
+					"lazy",
+					"mason",
+					"notify",
+					"toggleterm",
+					"lazyterm",
+				},
+				callback = function()
+					vim.b.miniindentscope_disable = true
+				end,
 			})
 		end,
 	},
