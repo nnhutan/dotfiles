@@ -1,7 +1,7 @@
-# /Users/lixibox/.config/tmuxinator/mux.yml
+# /Users/lixibox/.config/tmuxinator/wms-fe.yml
 
-name: mux
-root: ~/
+name: wms-fe
+root: ~/work/wms-fe/
 
 # Optional tmux socket
 # socket_name: foo
@@ -45,4 +45,6 @@ root: ~/
 # attach: false
 
 windows:
-  - editor: v .tmux.conf
+  - neovim: v
+  - terminal:
+  - server:

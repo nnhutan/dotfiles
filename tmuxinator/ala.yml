@@ -1,7 +1,7 @@
-# /Users/lixibox/.config/tmuxinator/mux.yml
+# /Users/lixibox/.config/tmuxinator/ala.yml
 
-name: mux
-root: ~/
+name: ala
+root: ~/.config/alacritty/
 
 # Optional tmux socket
 # socket_name: foo
@@ -45,4 +45,5 @@ root: ~/
 # attach: false
 
 windows:
-  - editor: v .tmux.conf
+  - neovim: v ~/.alacritty.yml
+  - terminal:
