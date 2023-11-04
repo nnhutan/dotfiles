@@ -118,7 +118,7 @@ local key_maps = {
     -- ["<leader>fh"] = { "<cmd> Telescope help_tags <CR>", "Help page" },
     ["<leader>fo"] = { "<cmd> Telescope oldfiles <CR>", "Find oldfiles" },
     ["<leader>fz"] = { "<cmd> Telescope current_buffer_fuzzy_find <CR>", "Find in current buffer" },
-    --		["<leader>fs"] = { "<cmd>lua FuzzyFindFiles{}<CR>", "Grep string" },
+    ["<leader>fs"] = { function() require("utils").FuzzyFindFiles() end, "Grep string" },
 
     -- git
     ["<leader>gc"] = { "<cmd> Telescope git_commits <CR>", "Git commits" },

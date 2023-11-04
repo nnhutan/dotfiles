@@ -18,7 +18,7 @@ opt.shortmess:append "sI"
 opt.timeoutlen = 400
 opt.undofile = true
 opt.whichwrap:append "<>[]hl"
-opt.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+opt.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:,diff:╱,]]
 opt.foldcolumn = "1"
 opt.cmdheight = 0
 opt.scrolloff = 8
@@ -31,30 +31,19 @@ opt.smartindent = true
 opt.splitbelow = true
 opt.splitkeep = "screen"
 opt.splitright = true
-opt.fillchars = {
-  foldopen = "",
-  foldclose = "",
-  fold = " ",
-  foldsep = " ",
-  diff = "╱",
-  eob = " ",
-}
 opt.statuscolumn = [[%!v:lua.require'utils'.statuscolumn()]]
 opt.smoothscroll = true
 
 g.mapleader = " "
 g.matchup_matchparen_offscreen = { method = "popup" }
-g.autoformat_enabled = true
 g.ruby_host_prog = "~/.rbenv/shims/neovim-ruby-host"
 g.nocompatible = true
 g.regexpengine = 1
 g.ttyfast = true
-g["escape-time"] = 10
+g["escape-time"] = 0
 g["test#neovim#start_normal"] = 1
 g["test#strategy"] = { nearest = "neovim", file = "neovim", suite = "neovim" }
-g.dashboard_disable_statusline = 1
 g.markdown_recommended_style = 0
-g.lua_tree_auto_close = 1
 g.VM_set_statusline = 0
 g.VM_silent_exit = 1
 

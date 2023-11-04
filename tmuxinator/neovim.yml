@@ -1,7 +1,7 @@
 # /Users/lixibox/.config/tmuxinator/neovim.yml
 
 name: neovim
-root: ~/.config/nvim/lua
+root: ~/.config/nvim
 
 # Optional tmux socket
 # socket_name: foo

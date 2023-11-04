@@ -1,6 +1,8 @@
 local M = {}
 local merge_tb = vim.tbl_deep_extend
 
+-- Get from alot of sources: LazyVim, Astronvim, Nvchad, etc. Thanks!
+
 M.load_keymap = function(values)
   local default_opts = { mode = mode }
   for mode, mode_values in pairs(values) do
@@ -134,7 +136,7 @@ function M.statuscolumn()
     end
     vim.api.nvim_win_call(win, function()
       if vim.fn.foldclosed(vim.v.lnum) >= 0 then
-        fold = { text = vim.opt.fillchars:get().foldclose or "", texthl = "Folded" }
+        fold = { text = "", texthl = "Folded" }
       end
     end)
     -- Left: mark or non-git sign
@@ -157,47 +159,6 @@ function M.statuscolumn()
   end
 
   return table.concat(components, "")
-end
-
-function M.getVimVisualMultiStatusLine()
-  if vim.b["visual_multi"] then
-    local result = vim.fn["VMInfos"]()
-    -- local current = result.current
-    -- local total = result.total
-    local ratio = result.ratio
-    local patterns = result.patterns
-    -- local status = result.status
-    return "%#St_InsertMode# "
-        .. " MULTI "
-        .. "%#St_lspWarning#  "
-        .. patterns[1]
-        .. " "
-        .. "%#StText#"
-        .. " "
-        .. ratio
-  else
-    return ""
-  end
-end
-
-function M.get_hlgroup(name, fallback)
-  if vim.fn.hlexists(name) == 1 then
-    local hl
-    if vim.api.nvim_get_hl then -- check for new neovim 0.9 API
-      hl = vim.api.nvim_get_hl(0, { name = name, link = false })
-      if not hl.fg then hl.fg = "NONE" end
-      if not hl.bg then hl.bg = "NONE" end
-    else
-      hl = vim.api.nvim_get_hl_by_name(name, vim.o.termguicolors)
-      if not hl.foreground then hl.foreground = "NONE" end
-      if not hl.background then hl.background = "NONE" end
-      hl.fg, hl.bg = hl.foreground, hl.background
-      hl.ctermfg, hl.ctermbg = hl.fg, hl.bg
-      hl.sp = hl.special
-    end
-    return hl
-  end
-  return fallback or {}
 end
 
 return M
