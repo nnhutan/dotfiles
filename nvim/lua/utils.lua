@@ -161,4 +161,75 @@ function M.statuscolumn()
   return table.concat(components, "")
 end
 
+function M.LSP_on_attach(client, bufnr)
+  local map = vim.keymap.set
+  local inlay_hint = vim.lsp.buf.inlay_hint or vim.lsp.inlay_hint
+  client.server_capabilities.documentFormattingProvider = true
+  client.server_capabilities.documentRangeFormattingProvider = true
+
+  local opts = { buffer = bufnr }
+  map("n", "[d", vim.diagnostic.goto_prev)
+  map("n", "]d", vim.diagnostic.goto_next)
+  map("n", "gD", vim.lsp.buf.declaration, opts)
+  map("n", "gd", vim.lsp.buf.definition, opts)
+  map("n", "K", vim.lsp.buf.hover, opts)
+  map("n", "gi", vim.lsp.buf.implementation, opts)
+  map("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+  map("n", "<space>wa", vim.lsp.buf.add_workspace_folder, opts)
+  map("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, opts)
+  map("n", "<space>wl", function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, opts)
+  map("n", "<space>D", vim.lsp.buf.type_definition, opts)
+  map("n", "<space>lr", vim.lsp.buf.rename, opts)
+  map({ "n", "v" }, "<space>la", vim.lsp.buf.code_action, opts)
+  map("n", "gr", vim.lsp.buf.references, opts)
+
+  if not client.supports_method("textDocument/semanticTokens") then client.server_capabilities.semanticTokensProvider = nil end
+  if client.supports_method("textDocument/inlayHint") then inlay_hint(bufnr, true) end
+
+  vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePre", "CursorHold", "InsertLeave", "TextChanged" }, {
+    buffer = bufnr,
+
+    callback = function()
+      local params = vim.lsp.util.make_text_document_params(bufnr)
+
+      client.request("textDocument/diagnostic", { textDocument = params }, function(err, result)
+        if err then return end
+        if not result then return end
+
+        vim.lsp.diagnostic.on_publish_diagnostics(nil, vim.tbl_extend("keep", params, { diagnostics = result.items }),
+          { client_id = client.id })
+      end)
+    end,
+  })
+end
+
+function M.LSP_capabilities()
+  local has_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+  local capabilities = vim.tbl_deep_extend(
+    "force",
+    {},
+    vim.lsp.protocol.make_client_capabilities(),
+    has_cmp and cmp_nvim_lsp.default_capabilities() or {}
+  )
+
+  capabilities.textDocument.completion.completionItem = {
+    documentationFormat = { "markdown", "plaintext" },
+    snippetSupport = true,
+    preselectSupport = true,
+    insertReplaceSupport = true,
+    labelDetailsSupport = true,
+    deprecatedSupport = true,
+    commitCharactersSupport = true,
+    tagSupport = { valueSet = { 1 } },
+    resolveSupport = {
+      properties = {
+        "documentation",
+        "detail",
+        "additionalTextEdits",
+      },
+    },
+  }
+  return capabilities
+end
+
 return M
