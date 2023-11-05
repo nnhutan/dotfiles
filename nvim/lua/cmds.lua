@@ -69,6 +69,7 @@ autocmd("BufWinEnter", {
     end
   end,
 })
+
 autocmd("FileType", {
   desc = "Unlist quickfist buffers",
   group = augroup("unlist_quickfist", { clear = true }),
@@ -176,3 +177,19 @@ autocmd("QuitPre", {
     end
   end,
 })
+
+local indent_blankline = augroup("toggle_indent_blankline", { clear = true })
+autocmd("ModeChanged",
+  {
+    group = indent_blankline,
+    pattern = "[vV\x16]*:*",
+    command = "IBLEnable",
+    desc = "Enable indent-blanklines when exiting visual mode"
+  })
+autocmd("ModeChanged",
+  {
+    group = indent_blankline,
+    pattern = "*:[vV\x16]*",
+    command = "IBLDisable",
+    desc = "Deshabilita indent-blanklines when entering visual mode"
+  })

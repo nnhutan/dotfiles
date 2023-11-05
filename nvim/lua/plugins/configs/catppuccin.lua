@@ -1,4 +1,6 @@
 return function()
+  local ucolors = require('catppuccin.utils.colors')
+  local mocha = require('catppuccin.palettes').get_palette('frappe')
   require("catppuccin").setup({
     compile_path = vim.fn.stdpath "cache" .. "/catppuccin",
     flavour = "frappe", -- latte, frappe, macchiato, mocha
@@ -54,14 +56,29 @@ return function()
         overlay1 = "#838ba7",
         overlay0 = "#737994",
         surface2 = "#626880",
-        surface1 = "#51576d",
+        surface1 = "#3c4051", -- #51576d
         surface0 = "#2f3344",
         base = "#292D3E",
         mantle = "#232738", --"#232738", "#2f3344",
         crust = "#2f3344",
       },
     },
-    custom_highlights = {},
+    custom_highlights = function(colors)
+      return {
+        -- Cmp Menu
+        -- PmenuSel = { fg = colors.base, bg = colors.maroon, style = { 'bold' } },
+
+        -- Telescope
+
+        -- Bufferline
+        BufferLineIndicatorSelected = { fg = colors.pink },
+        BufferLineIndicator = { fg = colors.base },
+        TabLineSel = { bg = colors.pink },
+        TroubleNormal = { fg = C.text, bg = C.mantle },
+
+        Visual = { bg = ucolors.darken('#82aaff', 0.25, mocha.base) }, -- Visual Mode
+      }
+    end,
     integrations = {
       cmp = true,
       gitsigns = true,
