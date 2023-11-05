@@ -60,8 +60,7 @@ local plugins = {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     config = configs.lualine,
-    dependencies = {
-      'nvim-tree/nvim-web-devicons' }
+    dependencies = { 'nvim-tree/nvim-web-devicons' }
   },
   {
     "folke/trouble.nvim",
