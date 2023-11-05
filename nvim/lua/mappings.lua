@@ -42,9 +42,6 @@ local key_maps = {
     ["<Up>"] = { 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', "Move up", opts = { expr = true } },
     ["<Down>"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', "Move down", opts = { expr = true } },
 
-    -- buffer
-
-
     -- bufferline
     ["L"] = { "<cmd>BufferLineCycleNext<CR>", "Goto next buffer", },
     ["H"] = { "<cmd>BufferLineCyclePrev<CR>", "Goto prev buffer", },
@@ -61,6 +58,23 @@ local key_maps = {
 
     ["<leader>bc"] = { "<cmd>BufferLineCloseOthers<CR>", "Close all buffers except current", },
     ["<leader>c"] = { "<cmd>close<CR>", "Close buffer", },
+    ["<leader>c"] = {
+      function()
+        local bd = require("mini.bufremove").delete
+        if vim.bo.modified then
+          local choice = vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
+          if choice == 1 then -- Yes
+            vim.cmd.write()
+            bd(0)
+          elseif choice == 2 then -- No
+            bd(0, true)
+          end
+        else
+          bd(0)
+        end
+      end,
+      "Delete Buffer",
+    },
 
     -- nvimtree
     ["<leader>e"] = { "<cmd>NvimTreeToggle<CR>", "Toggle nvimtree" },
