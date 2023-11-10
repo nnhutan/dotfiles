@@ -24,7 +24,6 @@ local M = {
   hop = require("plugins.configs.hop"),
   lazy = require("plugins.configs.lazy"),
   octo = require("plugins.configs.octo"),
-  neogit = require("plugins.configs.neogit"),
 }
 
 return M

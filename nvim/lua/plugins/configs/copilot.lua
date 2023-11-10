@@ -30,7 +30,6 @@ return function()
     },
     filetypes = {
       ["*"] = true,
-      ["NeogitCommitMessage"] = true
     },
     copilot_node_command = "node", -- Node.js version must be > 16.x
     server_opts_overrides = {},

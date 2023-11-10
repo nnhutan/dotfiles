@@ -138,13 +138,9 @@ local key_maps = {
     -- git
     ["<leader>gc"] = { "<cmd> Telescope git_commits <CR>", "Git commits" },
     ["<leader>gt"] = { "<cmd> Telescope git_status <CR>", "Git status" },
+    ["<leader>gn"] = { "<cmd> Neogit <CR>", "Neogit" },
 
     -- pick a hidden term
-    ["<leader>pt"] = { "<cmd> Telescope terms <CR>", "Pick hidden term" },
-
-    -- theme switcher
-    ["<leader>ft"] = { "<cmd> Telescope themes <CR>", "Nvchad themes" },
-
     ["<leader>fa"] = { "<cmd> Telescope marks <CR>", "telescope bookmarks" },
 
 

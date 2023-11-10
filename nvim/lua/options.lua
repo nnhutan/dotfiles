@@ -1,5 +1,6 @@
 local opt = vim.opt
 local g = vim.g
+local api = vim.api
 
 opt.showmode = false
 opt.clipboard = "unnamedplus"
@@ -58,4 +59,10 @@ g.markdown_recommended_style = 0
 g.VM_set_statusline = 0
 g.VM_silent_exit = 1
 
-vim.cmd("hi NeogitDiffDeleteHighlight guibg=#404040 guifg=#ff6b6f")
+vim.cmd([[
+  hi! link LazyGitFloat TelescopePreviewNormal
+]])
+
+vim.cmd([[
+  hi! link LazyGitBorder TelescopePreviewBorder
+]])

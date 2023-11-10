@@ -16,26 +16,20 @@ local plugins = {
   { "rhysd/clever-f.vim",                  event = "VeryLazy" },
   { "nvim-tree/nvim-web-devicons",         config = configs.devicon },
   { "lukas-reineke/indent-blankline.nvim", event = { "BufReadPre", "BufNewFile" }, config = configs.blankline, },
+  { "mg979/vim-visual-multi",              event = "VeryLazy",                     branch = "master" },
+  { "folke/persistence.nvim",              event = "BufReadPre",                   opts = {} },
+  { "lewis6991/gitsigns.nvim",             config = configs.gitsign,               event = { "BufReadPre", "BufNewFile" }, },
   {
-    "NeogitOrg/neogit",
-    cmd = "Neogit",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
-      "sindrets/diffview.nvim",
-      "ibhagwan/fzf-lua",
-    },
-    config = configs.neogit
+    "nvim-tree/nvim-tree.lua",
+    config = configs.nvimtree,
+    cmd = { "NvimTreeToggle",
+      "NvimTreeFocus" },
   },
-  { "mg979/vim-visual-multi",          event = "VeryLazy",        branch = "master" },
-  { "folke/persistence.nvim",          event = "BufReadPre",      opts = {} },
-  { "lewis6991/gitsigns.nvim",         config = configs.gitsign,  event = { "BufReadPre", "BufNewFile" }, },
-  { "nvim-tree/nvim-tree.lua",         config = configs.nvimtree, cmd = { "NvimTreeToggle", "NvimTreeFocus" }, },
-  { 'stevearc/dressing.nvim',          opts = {},                 config = configs.dressing },
-  { "rcarriga/nvim-notify",            event = "VeryLazy",        config = configs.notify },
-  { "stevearc/conform.nvim",           lazy = true,               config = configs.conform },
-  { "HiPhish/rainbow-delimiters.nvim", event = "BufReadPre",      config = configs.rainbow },
-  { "akinsho/bufferline.nvim",         event = "BufReadPre",      config = configs.bufferline },
+  { 'stevearc/dressing.nvim',          opts = {},            config = configs.dressing },
+  { "rcarriga/nvim-notify",            event = "VeryLazy",   config = configs.notify },
+  { "stevearc/conform.nvim",           lazy = true,          config = configs.conform },
+  { "HiPhish/rainbow-delimiters.nvim", event = "BufReadPre", config = configs.rainbow },
+  { "akinsho/bufferline.nvim",         event = "BufReadPre", config = configs.bufferline },
   {
     "max397574/better-escape.nvim",
     event = "InsertEnter",
@@ -194,13 +188,15 @@ local plugins = {
   },
   {
     'pwntester/octo.nvim',
+    event = "VeryLazy",
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope.nvim',
       'nvim-tree/nvim-web-devicons',
     },
     config = configs.octo,
-  }
+  },
+  { "kdheepak/lazygit.nvim",    cmd = "LazyGit", },
 }
 
 require("lazy").setup(plugins, configs.lazy)
