@@ -1,6 +1,14 @@
 return function()
   require("noice").setup({
     views = {
+      popupmenu = {
+        win_options = {
+          winhighlight = {
+            Normal = "TelescopePreviewNormal",
+            FloatBorder = "TelescopePreviewBorder",
+          },
+        },
+      },
       cmdline_popup = {
         win_options = {
           winhighlight = {
@@ -49,7 +57,7 @@ return function()
         ["cmp.entry.get_documentation"] = true,
       },
       signature = { enabled = true, },
-      hover = { enabled = true, },
+      hover = { enabled = true },
     },
     -- you can enable a preset for easier configuration
     presets = {

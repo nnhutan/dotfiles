@@ -26,7 +26,7 @@ return {
     Class         = " ",
     Codeium       = "󰘦 ",
     Color         = " ",
-    Control       = " ",
+    Control       = "",
     Collapsed     = " ",
     Constant      = "󰏿 ",
     Constructor   = " ",

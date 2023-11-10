@@ -1,6 +1,6 @@
 return function()
   local ucolors = require('catppuccin.utils.colors')
-  local mocha = require('catppuccin.palettes').get_palette('frappe')
+  local C = require('catppuccin.palettes').get_palette('frappe')
   require("catppuccin").setup({
     compile_path = vim.fn.stdpath "cache" .. "/catppuccin",
     flavour = "frappe", -- latte, frappe, macchiato, mocha
@@ -35,27 +35,43 @@ return function()
     },
     color_overrides = {
       frappe = {
-        rosewater = "#f2d5cf",
-        flamingo = "#eebebe",
+        -- base01 = "#444267",
+        -- base02 = "#32374d",
+        -- base03 = "#676e95",
+        -- base04 = "#8796b0",
+        -- base05 = "#d3d3d3",
+        -- base06 = "#efefef",
+        -- base07 = "#ffffff",
+        -- base08 = "#f07178",
+        -- base09 = "#ffa282",
+        -- base0A = "#ffcb6b",
+        -- base0B = "#c3e88d",
+        -- base0C = "#89ddff",
+        -- base0D = "#82aaff",
+        -- base0E = "#c792ea",
+        -- base0F = "#ff5370",
+
+        -- rosewater = "#f2d5cf",
+        flamingo = "#c3e88d",
         pink = "#ff5370",
         mauve = "#c792ea",
         red = "#f07178",
-        maroon = "#ea999c",
-        peach = "#ffa282",
+        maroon = "#f07178",
+        peach = "#f07178",
         yellow = "#ffcb6b",
         green = "#c3e88d",
-        teal = "#81c8be",
-        sky = "#99d1db",
-        sapphire = "#85c1dc",
+        -- teal = "#81c8be",
+        -- sky = "#99d1db",
+        sapphire = "#ffcb6b",
         blue = "#82aaff",
-        lavender = "#babbf1",
+        -- lavender = "#babbf1",
         text = "#d3d3d3",
-        subtext1 = "#b5bfe2",
-        subtext0 = "#a5adce",
-        overlay2 = "#949cbb",
-        overlay1 = "#838ba7",
-        overlay0 = "#737994",
-        surface2 = "#626880",
+        -- subtext1 = "#b5bfe2",
+        -- subtext0 = "#a5adce",
+        -- overlay2 = "#949cbb",
+        -- overlay1 = "#838ba7",
+        -- overlay0 = "#737994",
+        -- surface2 = "#626880",
         surface1 = "#3c4051", -- #51576d
         surface0 = "#2f3344",
         base = "#292D3E",
@@ -73,10 +89,13 @@ return function()
         -- Bufferline
         BufferLineIndicatorSelected = { fg = colors.pink },
         BufferLineIndicator = { fg = colors.base },
+        BufferLineIndicatorVisible = { bg = colors.crust },
+        BufferLineModifiedVisible = { bg = colors.crust, fg = colors.green },
+
         TabLineSel = { bg = colors.pink },
         TroubleNormal = { fg = C.text, bg = C.mantle },
 
-        Visual = { bg = ucolors.darken('#82aaff', 0.25, mocha.base) }, -- Visual Mode
+        Visual = { bg = ucolors.darken('#82aaff', 0.25, C.base) }, -- Visual Mode
       }
     end,
     integrations = {

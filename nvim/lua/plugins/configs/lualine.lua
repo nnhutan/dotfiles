@@ -14,10 +14,16 @@ local function cursor_position()
   return vim.o.columns > 140 and "Ln %l, Col %c" or ""
 end
 
+local function stbufnr()
+  return vim.api.nvim_win_get_buf(vim.api.nvim_get_current_win())
+end
+
 local function LSP_status()
   if rawget(vim, "lsp") then
     for _, client in ipairs(vim.lsp.get_active_clients()) do
-      return (vim.o.columns > 100 and "󰄭  " .. client.name) or "󰄭  LSP"
+      if client.attached_buffers[stbufnr()] and client.name ~= "null-ls" and client.name ~= "copilot" then
+        return (vim.o.columns > 100 and "󰄭  " .. client.name) or "󰄭  LSP"
+      end
     end
   end
 
@@ -87,13 +93,7 @@ return function()
         winbar = {},
       },
       ignore_focus = {},
-      always_divide_middle = true,
-      globalstatus = false,
-      refresh = {
-        statusline = 1000,
-        tabline = 1000,
-        winbar = 1000,
-      }
+      globalstatus = true,
     },
     sections = {
       lualine_a = {},
@@ -115,13 +115,8 @@ return function()
         }
       },
       lualine_x = {
-        { visualMultiMode,                             color = { fg = colors.purple, bg = colors.lightgray }, },
-        {
-          visualMultiInfos,
-          color = { fg = colors.yellow },
-          separator =
-          "|",
-        },
+        { visualMultiMode,  color = { fg = colors.purple, bg = colors.lightgray }, },
+        { visualMultiInfos, color = { fg = colors.yellow },                        separator = "|", },
         {
           'diff',
           symbols = {
@@ -151,17 +146,6 @@ return function()
       lualine_y = { { cwd, color = { fg = colors.red, bg = colors.lightgray } } },
       lualine_z = {}
     },
-    inactive_sections = {
-      lualine_a = {},
-      lualine_b = {},
-      lualine_c = {},
-      lualine_x = {},
-      lualine_y = {},
-      lualine_z = {}
-    },
-    tabline = {},
-    winbar = {},
-    inactive_winbar = {},
     extensions = {}
   }
 end

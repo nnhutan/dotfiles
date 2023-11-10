@@ -1,5 +1,6 @@
 return function()
-  require("telescope").setup {
+  local telescope = require("telescope")
+  telescope.setup({
     defaults = {
       vimgrep_arguments = {
         "rg",
@@ -66,7 +67,6 @@ return function()
       },
     },
 
-    extensions_list = { "themes", "terms", "fzf" },
     extensions = {
       fzf = {
         fuzzy = true,
@@ -76,5 +76,10 @@ return function()
       },
     },
 
-  }
+  })
+
+  local extensions_list = { "fzf" }
+  for _, ext in ipairs(extensions_list) do
+    telescope.load_extension(ext)
+  end
 end

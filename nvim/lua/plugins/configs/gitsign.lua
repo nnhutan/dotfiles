@@ -8,5 +8,6 @@ return function()
       changedelete = { text = "~" },
       untracked = { text = "│" },
     },
+    current_line_blame = true
   })
 end

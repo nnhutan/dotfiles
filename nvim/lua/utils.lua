@@ -45,25 +45,6 @@ function M.CopyFilePath(type)
   end
 end
 
-function M.foldtext()
-  local ok = pcall(vim.treesitter.get_parser, vim.api.nvim_get_current_buf())
-  local ret = ok and vim.treesitter.foldtext and vim.treesitter.foldtext()
-  if not ret or type(ret) == "string" then
-    ret = { { vim.api.nvim_buf_get_lines(0, vim.v.lnum - 1, vim.v.lnum, false)[1], {} } }
-  end
-  table.insert(ret, { " " .. "󰇘" })
-
-  if not vim.treesitter.foldtext then
-    return table.concat(
-      vim.tbl_map(function(line)
-        return line[1]
-      end, ret),
-      " "
-    )
-  end
-  return ret
-end
-
 function M.get_signs(buf, lnum)
   local signs = vim.tbl_map(function(sign)
     local ret = vim.fn.sign_getdefined(sign.name)[1]
@@ -162,6 +143,11 @@ function M.statuscolumn()
 end
 
 function M.LSP_on_attach(client, bufnr)
+  if require("servers")[client.name].unattachable then
+    vim.lsp.stop_client(client.id)
+    return
+  end
+
   local map = vim.keymap.set
   local inlay_hint = vim.lsp.buf.inlay_hint or vim.lsp.inlay_hint
   client.server_capabilities.documentFormattingProvider = true
@@ -175,9 +161,9 @@ function M.LSP_on_attach(client, bufnr)
   map("n", "K", vim.lsp.buf.hover, opts)
   map("n", "gi", vim.lsp.buf.implementation, opts)
   map("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-  map("n", "<space>wa", vim.lsp.buf.add_workspace_folder, opts)
-  map("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, opts)
-  map("n", "<space>wl", function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, opts)
+  -- map("n", "<space>wa", vim.lsp.buf.add_workspace_folder, opts)
+  -- map("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, opts)
+  -- map("n", "<space>wl", function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, opts)
   map("n", "<space>D", vim.lsp.buf.type_definition, opts)
   map("n", "<space>lr", vim.lsp.buf.rename, opts)
   map({ "n", "v" }, "<space>la", vim.lsp.buf.code_action, opts)

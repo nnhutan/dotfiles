@@ -1,23 +1,12 @@
 return function()
   require("nvim-treesitter.configs").setup {
     ensure_installed = { "lua", "vim", "vimdoc", "tsx", "html", "css", "typescript", "javascript" },
-
     indent = { enable = true },
-
-    rainbow = {
-      enable = true,
-      -- list of languages you want to disable the plugin for
-      disable = { "jsx", "cpp" },
-      -- Which query to use for finding delimiters
-      query = "rainbow-parens",
-    },
-    autotag = {
-      enable = true,
-    },
+    incremental_selection = { enable = true },
+    autotag = { enable = true, },
     highlight = {
       enable = true,
       additional_vim_regex_highlighting = false,
-      use_languagetree = true,
       disable = function(_, bufnr)
         if vim.bo.filetype == "help" then
           return true

@@ -2,7 +2,7 @@ local load_keymap = require('utils').load_keymap
 
 local key_maps = {
   n = {
-    ["]t"] = { "<cmd> tabNext <CR>", "Next tabs group" },
+    ["]t"] = { "<cmd> tabnext <CR>", "Next tabs group" },
     ["[t"] = { "<cmd> tabprevious <CR>", "Prev tabs group" },
     [";"] = { ":", "enter command mode", opts = { nowait = true } },
     ["<Esc>"] = { "<cmd> noh <CR>", "Clear highlights" },
@@ -37,8 +37,8 @@ local key_maps = {
     ["<leader>rn"] = { "<cmd> set rnu! <CR>", "Toggle relative number" },
 
     -- improve motion
-    -- ["j"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', "Move down", opts = { expr = true } },
-    -- ["k"] = { 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', "Move up", opts = { expr = true } },
+    -- ["j"] = { "v:count == 0 ? 'gj' : 'j'", "Move down", opts = { expr = true, silent = true } },
+    -- ["k"] = { "v:count == 0 ? 'gk' : 'k'", "Move up", opts = { expr = true, silent = true } },
     ["<Up>"] = { 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', "Move up", opts = { expr = true } },
     ["<Down>"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', "Move down", opts = { expr = true } },
 
@@ -133,6 +133,7 @@ local key_maps = {
     ["<leader>fo"] = { "<cmd> Telescope oldfiles <CR>", "Find oldfiles" },
     ["<leader>fz"] = { "<cmd> Telescope current_buffer_fuzzy_find <CR>", "Find in current buffer" },
     ["<leader>fs"] = { function() require("utils").FuzzyFindFiles() end, "Grep string" },
+    ["<leader>fN"] = { "<cmd> Telescope notify <CR>", "Notifications" },
 
     -- git
     ["<leader>gc"] = { "<cmd> Telescope git_commits <CR>", "Git commits" },

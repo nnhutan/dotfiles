@@ -3,7 +3,7 @@ local g = vim.g
 
 opt.showmode = false
 opt.clipboard = "unnamedplus"
-opt.cursorline = false
+opt.cursorline = true
 opt.expandtab = true
 opt.shiftwidth = 2
 opt.tabstop = 2
@@ -33,12 +33,23 @@ opt.splitkeep = "screen"
 opt.splitright = true
 opt.statuscolumn = [[%!v:lua.require'utils'.statuscolumn()]]
 opt.smoothscroll = true
+opt.breakindent = true
+opt.linebreak = true
+opt.virtualedit = "block"
+opt.wrap = false
+opt.writebackup = false
+opt.foldlevel = 99
+opt.foldmethod = "expr"
+opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+-- opt.omnifunc = 'v:lua.vim.treesitter.query.omnifunc'
+opt.omnifunc = 'v:lua.vim.lsp.omnifunc'
+-- opt.foldtext = 'v:lua.vim.treesitter.foldtext()'
+
 
 g.mapleader = " "
 g.matchup_matchparen_offscreen = { method = "popup" }
-g.ruby_host_prog = "~/.rbenv/shims/neovim-ruby-host"
+g.loaded_ruby_provider = 0
 g.nocompatible = true
-g.regexpengine = 1
 g.ttyfast = true
 g["escape-time"] = 0
 g["test#neovim#start_normal"] = 1
@@ -46,11 +57,5 @@ g["test#strategy"] = { nearest = "neovim", file = "neovim", suite = "neovim" }
 g.markdown_recommended_style = 0
 g.VM_set_statusline = 0
 g.VM_silent_exit = 1
-
-opt.foldlevel = 99
-opt.foldmethod = "expr"
-vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-vim.wo.foldtext = "v:lua.require'utils'.foldtext()"
-vim.o.formatexpr = "v:lua.vim.lsp.formatexpr({ timeout_ms = 3000 })"
 
 vim.cmd("hi NeogitDiffDeleteHighlight guibg=#404040 guifg=#ff6b6f")
