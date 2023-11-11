@@ -38,6 +38,7 @@ opt.breakindent = true
 opt.linebreak = true
 opt.virtualedit = "block"
 opt.wrap = false
+opt.sessionoptions:append("localoptions")
 opt.writebackup = false
 opt.foldlevel = 99
 opt.foldmethod = "expr"

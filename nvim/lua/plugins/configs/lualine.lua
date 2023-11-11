@@ -101,8 +101,8 @@ return function()
         { 'mode', icons_enabled = true, icon = '', }
       },
       lualine_c = {
-        { 'filetype', colored = false,           icon_only = true, },
-        { 'filename', separator = nil,           padding = { left = 0, right = 1 }, },
+        { 'filetype', colored = false,           icon_only = true, padding = { left = 1, right = 0 } },
+        { 'filename', separator = nil, },
         { 'branch',   icon = icons.kinds.Control },
         {
           'diagnostics',

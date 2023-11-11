@@ -45,7 +45,6 @@ root: ~/work/lixibox-wms
 # attach: false
 
 windows:
-  - neovim: v
   - termial:
       layout: even-horizontal
       panes:
@@ -56,4 +55,3 @@ windows:
       panes:
         - rails: bundle exec rails s
         - sidekiq: bundle exec sidekiq
-  - lazygit: lazygit

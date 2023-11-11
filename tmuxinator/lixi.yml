@@ -45,7 +45,6 @@ root: ~/work/lixibox
 # attach: false
 
 windows:
-  - neovim: v
   - terminal:
       layout: even-horizontal
       panes:
@@ -56,4 +55,3 @@ windows:
       panes:
         - servicer: rails s -p 4000
         - sidekiq: bundle exec sidekiq
-  - lazygit: lazygit

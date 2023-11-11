@@ -17,7 +17,6 @@ local plugins = {
   { "nvim-tree/nvim-web-devicons",         config = configs.devicon },
   { "lukas-reineke/indent-blankline.nvim", event = { "BufReadPre", "BufNewFile" }, config = configs.blankline, },
   { "mg979/vim-visual-multi",              event = "VeryLazy",                     branch = "master" },
-  { "folke/persistence.nvim",              event = "BufReadPre",                   opts = {} },
   { "lewis6991/gitsigns.nvim",             config = configs.gitsign,               event = { "BufReadPre", "BufNewFile" }, },
   {
     "nvim-tree/nvim-tree.lua",
@@ -102,10 +101,10 @@ local plugins = {
     config = configs.cmp.config
   },
   {
-    "glepnir/dashboard-nvim",
-    config = configs.dashboard,
+    "goolord/alpha-nvim",
     event = "VimEnter",
     dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = configs.alpha,
   },
   {
     "jonahgoldwastaken/copilot-status.nvim",
@@ -143,7 +142,7 @@ local plugins = {
     cmd = "Telescope",
     config = configs.telescope
   },
-  { 'vidocqh/auto-indent.nvim', event = "InsertEnter", opts = {}, },
+  { 'vidocqh/auto-indent.nvim',  event = "InsertEnter",  opts = {}, },
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
@@ -196,7 +195,10 @@ local plugins = {
     },
     config = configs.octo,
   },
-  { "kdheepak/lazygit.nvim",    cmd = "LazyGit", },
+  { "kdheepak/lazygit.nvim",     cmd = "LazyGit", },
+  { 'gnikdroy/projections.nvim', branch = "pre_release", config = configs.projections, },
+  { "folke/persistence.nvim",    event = "BufReadPre",   opts = {} },
+  { 'akinsho/toggleterm.nvim',   cmd = "ToggleTerm",     version = "*",                opts = configs.terms }
 }
 
 require("lazy").setup(plugins, configs.lazy)

@@ -114,6 +114,7 @@ autocmd("FileType", {
     "checkhealth",
     "neotest-summary",
     "neotest-output-panel",
+    "toggleterm",
   },
   callback = function(event)
     vim.bo[event.buf].buflisted = false
@@ -193,3 +194,11 @@ autocmd("ModeChanged",
     command = "IBLDisable",
     desc = "Deshabilita indent-blanklines when entering visual mode"
   })
+
+function _G.set_terminal_keymaps()
+  local opts = { buffer = 0, nowait = true, noremap = true, silent = true }
+  vim.keymap.set('t', 'qq', [[<C-\><C-n>]], opts)
+end
+
+-- if you only want these mappings for toggle term use term://*toggleterm#* instead
+vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')

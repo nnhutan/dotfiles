@@ -5,7 +5,6 @@ local M = {
   cmp = require("plugins.configs.cmp"),
   conform = require("plugins.configs.conform"),
   copilot = require("plugins.configs.copilot"),
-  dashboard = require("plugins.configs.dashboard"),
   dressing = require("plugins.configs.dressing"),
   flash = require("plugins.configs.flash"),
   gitsign = require("plugins.configs.gitsign"),
@@ -24,6 +23,9 @@ local M = {
   hop = require("plugins.configs.hop"),
   lazy = require("plugins.configs.lazy"),
   octo = require("plugins.configs.octo"),
+  alpha = require("plugins.configs.alpha"),
+  projections = require("plugins.configs.projections"),
+  terms = require("plugins.configs.terms"),
 }
 
 return M

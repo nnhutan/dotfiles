@@ -78,7 +78,7 @@ return function()
 
   })
 
-  local extensions_list = { "fzf" }
+  local extensions_list = { "fzf", "projections" }
   for _, ext in ipairs(extensions_list) do
     telescope.load_extension(ext)
   end
