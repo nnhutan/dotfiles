@@ -115,6 +115,16 @@ return function()
         }
       },
       lualine_x = {
+        {
+          require("noice").api.status.command.get,
+          cond = require("noice").api.status.command.has,
+          color = { fg = colors.purple },
+        },
+        {
+          require("noice").api.statusline.mode.get,
+          cond = require("noice").api.statusline.mode.has,
+          color = { fg = colors.orange },
+        },
         { visualMultiMode,  color = { fg = colors.purple, bg = colors.lightgray }, },
         { visualMultiInfos, color = { fg = colors.yellow },                        separator = "|", },
         {
@@ -138,10 +148,34 @@ return function()
           end
         },
         cursor_position,
-        { file_encoding,                               color = { fg = colors.orange, } },
-        { file_type,                                   color = { fg = colors.blue, } },
-        { LSP_status,                                  color = { fg = colors.green, } },
-        { 'require("copilot_status").status_string()', color = { fg = colors.green, } }
+        { file_encoding, color = { fg = colors.orange, } },
+        { file_type,     color = { fg = colors.blue, } },
+        { LSP_status,    color = { fg = colors.green, } },
+        {
+          'copilot',
+          -- Default values
+          symbols = {
+            status = {
+              icons = {
+                enabled = "",
+                disabled = "",
+                warning = "",
+                unknown = ""
+              },
+              hl = {
+                enabled = colors.green,
+                disabled = colors.lightgray,
+                warning = colors.yellow,
+                unknown = colors.red
+              }
+            },
+            spinners = require("copilot-lualine.spinners").dots,
+            spinner_color = "#6272A4"
+          },
+          show_colors = true,
+          show_loading = true,
+          padding = { right = 2 }
+        },
       },
       lualine_y = { { cwd, color = { fg = colors.red, bg = colors.lightgray } } },
       lualine_z = {}

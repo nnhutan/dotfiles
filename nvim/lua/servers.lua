@@ -16,6 +16,13 @@ return {
   ["emmet_ls"] = {},
   ["jsonls"] = {},
   ["solargraph"] = {},
+  ["pasls"] = {},
+  ["omnisharp"] = {
+    configs = {
+      cmd = { 'dotnet', '/Users/lixibox/Desktop/omnisharp-osx-x64-net6.0/OmniSharp.dll', '--languageserver', '--hostPID',
+        tostring(vim.fn.getpid()) }
+    }
+  },
   -- ["solargraph"] = { unattachable = not available({ only = { "/Users/lixibox/work/lixibox" }, ignore = nil }), },
   -- ["ruby_ls"] = { unattachable = not available({ ignore = { "/Users/lixibox/work/lixibox" }, only = nil }),
   --   -- configs = {

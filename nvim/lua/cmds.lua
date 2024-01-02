@@ -196,9 +196,42 @@ autocmd("ModeChanged",
   })
 
 function _G.set_terminal_keymaps()
-  local opts = { buffer = 0, nowait = true, noremap = true, silent = true }
-  vim.keymap.set('t', 'qq', [[<C-\><C-n>]], opts)
+  local opts = { silent = true }
+  vim.keymap.set('t', 'hh', [[<C-\><C-n>]], opts)
+  vim.keymap.set('t', '<c-t>', [[<C-\><C-n><cmd>close<cr>]], opts)
 end
 
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
+
+autocmd("User", {
+  pattern = "DashboardLoaded",
+  callback = function()
+    local current_buf = vim.api.nvim_get_current_buf()
+    vim.bo[current_buf].modifiable = true
+    vim.cmd([[ :silent %s/^\n\{1,}/\r/ ]])
+    vim.bo[current_buf].modifiable = false
+    vim.bo[current_buf].modified = false
+  end,
+}
+)
+
+autocmd("BufEnter", {
+  nested = true,
+  callback = function()
+    local api = require('nvim-tree.api')
+
+    -- Only 1 window with nvim-tree left: we probably closed a file buffer
+    if #vim.api.nvim_list_wins() == 1 and api.tree.is_tree_buf() then
+      -- Required to let the close event complete. An error is thrown without this.
+      vim.defer_fn(function()
+        -- close nvim-tree: will go to the last hidden buffer used before closing
+        api.tree.toggle({ find_file = true, focus = true })
+        -- re-open nivm-tree
+        api.tree.toggle({ find_file = true, focus = true })
+        -- nvim-tree is still the active window. Go to the previous window.
+        vim.cmd("wincmd p")
+      end, 0)
+    end
+  end
+})

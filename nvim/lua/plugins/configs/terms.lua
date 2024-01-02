@@ -1,7 +1,7 @@
 return {
+  start_in_insert = true,
+  persist_mode = false,
   highlights = {
-    persist_mode = false,
-    start_in_insert = true,
     NormalFloat = {
       link = 'Normal'
     },
@@ -13,5 +13,6 @@ return {
   float_opts = {
     width = vim.o.columns,
     height = vim.o.lines,
-  }
+  },
+  autochdir = false,
 }

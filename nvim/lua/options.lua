@@ -38,7 +38,7 @@ opt.breakindent = true
 opt.linebreak = true
 opt.virtualedit = "block"
 opt.wrap = false
-opt.sessionoptions:append("localoptions")
+-- opt.sessionoptions:append("localoptions")
 opt.writebackup = false
 opt.foldlevel = 99
 opt.foldmethod = "expr"
@@ -59,11 +59,7 @@ g["test#strategy"] = { nearest = "neovim", file = "neovim", suite = "neovim" }
 g.markdown_recommended_style = 0
 g.VM_set_statusline = 0
 g.VM_silent_exit = 1
+g.lazygit_floating_window_scaling_factor = 0.95
 
-vim.cmd([[
-  hi! link LazyGitFloat TelescopePreviewNormal
-]])
-
-vim.cmd([[
-  hi! link LazyGitBorder TelescopePreviewBorder
-]])
+vim.cmd([[ hi! link LazyGitFloat TelescopePreviewNormal ]])
+vim.cmd([[ hi! link LazyGitBorder TelescopePreviewBorder ]])

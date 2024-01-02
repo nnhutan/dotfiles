@@ -58,7 +58,7 @@ local plugins = {
     opts = {},
     dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
   },
-  { "phaazon/hop.nvim",      branch = "v2",              cmd = "HopWord",                        config = configs.hop, },
+  { 'smoka7/hop.nvim',       version = "*",              opts = {}, },
   { "folke/flash.nvim",      event = "VeryLazy",         opts = {},                              keys = configs.flash },
   {
     "zbirenbaum/copilot.lua",
@@ -101,10 +101,10 @@ local plugins = {
     config = configs.cmp.config
   },
   {
-    "goolord/alpha-nvim",
+    "glepnir/dashboard-nvim",
     event = "VimEnter",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = configs.alpha,
+    config = configs.dashboard,
   },
   {
     "jonahgoldwastaken/copilot-status.nvim",
@@ -153,12 +153,12 @@ local plugins = {
           -- When in diff mode, we want to use the default
           -- vim text objects c & C instead of the treesitter ones.
           local move = require("nvim-treesitter.textobjects.move") ---@type table<string,fun(...)>
-          local configs = require("nvim-treesitter.configs")
+          local cons = require("nvim-treesitter.configs")
           for name, fn in pairs(move) do
             if name:find("goto") == 1 then
               move[name] = function(q, ...)
                 if vim.wo.diff then
-                  local config = configs.get_module("textobjects.move")[name] ---@type table<string,string>
+                  local config = cons.get_module("textobjects.move")[name] ---@type table<string,string>
                   for key, query in pairs(config or {}) do
                     if q == query and key:find("[%]%[][cC]") then
                       vim.cmd("normal! " .. key)
@@ -185,20 +185,22 @@ local plugins = {
     end,
     config = configs.treesitter
   },
-  {
-    'pwntester/octo.nvim',
-    event = "VeryLazy",
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-telescope/telescope.nvim',
-      'nvim-tree/nvim-web-devicons',
-    },
-    config = configs.octo,
-  },
+  -- {
+  --   'pwntester/octo.nvim',
+  --   event = "VeryLazy",
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim',
+  --     'nvim-telescope/telescope.nvim',
+  --     'nvim-tree/nvim-web-devicons',
+  --   },
+  --   config = configs.octo,
+  -- },
   { "kdheepak/lazygit.nvim",     cmd = "LazyGit", },
   { 'gnikdroy/projections.nvim', branch = "pre_release", config = configs.projections, },
   { "folke/persistence.nvim",    event = "BufReadPre",   opts = {} },
-  { 'akinsho/toggleterm.nvim',   cmd = "ToggleTerm",     version = "*",                opts = configs.terms }
+  { 'akinsho/toggleterm.nvim',   cmd = "ToggleTerm",     version = "*",                opts = configs.terms },
+  { "AndrewRadev/splitjoin.vim", event = "BufReadPre",   keys = { "gS", "gJ" }, },
+  { 'AndreM222/copilot-lualine' },
 }
 
 require("lazy").setup(plugins, configs.lazy)

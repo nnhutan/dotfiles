@@ -23,9 +23,9 @@ local M = {
   hop = require("plugins.configs.hop"),
   lazy = require("plugins.configs.lazy"),
   octo = require("plugins.configs.octo"),
-  alpha = require("plugins.configs.alpha"),
   projections = require("plugins.configs.projections"),
   terms = require("plugins.configs.terms"),
+  dashboard = require("plugins.configs.dashboard"),
 }
 
 return M

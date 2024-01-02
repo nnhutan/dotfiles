@@ -2,7 +2,8 @@ local load_keymap = require('utils').load_keymap
 
 local key_maps = {
   n = {
-    ["<leader>t"] = { "<cmd>ToggleTerm direction=float<CR>", "Terminal" },
+    ["<c-t>"] = { "<cmd>ToggleTerm direction=float<CR>", "Terminal" },
+    ["<c-b>w"] = { "<cmd>ToggleTerm direction=float<CR>", "Terminal" },
     ["]t"] = { "<cmd> tabnext <CR>", "Next tabs group" },
     ["[t"] = { "<cmd> tabprevious <CR>", "Prev tabs group" },
     [";"] = { ":", "enter command mode", opts = { nowait = true } },
@@ -141,7 +142,6 @@ local key_maps = {
     ["<leader>gt"] = { "<cmd> Telescope git_status <CR>", "Git status" },
     ["<leader>gg"] = { "<cmd> LazyGit <CR>", "LazyGit" },
 
-    -- pick a hidden term
     ["<leader>fa"] = { "<cmd> Telescope marks <CR>", "telescope bookmarks" },
 
 
@@ -244,7 +244,8 @@ local key_maps = {
   },
 
   v = {
-    ["<leader>t"] = { "<cmd>ToggleTerm direction=float<CR>", "Terminal" },
+    ["<c-t>"] = { "<cmd>ToggleTerm direction=float<CR>", "Terminal" },
+    ["<c-b>w"] = { "<cmd>ToggleTerm direction=float<CR>", "Terminal" },
     -- gpt
     ["<leader>ke"] = { "<cmd>ChatGPTEditWithInstruction<CR>", "Edit with instruction" },
     ["<leader>kg"] = { "<cmd>ChatGPTRun grammar_correction<CR>", "Grammar Correction" },

@@ -45,6 +45,18 @@ return function()
           },
         },
       },
+      hover = {
+        border = {
+          style = "none",
+          padding = { 1, 2 },
+        },
+        win_options = {
+          winhighlight = {
+            Normal = "TelescopePreviewNormal",
+            FloatBorder = "TelescopePreviewBorder",
+          },
+        }
+      }
     },
     lsp = {
       progress = {
@@ -57,7 +69,9 @@ return function()
         ["cmp.entry.get_documentation"] = true,
       },
       signature = { enabled = true, },
-      hover = { enabled = true },
+      hover = {
+        enabled = true,
+      },
     },
     -- you can enable a preset for easier configuration
     presets = {

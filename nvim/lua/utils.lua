@@ -46,11 +46,27 @@ function M.CopyFilePath(type)
 end
 
 function M.get_signs(buf, lnum)
-  local signs = vim.tbl_map(function(sign)
-    local ret = vim.fn.sign_getdefined(sign.name)[1]
-    ret.priority = sign.priority
-    return ret
-  end, vim.fn.sign_getplaced(buf, { group = "*", lnum = lnum })[1].signs)
+  local signs = {}
+
+  if vim.fn.has("nvim-0.10") == 0 then
+    -- Only needed for Neovim <0.10
+    -- Newer versions include legacy signs in nvim_buf_get_extmarks
+    for _, sign in ipairs(vim.fn.sign_getplaced(buf, { group = "*", lnum = lnum })[1].signs) do
+      local ret = vim.fn.sign_getdefined(sign.name)[1] --[[@as Sign]]
+      if ret then
+        ret.priority = sign.priority
+        signs[#signs + 1] = ret
+      end
+    end
+  end
+
+  -- local signs = vim.tbl_map(function(sign)
+  --   local ret = vim.fn.sign_getdefined(sign.name)[1]
+  --   if ret ~= nil then
+  --     ret.priority = sign.priority
+  --     return ret
+  --   end
+  -- end, vim.fn.sign_getplaced(buf, { group = "*", lnum = lnum })[1].signs)
 
   -- Get extmark signs
   local extmarks = vim.api.nvim_buf_get_extmarks(
@@ -149,7 +165,6 @@ function M.LSP_on_attach(client, bufnr)
   end
 
   local map = vim.keymap.set
-  local inlay_hint = vim.lsp.buf.inlay_hint or vim.lsp.inlay_hint
   client.server_capabilities.documentFormattingProvider = true
   client.server_capabilities.documentRangeFormattingProvider = true
 
@@ -170,8 +185,6 @@ function M.LSP_on_attach(client, bufnr)
   map("n", "gr", vim.lsp.buf.references, opts)
 
   if not client.supports_method("textDocument/semanticTokens") then client.server_capabilities.semanticTokensProvider = nil end
-  if client.supports_method("textDocument/inlayHint") then inlay_hint(bufnr, true) end
-
   vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePre", "CursorHold", "InsertLeave", "TextChanged" }, {
     buffer = bufnr,
 
@@ -182,11 +195,13 @@ function M.LSP_on_attach(client, bufnr)
         if err then return end
         if not result then return end
 
+
         vim.lsp.diagnostic.on_publish_diagnostics(nil, vim.tbl_extend("keep", params, { diagnostics = result.items }),
           { client_id = client.id })
       end)
     end,
   })
+  vim.cmd([[ hi! link FloatBorder TelescopePreviewBorder ]])
 end
 
 function M.LSP_capabilities()

@@ -4,6 +4,10 @@ return function(_, opts)
       dotfiles = false,
       exclude = { vim.fn.stdpath "config" .. "/lua/custom" },
     },
+    live_filter = {
+      prefix = "[FILTER]: ",
+      always_show_folders = true, -- Turn into false from true by default
+    },
     disable_netrw = true,
     hijack_netrw = true,
     hijack_cursor = true,
