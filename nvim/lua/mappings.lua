@@ -39,8 +39,8 @@ local key_maps = {
     ["<leader>rn"] = { "<cmd> set rnu! <CR>", "Toggle relative number" },
 
     -- improve motion
-    -- ["j"] = { "v:count == 0 ? 'gj' : 'j'", "Move down", opts = { expr = true, silent = true } },
-    -- ["k"] = { "v:count == 0 ? 'gk' : 'k'", "Move up", opts = { expr = true, silent = true } },
+    ["j"] = { "v:count == 0 ? 'gj' : 'j'", "Move down", opts = { expr = true, silent = true } },
+    ["k"] = { "v:count == 0 ? 'gk' : 'k'", "Move up", opts = { expr = true, silent = true } },
     ["<Up>"] = { 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', "Move up", opts = { expr = true } },
     ["<Down>"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', "Move down", opts = { expr = true } },
 
@@ -79,8 +79,8 @@ local key_maps = {
     },
 
     -- nvimtree
-    ["<leader>e"] = { "<cmd>NvimTreeToggle<CR>", "Toggle nvimtree" },
-    ["<leader>o"] = { "<cmd> NvimTreeFocus <CR>", "Focus nvimtree" },
+    -- ["<leader>e"] = { "<cmd>NvimTreeToggle<CR>", "Toggle nvimtree" },
+    -- ["<leader>o"] = { "<cmd> NvimTreeFocus <CR>", "Focus nvimtree" },
 
     -- lsp
     ["<leader>lf"] = {
@@ -97,6 +97,7 @@ local key_maps = {
     },
     ["<leader>ls"] = {
       function()
+        -- require("telescope.builtin").lsp_document_symbols()
         local aerial_avail, _ = pcall(require, "aerial")
         if aerial_avail then
           require("telescope").extensions.aerial.aerial()
@@ -104,7 +105,13 @@ local key_maps = {
           require("telescope.builtin").lsp_document_symbols()
         end
       end,
-      "Search symbols",
+      "Search document symbols",
+    },
+    ["<leader>lw"] = {
+      function()
+        require("telescope.builtin").lsp_dynamic_workspace_symbols()
+      end,
+      "Search workspace symbols",
     },
     ["<leader>lS"] = {
       function()
@@ -132,10 +139,12 @@ local key_maps = {
     },
     ["<leader>fb"] = { "<cmd> Telescope buffers <CR>", "Find buffers" },
     -- ["<leader>fh"] = { "<cmd> Telescope help_tags <CR>", "Help page" },
-    ["<leader>fo"] = { "<cmd> Telescope oldfiles <CR>", "Find oldfiles" },
+    ["<leader>fO"] = { "<cmd> Telescope oldfiles <CR>", "Find oldfiles" },
+    ["<leader>fo"] = { "<cmd> Telescope frecency <CR>", "Find recent" },
     ["<leader>fz"] = { "<cmd> Telescope current_buffer_fuzzy_find <CR>", "Find in current buffer" },
     ["<leader>fs"] = { function() require("utils").FuzzyFindFiles() end, "Grep string" },
     ["<leader>fN"] = { "<cmd> Telescope notify <CR>", "Notifications" },
+    ["<leader>ft"] = { "<cmd> Telescope colorscheme <CR>", "Theme" },
 
     -- git
     ["<leader>gc"] = { "<cmd> Telescope git_commits <CR>", "Git commits" },
@@ -203,19 +212,10 @@ local key_maps = {
     ["<leader>gD"] = { "<cmd>wincmd p | q<cr>", "Close git diff" },
 
     ["<leader>j"] = { "<cmd>HopWord<cr>", "Jump to word" },
-    ["<leader>Tf"] = { "<cmd>TestFile -strategy=neovim<CR>", "Test file" },
-    ["<leader>Tn"] = { "<cmd>TestNearest<CR>", "Test nearest" },
-    ["<leader>Tc"] = { "<cmd>TestClass<CR>", "Test class" },
-    ["<leader>Ts"] = { "<cmd>TestSuite<CR>", "Test suite" },
+
     ["<leader>s"] = { "<cmd>Spectre<cr>", "Search panel" },
 
     ["<leader>lt"] = { "<cmd>Trouble<cr>", "Code problems" },
-
-    -- persistent
-    ["<leader>Ss"] = { '<cmd>lua require("persistence").load()<cr>', "Load current session" },
-    ["<leader>a"] = { '<cmd>lua require("persistence").load()<cr>', "Load current session" },
-    ["<leader>Sl"] = { '<cmd>lua require("persistence").load({ last = true })<cr>', "Load last session" },
-    ["<leader>Sq"] = { '<cmd>lua require("persistence").stop()<cr>', "Stop persistence" },
 
     --notify
     ["<leader>un"] = {
@@ -241,6 +241,15 @@ local key_maps = {
     ["<leader>kx"] = { "<cmd>ChatGPTRun explain_code<CR>", "Explain Code" },
     ["<leader>kr"] = { "<cmd>ChatGPTRun roxygen_edit<CR>", "Roxygen Edit" },
     ["<leader>kl"] = { "<cmd>ChatGPTRun code_readability_analysis<CR>", "Code Readability Analysis" },
+
+    ['<leader>tn'] = { '<cmd>lua require("neotest").run.run()<cr>', "Nearest" },
+    ['<leader>tf'] = { '<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<cr>', "File" },
+    ['<leader>ts'] = { '<cmd>lua require("neotest").run.stop()<cr>', "Stop" },
+    ['<leader>tp'] = { '<cmd>lua require("neotest").output_panel.toggle()<cr>', "Result panel" },
+    ['<leader>tx'] = { '<cmd>lua require("neotest").output_panel.clear()<cr>', "Clear result panel" },
+    ['<leader>to'] = { '<cmd>lua require("neotest").output.open({ enter = true }) <cr>', "Result" },
+    ['<leader>tS'] = { '<cmd>lua require("neotest").summary.toggle()<cr>', "Summary" },
+    ['<leader>tw'] = { '<cmd>lua require("neotest").watch.toggle(vim.fn.expand("%"))<cr>', "Watch" },
   },
 
   v = {

@@ -1,3 +1,4 @@
+---@diagnostic disable: need-check-nil, no-unknown
 local fn = vim.fn
 local icons = require("icons")
 
@@ -52,40 +53,36 @@ local function visualMultiInfos()
   end
 end
 
-local colors = {
-  text      = '#9598A5',
-  red       = '#f07178',
-  green     = '#c3e88d',
-  blue      = '#82aaff',
-  yellow    = '#ffcb6b',
-  gray      = '#2f3344',
-  lightgray = '#444859',
-  purple    = "#c792ea",
-  cyan      = "#89ddff",
-  orange    = "#ffa282",
-}
-
-
 local function cwd()
   local dir_name = "󰉖 " .. fn.fnamemodify(fn.getcwd(), ":t")
   return (vim.o.columns > 85 and dir_name) or ""
 end
 
 return function()
+  local C = require("catppuccin.palettes").get_palette()
+  local get_theme = function()
+    local flvr = require("catppuccin").flavour or vim.g.catppuccin_flavour or "frappe"
+    if flvr == "frappe" then
+      return {
+        normal = {
+          b = { bg = C.surface1, gui = 'bold', fg = C.blue },
+          c = { bg = C.surface0, fg = C.overlay1 },
+        },
+        insert = { b = { bg = C.surface1, gui = 'bold', fg = C.mauve }, },
+        visual = { b = { bg = C.surface1, gui = 'bold', fg = C.sky }, },
+        replace = { b = { bg = C.surface1, gui = 'bold', fg = C.peach }, },
+        command = { b = { bg = C.surface1, gui = 'bold', fg = C.green }, },
+        inactive = { b = { bg = C.surface1, gui = 'bold', fg = C.text }, },
+      }
+    else
+      return require("catppuccin.utils.lualine")(flvr)
+    end
+  end
+
   require('lualine').setup {
     options = {
       icons_enabled = true,
-      theme = {
-        normal = {
-          b = { bg = colors.lightgray, gui = 'bold', fg = colors.blue },
-          c = { bg = colors.gray, fg = colors.text },
-        },
-        insert = { b = { bg = colors.lightgray, gui = 'bold', fg = colors.purple }, },
-        visual = { b = { bg = colors.lightgray, gui = 'bold', fg = colors.cyan }, },
-        replace = { b = { bg = colors.lightgray, gui = 'bold', fg = colors.orange }, },
-        command = { b = { bg = colors.lightgray, gui = 'bold', fg = colors.green }, },
-        inactive = { b = { bg = colors.lightgray, gui = 'bold', fg = colors.text }, },
-      },
+      theme = get_theme,
       component_separators = { left = '', right = '' },
       section_separators = { left = '', right = '' },
       disabled_filetypes = {
@@ -118,15 +115,15 @@ return function()
         {
           require("noice").api.status.command.get,
           cond = require("noice").api.status.command.has,
-          color = { fg = colors.purple },
+          color = { fg = C.mauve },
         },
         {
           require("noice").api.statusline.mode.get,
           cond = require("noice").api.statusline.mode.has,
-          color = { fg = colors.orange },
+          color = { fg = C.peach },
         },
-        { visualMultiMode,  color = { fg = colors.purple, bg = colors.lightgray }, },
-        { visualMultiInfos, color = { fg = colors.yellow },                        separator = "|", },
+        { visualMultiMode,  color = { fg = C.mauve --[[ , bg = C.surface1  ]] }, },
+        { visualMultiInfos, color = { fg = C.yellow },                           separator = "|", },
         {
           'diff',
           symbols = {
@@ -148,36 +145,12 @@ return function()
           end
         },
         cursor_position,
-        { file_encoding, color = { fg = colors.orange, } },
-        { file_type,     color = { fg = colors.blue, } },
-        { LSP_status,    color = { fg = colors.green, } },
-        {
-          'copilot',
-          -- Default values
-          symbols = {
-            status = {
-              icons = {
-                enabled = "",
-                disabled = "",
-                warning = "",
-                unknown = ""
-              },
-              hl = {
-                enabled = colors.green,
-                disabled = colors.lightgray,
-                warning = colors.yellow,
-                unknown = colors.red
-              }
-            },
-            spinners = require("copilot-lualine.spinners").dots,
-            spinner_color = "#6272A4"
-          },
-          show_colors = true,
-          show_loading = true,
-          padding = { right = 2 }
-        },
+        { file_encoding,                               color = { fg = C.peach, } },
+        { file_type,                                   color = { fg = C.blue, } },
+        { LSP_status,                                  color = { fg = C.blue, } },
+        { 'require("copilot_status").status_string()', color = { fg = C.blue, }, padding = { left = 0, right = 1 } },
       },
-      lualine_y = { { cwd, color = { fg = colors.red, bg = colors.lightgray } } },
+      lualine_y = { { cwd, color = { fg = C.red } } },
       lualine_z = {}
     },
     extensions = {}

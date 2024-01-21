@@ -13,21 +13,37 @@ return function()
         local nvim_tree_present, api = pcall(require, "nvim-tree.api")
         if nvim_tree_present then api.tree.close() end
       end,
-      -- post = function()
-      --   local nvim_tree_present, api = pcall(require, "nvim-tree.api")
-      --   if nvim_tree_present then
-      --     local global_cwd = vim.fn.getcwd(-1, -1)
-      --     api.tree.change_root(global_cwd)
-      --   end
-      -- end,
+
+      post = function()
+        local nvim_tree_present, api = pcall(require, "nvim-tree.api")
+        if nvim_tree_present then
+          local global_cwd = vim.fn.getcwd(-1, -1)
+          api.tree.change_root(global_cwd)
+        end
+      end,
     },
     -- patterns = { ".git", ".svn", ".hg" },      -- Default patterns to use if none were specified. These are NOT regexps.
     -- store_hooks = { pre = nil, post = nil },   -- pre and post hooks for store_session, callable | nil
     restore_hooks = {
+      -- pre = function()
+      --   vim.fn.timer_start(300, function()
+      --     vim.cmd("LspStop")
+      --   end)
+      -- end,
       post = function()
-        vim.fn.timer_start(100, function()
-          vim.cmd("LspRestart")
-        end)
+        if not vim.tbl_isempty(vim.lsp.buf_get_clients()) then
+          local timer = vim.loop.new_timer()
+          timer:start(
+            500,
+            100,
+            vim.schedule_wrap(function()
+              vim.cmd("LspRestart")
+              if not timer:is_closing() then
+                timer:close()
+              end
+              vim.cmd([[tabdo e]])
+            end))
+        end
       end
     },
     -- workspaces_file = "~/dotfiles/nvim/lua/workspaces.json",

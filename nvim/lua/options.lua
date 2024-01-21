@@ -37,8 +37,8 @@ opt.smoothscroll = true
 opt.breakindent = true
 opt.linebreak = true
 opt.virtualedit = "block"
-opt.wrap = false
--- opt.sessionoptions:append("localoptions")
+-- opt.wrap = true
+opt.sessionoptions:append("localoptions")
 opt.writebackup = false
 opt.foldlevel = 99
 opt.foldmethod = "expr"
@@ -49,17 +49,22 @@ opt.omnifunc = 'v:lua.vim.lsp.omnifunc'
 
 
 g.mapleader = " "
+g.hidden = false
 g.matchup_matchparen_offscreen = { method = "popup" }
 g.loaded_ruby_provider = 0
 g.nocompatible = true
 g.ttyfast = true
 g["escape-time"] = 0
-g["test#neovim#start_normal"] = 1
-g["test#strategy"] = { nearest = "neovim", file = "neovim", suite = "neovim" }
+-- g["test#neovim#start_normal"] = 1
+-- g["test#strategy"] = { nearest = "neovim", file = "neovim", suite = "neovim" }
 g.markdown_recommended_style = 0
 g.VM_set_statusline = 0
 g.VM_silent_exit = 1
 g.lazygit_floating_window_scaling_factor = 0.95
+g.syntastic_haml_checkers = 'haml_lint'
 
 vim.cmd([[ hi! link LazyGitFloat TelescopePreviewNormal ]])
 vim.cmd([[ hi! link LazyGitBorder TelescopePreviewBorder ]])
+vim.cmd([[ hi! link MiniFilesTitle TelescopeResultsTitle ]])
+vim.cmd([[ hi! link MiniFilesTitleFocused TelescopePromptTitle ]])
+vim.cmd([[ hi! link MiniFilesBorder TelescopePreviewBorder ]])

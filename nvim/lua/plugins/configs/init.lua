@@ -26,6 +26,13 @@ local M = {
   projections = require("plugins.configs.projections"),
   terms = require("plugins.configs.terms"),
   dashboard = require("plugins.configs.dashboard"),
+  mason = require("plugins.configs.mason"),
+  material = require("plugins.configs.material"),
+  harpoon = require("plugins.configs.harpoon"),
+  illuminate = require("plugins.configs.illuminate"),
+  mini_files = require("plugins.configs.mini_files"),
+  neotest = require("plugins.configs.neotest"),
+  mini_ai = require("plugins.configs.mini_ai"),
 }
 
 return M

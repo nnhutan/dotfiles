@@ -1,5 +1,7 @@
 return function()
   local telescope = require("telescope")
+  local z_utils = require("telescope._extensions.zoxide.utils")
+
   telescope.setup({
     defaults = {
       vimgrep_arguments = {
@@ -28,8 +30,8 @@ return function()
         vertical = {
           mirror = false,
         },
-        width = 0.87,
-        height = 0.80,
+        width = 0.9,
+        height = 0.90,
         preview_cutoff = 120,
       },
       file_sorter = require("telescope.sorters").get_fuzzy_file,
@@ -66,7 +68,21 @@ return function()
         },
       },
     },
-
+    pickers = {
+      find_files = {
+        mappings = {
+          n = {
+            ["cd"] = function(prompt_bufnr)
+              local selection = require("telescope.actions.state").get_selected_entry()
+              local dir = vim.fn.fnamemodify(selection.path, ":p:h")
+              require("telescope.actions").close(prompt_bufnr)
+              -- Depending on what you want put `cd`, `lcd`, `tcd`
+              vim.cmd(string.format("silent lcd %s", dir))
+            end
+          }
+        }
+      },
+    },
     extensions = {
       fzf = {
         fuzzy = true,
@@ -74,11 +90,41 @@ return function()
         override_file_sorter = true,
         case_mode = "smart_case",
       },
+      aerial = {
+        -- Display symbols as <root>.<parent>.<symbol>
+        show_nesting = {
+          ["_"] = false, -- This key will be the default
+          json = true,   -- You can set the option for specific filetypes
+          yaml = true,
+        },
+      },
+      zoxide = {
+        prompt_title = "Change Directory",
+        mappings = {
+          default = {
+            after_action = function(selection)
+              print("Update to (" .. selection.z_score .. ") " .. selection.path)
+            end
+          },
+          ["<C-s>"] = {
+            before_action = function(selection) print("before C-s") end,
+            action = function(selection)
+              vim.cmd.edit(selection.path)
+            end
+          },
+          -- Opens the selected entry in a new split
+          ["<C-q>"] = { action = z_utils.create_basic_command("split") },
+        },
+      },
+      ["ui-select"] = {
+        require("telescope.themes").get_dropdown {
+          -- even more opts
+        } }
     },
 
   })
 
-  local extensions_list = { "fzf", "projections" }
+  local extensions_list = { "fzf", "projections", "aerial", 'zoxide', 'ui-select' }
   for _, ext in ipairs(extensions_list) do
     telescope.load_extension(ext)
   end

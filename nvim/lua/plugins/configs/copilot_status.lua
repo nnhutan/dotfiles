@@ -2,9 +2,9 @@ return function()
   require("copilot_status").setup({
     icons = {
       idle = " ",
-      error = " ",
-      offline = " ",
-      warning = " ",
+      offline = " ",
+      warning = " ",
+      error = " ",
       loading = " ",
     },
     debug = false,

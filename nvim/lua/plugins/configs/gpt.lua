@@ -3,7 +3,7 @@ return function()
     api_key_cmd = nil,
     yank_register = "+",
     edit_with_instructions = {
-      diff = false,
+      diff = true,
       keymaps = {
         close = "<C-c>",
         accept = "<C-y>",
@@ -14,7 +14,22 @@ return function()
       },
     },
     chat = {
-      sessions_window = { win_options = { winhighlight = "Normal:TelescopePreviewNormal,FloatBorder:FloatBorder", }, },
+      border_left_sign = "",
+      border_right_sign = "",
+      sessions_window = {
+        active_sign = "  ",
+        inactive_sign = "  ",
+        current_line_sign = "󰁕",
+        border = {
+          highlight = "TelescopePreviewBorder",
+        },
+        win_options = {
+          winhighlight = "Normal:TelescopePreviewBorder,FloatBorder:TelescopePromptNormal",
+          statuscolumn =
+          '%=%l%s%{foldlevel(v:lnum) > 0 ? (foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? "-" : "+") : "│") : " " }'
+        },
+
+      },
       keymaps = {
         close = "<C-c>",
         yank_last = "<C-y>",
@@ -26,7 +41,7 @@ return function()
         cycle_modes = "<C-f>",
         next_message = "<C-j>",
         prev_message = "<C-k>",
-        select_session = "<Space>",
+        select_session = "<CR>",
         rename_session = "r",
         delete_session = "d",
         draft_message = "<C-d>",
@@ -45,8 +60,10 @@ return function()
       win_options = {
         wrap = true,
         linebreak = true,
-        foldcolumn = "1",
+        -- foldcolumn = "1",
         winhighlight = "Normal:TelescopePreviewNormal,FloatBorder:FloatBorder",
+        statuscolumn =
+        '%=%l%s%{foldlevel(v:lnum) > 0 ? (foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? "-" : "+") : "│") : " " }'
       },
       buf_options = {
         filetype = "markdown",
@@ -59,8 +76,17 @@ return function()
       win_options = {
         wrap = true,
         linebreak = true,
-        foldcolumn = "2",
+        -- foldcolumn = "2",
         winhighlight = "Normal:TelescopePromptNormal,FloatBorder:FloatBorder",
+        statuscolumn =
+        '%=%l%s%{foldlevel(v:lnum) > 0 ? (foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? "-" : "+") : "│") : " " }'
+      },
+    },
+    popup_layout = {
+      default = "center",
+      center = {
+        width = "90%",
+        height = "90%",
       },
     },
     popup_input = {
@@ -75,9 +101,20 @@ return function()
       submit_n = "<Enter>",
       max_visible_lines = 20,
     },
-    settings_window = {
+    help_window = {
+      border = {
+        highlight = "TelescopePreviewBorder",
+      },
       win_options = {
-        winhighlight = "Normal:TelescopePromptNormal,FloatBorder:FloatBorder",
+        winhighlight = "Normal:TelescopePreviewBorder,FloatBorder:TelescopePromptNormal",
+      },
+    },
+    settings_window = {
+      border = {
+        highlight = "TelescopePreviewBorder",
+      },
+      win_options = {
+        winhighlight = "Normal:TelescopePreviewBorder,FloatBorder:TelescopePromptNormal",
       },
     },
   })

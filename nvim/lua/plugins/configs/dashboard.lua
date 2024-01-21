@@ -4,9 +4,9 @@ return function()
     theme = "hyper",
     disable_move = true,
     preview = {
-      command = 'echo "\\n\\n\\n" && cat | cat',
+      command = 'cat | cat',
       file_path = "~/.config/nvim/lua/logo.cat",
-      file_height = 13,
+      file_height = 9,
       file_width = 71,
     },
     hide = {
@@ -39,13 +39,13 @@ return function()
         },
         {
           desc = ' Settings',
-          group = '@keyword',
+          group = '@function',
           action = 'e ~/.config/nvim/init.lua',
           key = 's',
         },
         {
           desc = ' Quit',
-          group = 'Number',
+          group = '@error',
           action = 'qa',
           key = 'q',
         }

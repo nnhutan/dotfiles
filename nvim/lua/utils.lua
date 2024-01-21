@@ -4,10 +4,9 @@ local merge_tb = vim.tbl_deep_extend
 -- Get from alot of sources: LazyVim, Astronvim, Nvchad, etc. Thanks!
 
 M.load_keymap = function(values)
-  local default_opts = { mode = mode }
   for mode, mode_values in pairs(values) do
     for keybind, mapping_info in pairs(mode_values) do
-      local opts = merge_tb("force", default_opts, mapping_info.opts or {})
+      local opts = mapping_info.opts or {}
       opts.silent = opts.silent ~= false
       opts.desc = mapping_info[2]
 
@@ -159,14 +158,16 @@ function M.statuscolumn()
 end
 
 function M.LSP_on_attach(client, bufnr)
-  if require("servers")[client.name].unattachable then
-    vim.lsp.stop_client(client.id)
-    return
-  end
-
   local map = vim.keymap.set
-  client.server_capabilities.documentFormattingProvider = true
-  client.server_capabilities.documentRangeFormattingProvider = true
+
+  if client.supports_method("textDocument/inlayHint") or client.server_capabilities.inlayHintProvider then
+    local ih = vim.lsp.buf.inlay_hint or vim.lsp.inlay_hint
+    if type(bufnr) == "function" then
+      ih(bufnr, true)
+    elseif type(ih) == "table" and ih.enable then
+      ih.enable(bufnr, true)
+    end
+  end
 
   local opts = { buffer = bufnr }
   map("n", "[d", vim.diagnostic.goto_prev)
@@ -176,9 +177,6 @@ function M.LSP_on_attach(client, bufnr)
   map("n", "K", vim.lsp.buf.hover, opts)
   map("n", "gi", vim.lsp.buf.implementation, opts)
   map("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-  -- map("n", "<space>wa", vim.lsp.buf.add_workspace_folder, opts)
-  -- map("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, opts)
-  -- map("n", "<space>wl", function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, opts)
   map("n", "<space>D", vim.lsp.buf.type_definition, opts)
   map("n", "<space>lr", vim.lsp.buf.rename, opts)
   map({ "n", "v" }, "<space>la", vim.lsp.buf.code_action, opts)
@@ -187,7 +185,6 @@ function M.LSP_on_attach(client, bufnr)
   if not client.supports_method("textDocument/semanticTokens") then client.server_capabilities.semanticTokensProvider = nil end
   vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePre", "CursorHold", "InsertLeave", "TextChanged" }, {
     buffer = bufnr,
-
     callback = function()
       local params = vim.lsp.util.make_text_document_params(bufnr)
 
@@ -195,12 +192,12 @@ function M.LSP_on_attach(client, bufnr)
         if err then return end
         if not result then return end
 
-
         vim.lsp.diagnostic.on_publish_diagnostics(nil, vim.tbl_extend("keep", params, { diagnostics = result.items }),
           { client_id = client.id })
       end)
     end,
   })
+
   vim.cmd([[ hi! link FloatBorder TelescopePreviewBorder ]])
 end
 
@@ -231,6 +228,45 @@ function M.LSP_capabilities()
     },
   }
   return capabilities
+end
+
+function M.LSP_get_config(server)
+  local configs = require("lspconfig.configs")
+  return rawget(configs, server)
+end
+
+function M.LSP_disable(server, cond)
+  local util = require("lspconfig.util")
+  local def = M.LSP_get_config(server)
+  def.document_config.on_new_config = util.add_hook_before(def.document_config.on_new_config,
+    function(config, root_dir)
+      if cond(root_dir, config) then
+        config.enabled = false
+      end
+    end)
+end
+
+function M.toggle_theme()
+  local flvr = require("catppuccin").flavour or vim.g.catppuccin_flavour or "frappe"
+  if flvr ~= "latte" then
+    vim.cmd("colorscheme catppuccin-latte")
+  else
+    vim.cmd("colorscheme catppuccin-frappe")
+  end
+end
+
+function M.close_all_buffers()
+  local bufferline = require("bufferline")
+  local tabpages = vim.api.nvim_list_tabpages()
+  if #tabpages > 1 then
+    vim.cmd("q")
+  else
+    for _, e in ipairs(bufferline.get_elements().elements) do
+      vim.schedule(function()
+        vim.cmd("bd " .. e.id)
+      end)
+    end
+  end
 end
 
 return M

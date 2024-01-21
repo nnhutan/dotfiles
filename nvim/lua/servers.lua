@@ -1,51 +1,116 @@
-local available = function(conditions)
-  local current = vim.fn.getcwd()
-  local ignores = conditions.ignore or {}
-  local onlys = conditions.only or { current }
-
-  return not vim.tbl_contains(ignores, current) and vim.tbl_contains(onlys, current)
-end
-
-return {
-  ["html"] = {},
-  ["cssls"] = {},
-  ["clangd"] = {},
-  ["marksman"] = {},
-  ["yamlls"] = {},
-  ["gopls"] = {},
-  ["emmet_ls"] = {},
-  ["jsonls"] = {},
-  ["solargraph"] = {},
-  ["pasls"] = {},
-  ["omnisharp"] = {
-    configs = {
-      cmd = { 'dotnet', '/Users/lixibox/Desktop/omnisharp-osx-x64-net6.0/OmniSharp.dll', '--languageserver', '--hostPID',
-        tostring(vim.fn.getpid()) }
-    }
+return
+{
+  servers = {
+    html = {},
+    cssls = {},
+    clangd = {},
+    marksman = {},
+    yamlls = {},
+    emmet_ls = {},
+    jsonls = {},
+    solargraph = {
+      mason = false,
+    },
+    sorbet = {
+      mason = false,
+    },
+    ruby_ls = {
+      mason = false,
+      init_options = {
+        enableExperimentalFeatures = true,
+        featuresConfiguration = {
+          inlayHint = {
+            enableAll = true
+          }
+        },
+        enabledFeatures = {
+          "codeActions",
+          "diagnostics",
+          "documentHighlights",
+          "documentLink",
+          "documentSymbols",
+          "foldingRanges",
+          "formatting",
+          "hover",
+          "inlayHint",
+          -- "onTypeFormatting",
+          "selectionRanges",
+          "semanticHighlighting",
+          "completion",
+          "codeLens",
+          "definition",
+          "workspaceSymbol"
+        }
+      }
+    },
+    tsserver = { init_options = { preferences = { quotePreference = "single" } } },
+    lua_ls = {
+      mason = false,
+      single_file_support = true,
+      settings = {
+        Lua = {
+          workspace = {
+            checkThirdParty = false,
+          },
+          completion = {
+            workspaceWord = true,
+            callSnippet = "Both",
+          },
+          misc = {
+            parameters = {
+              -- "--log-level=trace",
+            },
+          },
+          hint = {
+            enable = true,
+            setType = false,
+            paramType = true,
+            paramName = "Disable",
+            semicolon = "Disable",
+            arrayIndex = "Disable",
+          },
+          doc = {
+            privateName = { "^_" },
+          },
+          type = {
+            castNumberToInteger = true,
+          },
+          diagnostics = {
+            disable = { "incomplete-signature-doc", "trailing-space" },
+            -- enable = false,
+            groupSeverity = {
+              strong = "Warning",
+              strict = "Warning",
+            },
+            groupFileStatus = {
+              ["ambiguity"] = "Opened",
+              ["await"] = "Opened",
+              ["codestyle"] = "None",
+              ["duplicate"] = "Opened",
+              ["global"] = "Opened",
+              ["luadoc"] = "Opened",
+              ["redefined"] = "Opened",
+              ["strict"] = "Opened",
+              ["strong"] = "Opened",
+              ["type-check"] = "Opened",
+              ["unbalanced"] = "Opened",
+              ["unused"] = "Opened",
+            },
+            unusedLocalExclude = { "_*" },
+          },
+          format = {
+            enable = true,
+            defaultConfig = {
+              indent_style = "space",
+              indent_size = "2",
+              continuation_indent_size = "2",
+              max_line_length = "240",
+            },
+          },
+        },
+      },
+    },
   },
-  -- ["solargraph"] = { unattachable = not available({ only = { "/Users/lixibox/work/lixibox" }, ignore = nil }), },
-  -- ["ruby_ls"] = { unattachable = not available({ ignore = { "/Users/lixibox/work/lixibox" }, only = nil }),
-  --   -- configs = {
-  --   --   init_options = {
-  --   --     enabledFeatures = {
-  --   --       "documentHighlights",
-  --   --       "documentLink",
-  --   --       "documentSymbols",
-  --   --       "hover",
-  --   --       "inlayHint",
-  --   --       "foldingRanges",
-  --   --       "selectionRanges",
-  --   --       "codeLens",
-  --   --       "completion",
-  --   --       -- "semanticHighlighting",
-  --   --       "formatting",
-  --   --       "codeActions",
-  --   --       "diagnostics"
-  --   --     }
-  --   --   }
-  --
-  --   -- }
-  -- },
-  ["tsserver"] = { configs = { init_options = { preferences = { quotePreference = "single" } } } },
-  ["lua_ls"] = { configs = { settings = { Lua = { diagnostics = { globals = { "vim" } } } } } },
+  setup = {
+  },
 }

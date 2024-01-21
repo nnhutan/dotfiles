@@ -1,4 +1,5 @@
 local M = {}
+local icons = require('icons').kinds
 
 M.dependencies = {
   -- cmp sources
@@ -42,33 +43,6 @@ M.config = function()
       fields = { "abbr", "kind", "menu" },
 
       format = function(_, item)
-        local icons = {
-          Text = "",
-          Method = "󰆧",
-          Function = "󰊕",
-          Constructor = "",
-          Field = "󰇽",
-          Variable = "󰂡",
-          Class = "󰠱",
-          Interface = "",
-          Module = "",
-          Property = "󰜢",
-          Unit = "",
-          Value = "󰎠",
-          Enum = "",
-          Keyword = "󰌋",
-          Snippet = "",
-          Color = "󰏘",
-          File = "󰈙",
-          Reference = "",
-          Folder = "󰉋",
-          EnumMember = "",
-          Constant = "󰏿",
-          Struct = "",
-          Event = "",
-          Operator = "󰆕",
-          TypeParameter = "󰅲",
-        }
         local icon = icons[item.kind] or ""
         icon = (" " .. icon .. " ")
         item.kind = string.format("%s %s", icon, item.kind or "")
@@ -109,7 +83,7 @@ M.config = function()
       -- luasnip
       ["<Tab>"] = cmp.mapping(function(fallback)
         if cmp.visible() then
-          cmp.select_next_item()
+          cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
         elseif require("luasnip").expand_or_jumpable() then
           vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
         else
@@ -121,7 +95,7 @@ M.config = function()
       }),
       ["<S-Tab>"] = cmp.mapping(function(fallback)
         if cmp.visible() then
-          cmp.select_prev_item()
+          cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
         elseif require("luasnip").jumpable(-1) then
           vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
         else

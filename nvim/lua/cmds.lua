@@ -179,42 +179,44 @@ autocmd("QuitPre", {
   end,
 })
 
-local indent_blankline = augroup("toggle_indent_blankline", { clear = true })
-autocmd("ModeChanged",
-  {
-    group = indent_blankline,
-    pattern = "[vV\x16]*:*",
-    command = "IBLEnable",
-    desc = "Enable indent-blanklines when exiting visual mode"
-  })
-autocmd("ModeChanged",
-  {
-    group = indent_blankline,
-    pattern = "*:[vV\x16]*",
-    command = "IBLDisable",
-    desc = "Deshabilita indent-blanklines when entering visual mode"
-  })
+-- local indent_blankline = augroup("toggle_indent_blankline", { clear = true })
+-- autocmd("ModeChanged",
+--   {
+--     group = indent_blankline,
+--     pattern = "[vV\x16]*:*",
+--     command = "IBLEnable",
+--     desc = "Enable indent-blanklines when exiting visual mode"
+--   })
+-- autocmd("ModeChanged",
+--   {
+--     group = indent_blankline,
+--     pattern = "*:[vV\x16]*",
+--     command = "IBLDisable",
+--     desc = "Deshabilita indent-blanklines when entering visual mode"
+--   })
 
 function _G.set_terminal_keymaps()
   local opts = { silent = true }
-  vim.keymap.set('t', 'hh', [[<C-\><C-n>]], opts)
+  vim.keymap.set('t', '<C-x>', [[<C-\><C-n>]], opts)
   vim.keymap.set('t', '<c-t>', [[<C-\><C-n><cmd>close<cr>]], opts)
 end
 
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 
-autocmd("User", {
-  pattern = "DashboardLoaded",
-  callback = function()
-    local current_buf = vim.api.nvim_get_current_buf()
-    vim.bo[current_buf].modifiable = true
-    vim.cmd([[ :silent %s/^\n\{1,}/\r/ ]])
-    vim.bo[current_buf].modifiable = false
-    vim.bo[current_buf].modified = false
-  end,
-}
-)
+-- autocmd("User", {
+--   pattern = "DashboardLoaded",
+--   callback = function()
+--     local current_buf = vim.api.nvim_get_current_buf()
+--     if not vim.bo[current_buf].modifiable then
+--       vim.bo[current_buf].modifiable = true
+--       vim.cmd([[ :silent %s/^\n\{1,}/\r/ ]])
+--       vim.bo[current_buf].modifiable = false
+--       vim.bo[current_buf].modified = false
+--     end
+--   end,
+-- }
+-- )
 
 autocmd("BufEnter", {
   nested = true,
@@ -234,4 +236,26 @@ autocmd("BufEnter", {
       end, 0)
     end
   end
+})
+
+-- autocmd('ModeChanged', {
+--   pattern = { 'n:i', 'v:s' },
+--   desc = 'Disable diagnostics in insert and select mode',
+--   callback = function(e) vim.diagnostic.disable(e.buf) end
+-- })
+--
+-- autocmd('ModeChanged', {
+--   pattern = 'i:n',
+--   desc = 'Enable diagnostics when leaving insert mode',
+--   callback = function(e) vim.diagnostic.enable(e.buf) end
+-- })
+
+autocmd('User', {
+  pattern = 'MiniFilesWindowOpen',
+  callback = function(args)
+    local win_id = args.data.win_id
+
+    -- Customize window-local settings
+    vim.wo[win_id].winblend = 10
+  end,
 })

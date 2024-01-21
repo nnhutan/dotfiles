@@ -1,6 +1,5 @@
 return function()
   local ucolors = require('catppuccin.utils.colors')
-  local C = require('catppuccin.palettes').get_palette('frappe')
   require("catppuccin").setup({
     compile_path = vim.fn.stdpath "cache" .. "/catppuccin",
     flavour = "frappe", -- latte, frappe, macchiato, mocha
@@ -12,9 +11,9 @@ return function()
     show_end_of_buffer = false,     -- shows the '~' characters after the end of buffers
     term_colors = true,             -- sets terminal colors (e.g. `g:terminal_color_0`)
     dim_inactive = {
-      enabled = false,              -- dims the background color of inactive window
+      enabled = true,               -- dims the background color of inactive window
       shade = "dark",
-      percentage = 0.15,            -- percentage of the shade to apply to the inactive window
+      percentage = 0.6,             -- percentage of the shade to apply to the inactive window
     },
     no_italic = false,              -- Force no italic
     no_bold = false,                -- Force no bold
@@ -24,7 +23,7 @@ return function()
       conditionals = { "italic" },
       loops = {},
       functions = {},
-      keywords = {},
+      keywords = { "italic" },
       strings = {},
       variables = {},
       numbers = {},
@@ -35,74 +34,84 @@ return function()
     },
     color_overrides = {
       frappe = {
-        -- base01 = "#444267",
-        -- base02 = "#32374d",
-        -- base03 = "#676e95",
-        -- base04 = "#8796b0",
-        -- base05 = "#d3d3d3",
-        -- base06 = "#efefef",
-        -- base07 = "#ffffff",
-        -- base08 = "#f07178",
-        -- base09 = "#ffa282",
-        -- base0A = "#ffcb6b",
-        -- base0B = "#c3e88d",
-        -- base0C = "#89ddff",
-        -- base0D = "#82aaff",
-        -- base0E = "#c792ea",
-        -- base0F = "#ff5370",
-
         -- rosewater = "#f2d5cf",
-        flamingo = "#c3e88d",
-        pink = "#ff5370",
+        -- 	flamingo = "#eebebe",
+        -- 	pink = "#f4b8e4",
+        -- 	mauve = "#ca9ee6",
+        -- 	red = "#e78284",
+        -- 	maroon = "#ea999c",
+        -- 	peach = "#ef9f76",
+        -- 	yellow = "#e5c890",
+        -- 	green = "#a6d189",
+        -- 	teal = "#81c8be",
+        -- 	sky = "#99d1db",
+        -- 	sapphire = "#85c1dc",
+        -- 	blue = "#8caaee",
+        -- 	lavender = "#babbf1",
+        -- 	text = "#c6d0f5",
+        -- 	subtext1 = "#b5bfe2",
+        -- 	subtext0 = "#a5adce",
+        -- 	overlay2 = "#949cbb",
+        -- 	overlay1 = "#838ba7",
+        -- 	overlay0 = "#737994",
+        -- 	surface2 = "#626880",
+        -- 	surface1 = "#51576d",
+        -- 	surface0 = "#414559",
+        -- 	base = "#303446",
+        -- 	mantle = "#292c3c",
+        -- 	crust = "#232634",
+
+        -- #282C3D
+        flamingo = "#82aaff",
+        pink = "#f07178",
+        -- pink = "#ff5572",
         mauve = "#c792ea",
-        red = "#f07178",
-        maroon = "#f07178",
-        peach = "#f07178",
-        yellow = "#ffcb6b",
+        teal = "#c792ea",
+        -- red = "#f07178",
+        red = "#ff5572",
+        -- maroon = "#f07178",
+        -- peach = "#f07178",
+        yellow = "#FFCB6B",
         green = "#c3e88d",
-        -- teal = "#81c8be",
-        -- sky = "#99d1db",
         sapphire = "#ffcb6b",
         blue = "#82aaff",
-        -- lavender = "#babbf1",
-        text = "#d3d3d3",
-        -- subtext1 = "#b5bfe2",
-        -- subtext0 = "#a5adce",
-        -- overlay2 = "#949cbb",
-        -- overlay1 = "#838ba7",
-        -- overlay0 = "#737994",
-        -- surface2 = "#626880",
+        text = "#BFC7D5",
         surface1 = "#3c4051", -- #51576d
         surface0 = "#2f3344",
         base = "#292D3E",
         mantle = "#232738", --"#232738", "#2f3344",
         crust = "#2f3344",
+        overlay0 = "#4c5374",
+
       },
     },
-    custom_highlights = function(colors)
-      return {
-        -- Cmp Menu
-        -- PmenuSel = { fg = colors.base, bg = colors.maroon, style = { 'bold' } },
+    highlight_overrides = {
+      frappe = function(colors)
+        return {
+          BufferLineIndicatorSelected = { fg = colors.pink },
+          BufferLineIndicator = { fg = colors.base },
+          BufferLineIndicatorVisible = { bg = colors.crust },
+          BufferLineModifiedVisible = { bg = colors.crust, fg = colors.green },
 
-        -- Telescope
+          CursorLine = { bg = U.darken(colors.crust, 0.1, colors.mantle) },
 
-        -- Bufferline
-        BufferLineIndicatorSelected = { fg = colors.pink },
-        BufferLineIndicator = { fg = colors.base },
-        BufferLineIndicatorVisible = { bg = colors.crust },
-        BufferLineModifiedVisible = { bg = colors.crust, fg = colors.green },
+          TabLineSel = { bg = colors.pink },
+          TroubleNormal = { fg = colors.text, bg = colors.mantle },
 
-        TabLineSel = { bg = colors.pink },
-        TroubleNormal = { fg = C.text, bg = C.mantle },
-
-        Visual = { bg = ucolors.darken('#82aaff', 0.25, C.base) }, -- Visual Mode
-      }
-    end,
+          Visual = { bg = ucolors.darken(colors.blue, 0.1, colors.base) }, -- Visual Mode
+          ['@namespace'] = { fg = colors.yellow, style = { 'bold' } },
+          WinBar = { fg = colors.overlay0 },
+          Special = { fg = colors.overlay0 },
+          CurSearch = { bg = colors.mauve, fg = colors.mantle },
+        }
+      end
+    },
     integrations = {
       cmp = true,
       gitsigns = true,
       nvimtree = true,
       treesitter = true,
+      treesitter_context = true,
       notify = true,
       aerial = true,
       rainbow_delimiters = true,
@@ -112,10 +121,17 @@ return function()
         enabled = true,
         style = "nvchad"
       },
+      window_picker = true,
       mason = true,
       hop = true,
       neotest = true,
       noice = true,
+      dropbar = {
+        enabled = false,
+        color_mode = true
+      },
+      harpoon = true,
+      vimwiki = true,
       mini = {
         enabled = true,
         indentscope_color = "",

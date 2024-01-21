@@ -45,6 +45,5 @@ root: ~/work/wms-fe/
 # attach: false
 
 windows:
-  - neovim: v
   - terminal:
   - server:

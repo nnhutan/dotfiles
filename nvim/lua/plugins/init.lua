@@ -10,62 +10,119 @@ local plugins = {
   { "tpope/vim-haml",                      event = "VeryLazy" },
   { "thoughtbot/vim-rspec",                event = "VeryLazy" },
   { "sindrets/diffview.nvim",              event = "VeryLazy" },
-  { "vim-test/vim-test",                   event = "VeryLazy" },
   { "tpope/vim-rails",                     event = "VeryLazy" },
   { "mattn/emmet-vim",                     event = "VeryLazy" },
   { "rhysd/clever-f.vim",                  event = "VeryLazy" },
   { "nvim-tree/nvim-web-devicons",         config = configs.devicon },
+  { 'smoka7/hop.nvim',                     version = "*",                          opts = {}, },
   { "lukas-reineke/indent-blankline.nvim", event = { "BufReadPre", "BufNewFile" }, config = configs.blankline, },
   { "mg979/vim-visual-multi",              event = "VeryLazy",                     branch = "master" },
   { "lewis6991/gitsigns.nvim",             config = configs.gitsign,               event = { "BufReadPre", "BufNewFile" }, },
+  { 'stevearc/dressing.nvim',              opts = {},                              config = configs.dressing },
+  { "rcarriga/nvim-notify",                event = "VeryLazy",                     config = configs.notify },
+  { "stevearc/conform.nvim",               lazy = true,                            config = configs.conform },
+  { "HiPhish/rainbow-delimiters.nvim",     event = "BufReadPre",                   config = configs.rainbow },
+  { "akinsho/bufferline.nvim",             event = "BufReadPre",                   config = configs.bufferline },
   {
     "nvim-tree/nvim-tree.lua",
     config = configs.nvimtree,
     cmd = { "NvimTreeToggle",
       "NvimTreeFocus" },
   },
-  { 'stevearc/dressing.nvim',          opts = {},            config = configs.dressing },
-  { "rcarriga/nvim-notify",            event = "VeryLazy",   config = configs.notify },
-  { "stevearc/conform.nvim",           lazy = true,          config = configs.conform },
-  { "HiPhish/rainbow-delimiters.nvim", event = "BufReadPre", config = configs.rainbow },
-  { "akinsho/bufferline.nvim",         event = "BufReadPre", config = configs.bufferline },
+  {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    opts = {},
+    keys =
+        configs.flash
+  },
+  {
+    "numToStr/Comment.nvim",
+    event = "BufReadPre",
+    config = function()
+      require("Comment")
+          .setup()
+    end,
+  },
   {
     "max397574/better-escape.nvim",
     event = "InsertEnter",
     config = function()
-      require("better_escape").setup()
+      require(
+        "better_escape").setup()
     end,
   },
-  { "numToStr/Comment.nvim",  event = "BufReadPre", config = function() require("Comment").setup() end, },
   {
-    "kylechui/nvim-surround",
-    event = "BufReadPre",
+    "declancm/cinnamon.nvim",
+    event = "VeryLazy",
     config = function()
-      require("nvim-surround").setup({})
+      require(
+        "cinnamon").setup()
     end,
   },
-  { "declancm/cinnamon.nvim", event = "VeryLazy",   config = function() require("cinnamon").setup() end, },
-  { "tiagovla/scope.nvim",    event = "VeryLazy",   config = function() require("scope").setup({}) end },
+  {
+    "tiagovla/scope.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("scope").setup({})
+    end
+  },
+  -- {
+  --   "backdround/tabscope.nvim",
+  --   event = "VeryLazy",
+  --   config = function()
+  --     require("tabscope").setup({})
+  --   end
+  -- },
   {
     "NvChad/nvim-colorizer.lua",
     event = "VeryLazy",
-    opts = { user_default_options = { names = false } },
+    opts = {
+      user_default_options = { names = false } },
   },
-  { "neovim/nvim-lspconfig", config = configs.lspconfig, event = { "BufReadPre", "BufNewFile" }, },
-  {
-    "stevearc/aerial.nvim",
-    event = "VeryLazy",
-    opts = {},
-    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
-  },
-  { 'smoka7/hop.nvim',       version = "*",              opts = {}, },
-  { "folke/flash.nvim",      event = "VeryLazy",         opts = {},                              keys = configs.flash },
   {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
     event = "InsertEnter",
-    config = configs
-        .copilot
+    config =
+        configs.copilot
+  },
+  {
+    "kylechui/nvim-surround",
+    event = "BufReadPre",
+    config = function()
+      require(
+        "nvim-surround").setup({})
+    end,
+  },
+  {
+    "neovim/nvim-lspconfig",
+    config = configs.lspconfig,
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+      { "folke/neoconf.nvim", cmd = "Neoconf", config = false, dependencies = { "nvim-lspconfig" } },
+      { "folke/neodev.nvim",  opts = {} },
+      "mason.nvim",
+      "williamboman/mason-lspconfig.nvim",
+    }
+  },
+  {
+    "stevearc/aerial.nvim",
+    event = "VeryLazy",
+    opts = {
+      backends = { "lsp", "treesitter", "markdown", "man" },
+      attach_mode = "global",
+      icons = require('icons').kinds,
+      guides = {
+        mid_item = "├ ",
+        last_item = "└ ",
+        nested_top = "│ ",
+        whitespace = "  ",
+      },
+      filter_kind = false,
+      lazy_load = false
+    },
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
   },
   {
     "folke/todo-comments.nvim",
@@ -78,30 +135,38 @@ local plugins = {
     "catppuccin/nvim",
     name = "catppuccin",
     lazy = false,
-    config = configs
-        .catppuccin
+    config =
+        configs.catppuccin
   },
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     config = configs.lualine,
-    dependencies = { 'nvim-tree/nvim-web-devicons' }
+    dependencies = {
+      'nvim-tree/nvim-web-devicons', 'catppuccin/nvim' }
   },
   {
     "folke/trouble.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {},
-    cmd = "Trouble",
-    config = function() require("trouble").setup() end,
+    cmd =
+    "Trouble",
+    config = function()
+      require("trouble").setup()
+    end,
   },
   {
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
-    dependencies = configs.cmp.dependencies,
-    config = configs.cmp.config
+    dependencies = configs.cmp
+        .dependencies,
+    config =
+        configs.cmp.config
   },
   {
-    "glepnir/dashboard-nvim",
+    -- "glepnir/dashboard-nvim",
+    "nnhutan/dashboard-nvim",
+    branch = "master",
     event = "VimEnter",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = configs.dashboard,
@@ -130,11 +195,6 @@ local plugins = {
     keys = { "<leader>", "<c-r>", "<c-w>", '"', "'", "`", "c", "v", "g", "y", "\\" },
     cmd = "WhichKey",
     config = configs.whichkey,
-  },
-  {
-    "williamboman/mason.nvim",
-    cmd = "Mason",
-    config = function() require("mason").setup() end,
   },
   {
     "nvim-telescope/telescope.nvim",
@@ -185,22 +245,94 @@ local plugins = {
     end,
     config = configs.treesitter
   },
-  -- {
-  --   'pwntester/octo.nvim',
-  --   event = "VeryLazy",
-  --   dependencies = {
-  --     'nvim-lua/plenary.nvim',
-  --     'nvim-telescope/telescope.nvim',
-  --     'nvim-tree/nvim-web-devicons',
-  --   },
-  --   config = configs.octo,
-  -- },
   { "kdheepak/lazygit.nvim",     cmd = "LazyGit", },
   { 'gnikdroy/projections.nvim', branch = "pre_release", config = configs.projections, },
-  { "folke/persistence.nvim",    event = "BufReadPre",   opts = {} },
+  -- { "folke/persistence.nvim",    event = "BufReadPre",   opts = {} },
   { 'akinsho/toggleterm.nvim',   cmd = "ToggleTerm",     version = "*",                opts = configs.terms },
   { "AndrewRadev/splitjoin.vim", event = "BufReadPre",   keys = { "gS", "gJ" }, },
-  { 'AndreM222/copilot-lualine' },
+  {
+    "williamboman/mason.nvim",
+    cmd = "Mason",
+    keys = { { "<leader>m", "<cmd>Mason<cr>", desc = "Mason" } },
+    build = ":MasonUpdate",
+    config = configs.mason,
+  },
+  { 'Bekaboo/dropbar.nvim',                   dependencies = { 'nvim-telescope/telescope-fzf-native.nvim' } },
+  {
+    'jvgrootveld/telescope-zoxide',
+    dependencies = {
+      'nvim-telescope/telescope.nvim',
+      'nvim-lua/popup.nvim',
+    }
+  },
+  {
+    "ThePrimeagen/harpoon",
+    branch = "harpoon2",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = configs.harpoon,
+    event = "BufReadPre",
+  },
+  {
+    "nvimtools/none-ls.nvim",
+    event = "BufReadPre",
+    config = function()
+      local null_ls = require("null-ls")
+
+      null_ls.setup({
+        sources = {
+          null_ls.builtins.diagnostics.haml_lint.with {
+            env = {
+              RUBYOPT = "-W0",
+            },
+          },
+        },
+      })
+    end,
+  },
+  {
+    "RRethy/vim-illuminate",
+    event = "BufReadPre",
+    config = configs.illuminate,
+  },
+  {
+    'echasnovski/mini.files',
+    version = '*',
+    config = configs.mini_files,
+  },
+  {
+    "nvim-neotest/neotest",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-treesitter/nvim-treesitter"
+    },
+  },
+  {
+    "nvim-neotest/neotest",
+    lazy = true,
+    dependencies = {
+      "olimorris/neotest-rspec",
+    },
+    config = configs.neotest,
+  },
+  {
+    "ThePrimeagen/refactoring.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("refactoring").setup()
+    end,
+  },
+  { 'echasnovski/mini.ai',                    version = '*',                                                config = configs.mini_ai, },
+  { 'nvim-telescope/telescope-ui-select.nvim' },
+  {
+    "nvim-telescope/telescope-frecency.nvim",
+    config = function()
+      require("telescope").load_extension "frecency"
+    end,
+  }
 }
 
 require("lazy").setup(plugins, configs.lazy)

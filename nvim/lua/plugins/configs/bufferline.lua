@@ -1,10 +1,24 @@
 return function()
   local C = require("catppuccin.palettes").get_palette "frappe"
+  local L = require("catppuccin.palettes").get_palette "latte"
   local inactive_bg = C.crust
+
+  vim.cmd([[
+    function! ToggleTheme(a, b, c, d)
+      lua require("utils").toggle_theme()
+    endfunction
+  ]])
+
+  vim.cmd([[
+    function! CloseAllBuffers(a, b, c, d)
+      lua require("utils").close_all_buffers()
+    endfunction
+  ]])
+
 
   require("bufferline").setup {
     highlights = require("catppuccin.groups.integrations.bufferline").get({
-      styles = { "italic", "bold" },
+      styles = { 'light' },
       custom = {
         frappe = {
           -- buffers
@@ -16,8 +30,12 @@ return function()
           -- tabs
           tab = { fg = C.surface1, bg = inactive_bg },
           tab_separator = { bg = inactive_bg },
+          tab_selected = {
+            fg = C.text
+          },
 
-          tab_close = { fg = C.red, bg = inactive_bg },
+
+          tab_close = { fg = C.surface1, bg = C.pink },
           -- separators
           separator = { bg = inactive_bg },
           separator_visible = { bg = inactive_bg },
@@ -58,11 +76,29 @@ return function()
     }),
     options = {
       themable = true,
+      buffer_close_icon = "󰅖",
+      close_icon = "󰅖",
+      show_close_icon = false,
+      show_buffer_close_icons = true,
       close_command = function(n) require("mini.bufremove").delete(n, false) end,
       right_mouse_command = function(n) require("mini.bufremove").delete(n, false) end,
       offsets = {
         { filetype = "NvimTree", highlight = "NvimTreeNormal" },
       },
+      custom_areas = {
+        right = function()
+          resutls = {}
+          local flvr = require("catppuccin").flavour or vim.g.catppuccin_flavour or "frappe"
+          if flvr ~= "latte" then
+            table.insert(resutls, { text = "%@ToggleTheme@   ", fg = C.red, bg = C.surface1 })
+            table.insert(resutls, { text = "%@CloseAllBuffers@ 󰅖 ", fg = C.surface1, bg = C.red })
+          else
+            table.insert(resutls, { text = "%@ToggleTheme@ 󰖔  ", fg = L.blue, bg = L.surface0 })
+            table.insert(resutls, { text = "%@CloseAllBuffers@ 󰅖 ", fg = L.surface1, bg = L.red })
+          end
+          return resutls
+        end,
+      }
     },
   }
 end
