@@ -1,5 +1,5 @@
 local M = {}
-local merge_tb = vim.tbl_deep_extend
+-- local merge_tb = vim.tbl_deep_extend
 
 -- Get from alot of sources: LazyVim, Astronvim, Nvchad, etc. Thanks!
 
