@@ -1,6 +1,7 @@
 return {
   "nvim-tree/nvim-tree.lua",
   cmd = { "NvimTreeToggle", "NvimTreeFocus" },
+  enabled = false,
   config =
       function(_, opts)
         require("nvim-tree").setup({

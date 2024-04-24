@@ -1,6 +1,5 @@
 -- "  𝕟 𝕖 𝕠 𝕧 𝕚 𝕞  "
 return {
-  -- "glepnir/dashboard-nvim",
   "nnhutan/dashboard-nvim",
   branch = "master",
   event = "VimEnter",

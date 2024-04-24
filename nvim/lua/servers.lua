@@ -14,7 +14,7 @@ return
     sorbet = {
       mason = false,
     },
-    ruby_ls = {
+    ruby_lsp = {
       mason = false,
       init_options = {
         enableExperimentalFeatures = true,

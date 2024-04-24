@@ -115,6 +115,7 @@ autocmd("FileType", {
     "neotest-summary",
     "neotest-output-panel",
     "toggleterm",
+    'chatgpt-input',
   },
   callback = function(event)
     vim.bo[event.buf].buflisted = false
@@ -179,21 +180,6 @@ autocmd("QuitPre", {
   end,
 })
 
--- local indent_blankline = augroup("toggle_indent_blankline", { clear = true })
--- autocmd("ModeChanged",
---   {
---     group = indent_blankline,
---     pattern = "[vV\x16]*:*",
---     command = "IBLEnable",
---     desc = "Enable indent-blanklines when exiting visual mode"
---   })
--- autocmd("ModeChanged",
---   {
---     group = indent_blankline,
---     pattern = "*:[vV\x16]*",
---     command = "IBLDisable",
---     desc = "Deshabilita indent-blanklines when entering visual mode"
---   })
 
 function _G.set_terminal_keymaps()
   local opts = { silent = true }
@@ -204,51 +190,6 @@ end
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 
--- autocmd("User", {
---   pattern = "DashboardLoaded",
---   callback = function()
---     local current_buf = vim.api.nvim_get_current_buf()
---     if not vim.bo[current_buf].modifiable then
---       vim.bo[current_buf].modifiable = true
---       vim.cmd([[ :silent %s/^\n\{1,}/\r/ ]])
---       vim.bo[current_buf].modifiable = false
---       vim.bo[current_buf].modified = false
---     end
---   end,
--- }
--- )
-
-autocmd("BufEnter", {
-  nested = true,
-  callback = function()
-    local api = require('nvim-tree.api')
-
-    -- Only 1 window with nvim-tree left: we probably closed a file buffer
-    if #vim.api.nvim_list_wins() == 1 and api.tree.is_tree_buf() then
-      -- Required to let the close event complete. An error is thrown without this.
-      vim.defer_fn(function()
-        -- close nvim-tree: will go to the last hidden buffer used before closing
-        api.tree.toggle({ find_file = true, focus = true })
-        -- re-open nivm-tree
-        api.tree.toggle({ find_file = true, focus = true })
-        -- nvim-tree is still the active window. Go to the previous window.
-        vim.cmd("wincmd p")
-      end, 0)
-    end
-  end
-})
-
--- autocmd('ModeChanged', {
---   pattern = { 'n:i', 'v:s' },
---   desc = 'Disable diagnostics in insert and select mode',
---   callback = function(e) vim.diagnostic.disable(e.buf) end
--- })
---
--- autocmd('ModeChanged', {
---   pattern = 'i:n',
---   desc = 'Enable diagnostics when leaving insert mode',
---   callback = function(e) vim.diagnostic.enable(e.buf) end
--- })
 
 autocmd('User', {
   pattern = 'MiniFilesWindowOpen',
@@ -268,5 +209,6 @@ autocmd('ColorScheme', {
     vim.cmd([[ hi! link MiniFilesTitle TelescopeResultsTitle ]])
     vim.cmd([[ hi! link MiniFilesTitleFocused TelescopePromptTitle ]])
     vim.cmd([[ hi! link MiniFilesBorder TelescopePreviewBorder ]])
+    vim.cmd([[ hi! MatchParen guifg=NONE ]])
   end,
 })

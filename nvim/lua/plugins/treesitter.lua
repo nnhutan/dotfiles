@@ -45,6 +45,7 @@ return {
           indent = { enable = true },
           incremental_selection = { enable = true },
           autotag = { enable = true, },
+          -- matchup = { enable = true, },
           highlight = {
             enable = true,
             additional_vim_regex_highlighting = false,
@@ -62,7 +63,6 @@ return {
               end
             end,
           },
-
         }
       end
 }

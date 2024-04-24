@@ -1,7 +1,7 @@
-# /Users/lixibox/.config/tmuxinator/dotfile.yml
+# /Users/lixibox/.config/tmuxinator/markdown-blog.yml
 
-name: dotfile
-root: ~/dotfiles
+name: markdown-blog
+root: ~/work/markdown-blog/
 
 # Optional tmux socket
 # socket_name: foo
@@ -47,3 +47,5 @@ root: ~/dotfiles
 windows:
   - neovim: v
   - terminal:
+  - server: yarn && yarn run dev
+  - lazygit: lg

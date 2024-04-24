@@ -2,6 +2,7 @@ return {
   'akinsho/toggleterm.nvim',
   cmd = "ToggleTerm",
   version = "*",
+  enabled = false,
   opts =
   {
     start_in_insert = true,
@@ -19,5 +20,8 @@ return {
       height = vim.o.lines,
     },
     autochdir = false,
-  }
+  },
+  keys = {
+    -- { 'n', '<c-t>', ':ToggleTerm<CR>' },
+  },
 }

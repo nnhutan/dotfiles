@@ -27,6 +27,9 @@ return {
               current_line_sign = "󰁕",
               border = {
                 highlight = "TelescopePreviewBorder",
+                text = {
+                  top = { { ' Parameters ', 'TelescopeResultTitle' } },
+                },
               },
               win_options = {
                 winhighlight = "Normal:TelescopePreviewBorder,FloatBorder:TelescopePromptNormal",
@@ -109,6 +112,10 @@ return {
           help_window = {
             border = {
               highlight = "TelescopePreviewBorder",
+              text = {
+                top = { { ' Parameters ', 'TelescopeResultTitle' } },
+              },
+
             },
             win_options = {
               winhighlight = "Normal:TelescopePreviewBorder,FloatBorder:TelescopePromptNormal",
@@ -117,6 +124,9 @@ return {
           settings_window = {
             border = {
               highlight = "TelescopePreviewBorder",
+              text = {
+                top = { { ' Parameters ', 'TelescopeResultTitle' } },
+              },
             },
             win_options = {
               winhighlight = "Normal:TelescopePreviewBorder,FloatBorder:TelescopePromptNormal",

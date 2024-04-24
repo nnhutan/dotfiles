@@ -1,6 +1,6 @@
 local opt = vim.opt
 local g = vim.g
-local api = vim.api
+-- local api = vim.api
 
 opt.showmode = false
 opt.clipboard = "unnamedplus"
@@ -37,7 +37,7 @@ opt.smoothscroll = true
 opt.breakindent = true
 opt.linebreak = true
 opt.virtualedit = "block"
--- opt.wrap = true
+opt.wrap = false
 opt.sessionoptions:append("localoptions")
 opt.writebackup = false
 opt.foldlevel = 99
@@ -45,21 +45,20 @@ opt.foldmethod = "expr"
 opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 -- opt.omnifunc = 'v:lua.vim.treesitter.query.omnifunc'
 opt.omnifunc = 'v:lua.vim.lsp.omnifunc'
--- opt.foldtext = 'v:lua.vim.treesitter.foldtext()'
+opt.showtabline = 0
 
 
 g.mapleader = " "
 g.hidden = false
-g.matchup_matchparen_offscreen = { method = "popup" }
+-- g.matchup_matchparen_offscreen = { method = "status" }
 g.loaded_ruby_provider = 0
 g.nocompatible = true
 g.ttyfast = true
 g["escape-time"] = 0
--- g["test#neovim#start_normal"] = 1
--- g["test#strategy"] = { nearest = "neovim", file = "neovim", suite = "neovim" }
 g.markdown_recommended_style = 0
 g.VM_set_statusline = 0
 g.VM_silent_exit = 1
 g.lazygit_floating_window_scaling_factor = 0.95
 g.syntastic_haml_checkers = 'haml_lint'
 g.skip_ts_context_commentstring_module = true
+g.showtabline = 0

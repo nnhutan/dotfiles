@@ -33,9 +33,7 @@ return {
               dismiss = "<C-]>",
             },
           },
-          filetypes = {
-            ["*"] = true,
-          },
+          filetypes = { ["*"] = true, },
           copilot_node_command = "node", -- Node.js version must be > 16.x
           server_opts_overrides = {},
         })

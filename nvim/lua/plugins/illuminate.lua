@@ -1,6 +1,7 @@
 return {
   "RRethy/vim-illuminate",
   event = "BufReadPre",
+  enabled = false,
   config =
       function()
         -- default configuration

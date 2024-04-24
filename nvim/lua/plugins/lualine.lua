@@ -1,18 +1,9 @@
 ---@diagnostic disable: need-check-nil, no-unknown
-local fn = vim.fn
 local icons = require("cores.icons")
-
-local function file_encoding()
-  return string.upper(vim.opt.fileencoding:get())
-end
 
 local function file_type()
   local ft = vim.bo.filetype or ''
   return ft == "" and "{} plain text" or "{} " .. ft
-end
-
-local function cursor_position()
-  return vim.o.columns > 140 and "Ln %l, Col %c" or ""
 end
 
 local function stbufnr()
@@ -53,45 +44,20 @@ local function visualMultiInfos()
   end
 end
 
-local function cwd()
-  local dir_name = "󰉖 " .. fn.fnamemodify(fn.getcwd(), ":t")
-  return (vim.o.columns > 85 and dir_name) or ""
-end
-
 return
 {
   "nvim-lualine/lualine.nvim",
   event = "VeryLazy",
-  dependencies = {
-    'nvim-tree/nvim-web-devicons', 'catppuccin/nvim' },
+  dependencies = { 'nvim-tree/nvim-web-devicons', 'catppuccin/nvim' },
   config =
       function()
         local C = require("catppuccin.palettes").get_palette()
-        local get_theme = function()
-          local flvr = require("catppuccin").flavour or vim.g.catppuccin_flavour or "frappe"
-          if flvr == "frappe" then
-            return {
-              normal = {
-                b = { bg = C.surface1, gui = 'bold', fg = C.blue },
-                c = { bg = C.surface0, fg = C.overlay1 },
-              },
-              insert = { b = { bg = C.surface1, gui = 'bold', fg = C.mauve }, },
-              visual = { b = { bg = C.surface1, gui = 'bold', fg = C.sky }, },
-              replace = { b = { bg = C.surface1, gui = 'bold', fg = C.peach }, },
-              command = { b = { bg = C.surface1, gui = 'bold', fg = C.green }, },
-              inactive = { b = { bg = C.surface1, gui = 'bold', fg = C.text }, },
-            }
-          else
-            return require("catppuccin.utils.lualine")(flvr)
-          end
-        end
-
         require('lualine').setup {
           options = {
             icons_enabled = true,
-            theme = get_theme,
-            component_separators = { left = '', right = '' },
-            section_separators = { left = '', right = '' },
+            theme = 'catppuccin',
+            component_separators = { left = '', right = '' }, --
+            section_separators = { left = '', right = '' },
             disabled_filetypes = {
               statusline = { "dashboard", "alpha", "starter" },
               winbar = {},
@@ -100,14 +66,20 @@ return
             globalstatus = true,
           },
           sections = {
-            lualine_a = {},
+            lualine_a = { {} },
             lualine_b = {
-              { 'mode', icons_enabled = true, icon = '', }
+              { 'mode', icons_enabled = true, icon = '', padding = { left = 1, right = 0 }, }
             },
             lualine_c = {
-              { 'filetype', colored = false,           icon_only = true, padding = { left = 1, right = 0 } },
-              { 'filename', separator = nil, },
-              { 'branch',   icon = icons.kinds.Control },
+              { "tabs", },
+              {
+                'buffers',
+                max_length = vim.o.columns * 2 / 3,
+              },
+            },
+            lualine_x = {
+              { visualMultiMode,  color = { fg = C.mauve }, },
+              { visualMultiInfos, color = { fg = C.yellow }, separator = "|", },
               {
                 'diagnostics',
                 symbols = {
@@ -116,21 +88,29 @@ return
                   info = icons.diagnostics.Info,
                   hint = icons.diagnostics.Hint,
                 },
-              }
-            },
-            lualine_x = {
+              },
+              {
+                require("noice").api.statusline.mode.get,
+                cond = require("noice").api.statusline.mode.has,
+                color = { fg = C.mauve },
+              },
               {
                 require("noice").api.status.command.get,
                 cond = require("noice").api.status.command.has,
                 color = { fg = C.mauve },
               },
               {
-                require("noice").api.statusline.mode.get,
-                cond = require("noice").api.statusline.mode.has,
-                color = { fg = C.peach },
+                'branch',
+                icon = icons.kinds.Control,
+                fmt = function(branch)
+                  -- limit the length of the branch name
+                  local max_width = 30
+                  if string.len(branch) > max_width then
+                    return string.sub(branch, 0, max_width - 3) .. "..."
+                  end
+                  return branch
+                end,
               },
-              { visualMultiMode,  color = { fg = C.mauve --[[ , bg = C.surface1  ]] }, },
-              { visualMultiInfos, color = { fg = C.yellow },                           separator = "|", },
               {
                 'diff',
                 symbols = {
@@ -151,13 +131,14 @@ return
                   end
                 end
               },
-              cursor_position,
-              { file_encoding,                               color = { fg = C.peach, } },
+              { "encoding" },
               { file_type,                                   color = { fg = C.blue, } },
               { LSP_status,                                  color = { fg = C.blue, } },
               { 'require("copilot_status").status_string()', color = { fg = C.blue, }, padding = { left = 0, right = 1 } },
             },
-            lualine_y = { { cwd, color = { fg = C.red } } },
+            lualine_y = {
+              { "location", padding = { left = 0, right = 1 } }
+            },
             lualine_z = {}
           },
           extensions = {}

@@ -1,5 +1,21 @@
 local icons = require('cores.icons').diagnostics
 
+local get_config = function(server)
+  local configs = require("lspconfig.configs")
+  return rawget(configs, server)
+end
+
+local disable = function(server, cond)
+  local util = require("lspconfig.util")
+  local def = get_config(server)
+  def.document_config.on_new_config = util.add_hook_before(def.document_config.on_new_config,
+    function(config, root_dir)
+      if cond(root_dir, config) then
+        config.enabled = false
+      end
+    end)
+end
+
 return {
   "neovim/nvim-lspconfig",
   event = { "BufReadPre", "BufNewFile" },
@@ -13,22 +29,47 @@ return {
     local plugin = require("lazy.core.config").spec.plugins["neoconf.nvim"]
     require("neoconf").setup(require("lazy.core.plugin").values(plugin, "opts", false))
 
+    local has_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+    local capabilities = vim.tbl_deep_extend(
+      "force",
+      {},
+      vim.lsp.protocol.make_client_capabilities(),
+      has_cmp and cmp_nvim_lsp.default_capabilities() or {}
+    )
+
+    capabilities.textDocument.completion.completionItem = {
+      documentationFormat = { "markdown", "plaintext" },
+      snippetSupport = true,
+      preselectSupport = true,
+      insertReplaceSupport = true,
+      labelDetailsSupport = true,
+      deprecatedSupport = true,
+      commitCharactersSupport = true,
+      tagSupport = { valueSet = { 1 } },
+      resolveSupport = {
+        properties = {
+          "documentation",
+          "detail",
+          "additionalTextEdits",
+        },
+      },
+    }
     local opts = require "servers"
-    local capabilities = require('utils').LSP_capabilities()
-    local utils = require("utils")
+
 
     vim.diagnostic.config({
-      virtual_text = {
-        spacing = 4,
-        source = "if_many",
-        prefix = function(diagnostic)
-          for d, icon in pairs(icons) do
-            if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
-              return icon
-            end
-          end
-        end,
-      },
+      virtual_text = false,
+      -- virtual_text = {
+      --   spacing = 4,
+      --   source = "if_many",
+      --   prefix = function(diagnostic)
+      --     for d, icon in pairs(icons) do
+      --       if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
+      --         return icon
+      --       end
+      --     end
+      --   end,
+      -- },
       severity_sort = true,
       inlay_hints = { enabled = true },
       signs = {
@@ -61,15 +102,9 @@ return {
         local client = vim.lsp.get_client_by_id(args.data.client_id)
 
         local map = vim.keymap.set
-
         if not client.supports_method("textDocument/semanticTokens") then client.server_capabilities.semanticTokensProvider = nil end
         if client and client.supports_method("textDocument/inlayHint") then
-          local ih = vim.lsp.buf.inlay_hint or vim.lsp.inlay_hint
-          if type(bufnr) == "function" then
-            ih(bufnr, true)
-          elseif type(ih) == "table" and ih.enable then
-            ih.enable(bufnr, true)
-          end
+          vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
         end
 
         local keymap_opts = { buffer = bufnr }
@@ -147,10 +182,10 @@ return {
       mlsp.setup({ ensure_installed = ensure_installed, handlers = { setup } })
     end
 
-    if utils.LSP_get_config("denols") and utils.LSP_get_config("tsserver") then
+    if get_config("denols") and get_config("tsserver") then
       local is_deno = require("lspconfig.util").root_pattern("deno.json", "deno.jsonc")
-      utils.LSP_disable("tsserver", is_deno)
-      utils.LSP_disable("denols", function(root_dir)
+      disable("tsserver", is_deno)
+      disable("denols", function(root_dir)
         return not is_deno(root_dir)
       end)
     end

@@ -18,16 +18,14 @@ return {
     "max397574/better-escape.nvim",
     event = "InsertEnter",
     config = function()
-      require(
-        "better_escape").setup()
+      require("better_escape").setup()
     end,
   },
   {
     "declancm/cinnamon.nvim",
     event = "VeryLazy",
     config = function()
-      require(
-        "cinnamon").setup()
+      require("cinnamon").setup()
     end,
   },
   {
@@ -56,16 +54,6 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" }
   },
   { "kdheepak/lazygit.nvim",     cmd = "LazyGit", },
-  { "AndrewRadev/splitjoin.vim", keys = { "gS", "gJ" },                                        event = "BufReadPre", },
-  { 'Bekaboo/dropbar.nvim',      dependencies = { 'nvim-telescope/telescope-fzf-native.nvim' } },
-  {
-    "ThePrimeagen/refactoring.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-    },
-    config = function()
-      require("refactoring").setup()
-    end,
-  },
+  { "AndrewRadev/splitjoin.vim", keys = { "gS", "gJ" }, event = "BufReadPre", },
+  { "folke/persistence.nvim",    opts = {} },
 }

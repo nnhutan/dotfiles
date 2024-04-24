@@ -1,6 +1,7 @@
 return {
   "stevearc/conform.nvim",
   lazy = true,
+  enabled = false,
   config =
       function()
         local cmp = require "cmp"

@@ -3,7 +3,3 @@ return {
   version = "*",
   opts = {},
 }
-
--- function()
---   require("hop").setup({ keys = "etovxqpdygfblzhckisuran" })
--- end

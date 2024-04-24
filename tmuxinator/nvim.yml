@@ -1,7 +1,7 @@
-# /Users/lixibox/.config/tmuxinator/dotfile.yml
+# /Users/lixibox/.config/tmuxinator/nvim.yml
 
-name: dotfile
-root: ~/dotfiles
+name: nvim
+root: ~/.config/nvim/
 
 # Optional tmux socket
 # socket_name: foo
@@ -46,4 +46,3 @@ root: ~/dotfiles
 
 windows:
   - neovim: v
-  - terminal:

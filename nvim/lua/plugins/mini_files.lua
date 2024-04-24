@@ -41,7 +41,7 @@ return {
               reset       = '<BS>',
               reveal_cwd  = '@',
               show_help   = 'g?',
-              synchronize = '=',
+              synchronize = '<leader>w',
               trim_left   = '<',
               trim_right  = '>',
             },
@@ -71,15 +71,13 @@ return {
         )
 
 
-        vim.keymap.set('n', '<leader>e',
-          function(...)
-            if not MiniFiles.close() then MiniFiles.open(...) end
-          end, { noremap = true, silent = true })
+        vim.keymap.set('n', '<leader>e', function(...)
+          if not MiniFiles.close() then MiniFiles.open(...) end
+        end, { noremap = true, silent = true })
 
-        vim.keymap.set('n', '<leader>o',
-          function(...)
-            if not MiniFiles.close() then MiniFiles.open(vim.api.nvim_buf_get_name(0)) end
-          end, { noremap = true, silent = true })
+        vim.keymap.set('n', '<leader>o', function(...)
+          if not MiniFiles.close() then MiniFiles.open(vim.api.nvim_buf_get_name(0)) end
+        end, { noremap = true, silent = true })
 
         local map_split = function(buf_id, lhs, direction)
           local rhs = function()
