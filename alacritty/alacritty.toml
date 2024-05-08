@@ -1,0 +1,102 @@
+import = ["/Users/lixibox/.config/alacritty/catppuccin-mocha.toml"]
+live_config_reload = true
+
+# [colors.normal]
+# blue = "#566ca0"
+
+# [colors.primary]
+# background = "#292D3E"
+
+[cursor]
+unfocused_hollow = true
+
+[cursor.style]
+shape = "Block"
+
+[env]
+TERM = "xterm-256color"
+
+[font]
+size = 16
+
+[font.bold]
+family = "JetBrainsMono Nerd Font"
+style = "Regular"
+
+[font.bold_italic]
+family = "JetBrainsMono Nerd Font"
+style = "Italic"
+
+[font.normal]
+family = "JetBrainsMono Nerd Font"
+style = "ExtraLight"
+
+[font.italic]
+family = "JetBrainsMono Nerd Font"
+style = "ExtraLight Italic"
+
+[[keyboard.bindings]]
+chars = "\u0002"
+key = "B"
+mode = "~Vi|~Search"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u0002w"
+key = "E"
+mode = "~Vi|~Search"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = ""
+key = "T"
+mode = "~Vi|~Search"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u0002o"
+key = "o"
+mode = "~Vi|~Search"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u0002-"
+key = "RBracket"
+mode = "~Vi|~Search"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u0002_"
+key = "LBracket"
+mode = "~Vi|~Search"
+mods = "Command"
+
+[[keyboard.bindings]]
+action = "None"
+key = "H"
+mods = "Command"
+
+[[keyboard.bindings]]
+action = "None"
+key = "H"
+mods = "Command|Alt"
+
+[scrolling]
+history = 1000
+
+[window]
+decorations = "buttonless"
+dynamic_padding = true
+startup_mode = "Windowed"
+
+[window.dimensions]
+columns = 192
+lines = 48 
+
+[window.position]
+x = 95 
+y = 140 
+
+[window.padding]
+x = 0
+y = 0
