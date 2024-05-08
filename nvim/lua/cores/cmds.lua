@@ -197,7 +197,7 @@ autocmd('User', {
     local win_id = args.data.win_id
 
     -- Customize window-local settings
-    vim.wo[win_id].winblend = 10
+    -- vim.wo[win_id].winblend = 10
   end,
 })
 

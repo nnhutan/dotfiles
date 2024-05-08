@@ -46,6 +46,7 @@ opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 -- opt.omnifunc = 'v:lua.vim.treesitter.query.omnifunc'
 opt.omnifunc = 'v:lua.vim.lsp.omnifunc'
 opt.showtabline = 0
+opt.foldtext = ""
 
 
 g.mapleader = " "

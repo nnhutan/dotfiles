@@ -4,7 +4,7 @@ return {
   { "nvim-pack/nvim-spectre",     cmd = "Spectre" },
   { "echasnovski/mini.bufremove", event = "BufReadPre" },
   { "windwp/nvim-ts-autotag",     event = "VeryLazy" },
-  { "andymass/vim-matchup",       event = "VeryLazy" },
+  -- { "andymass/vim-matchup",       event = "VeryLazy" },
   { "vim-ruby/vim-ruby",          event = "BufReadPre" },
   { "tpope/vim-haml",             event = "VeryLazy" },
   { "thoughtbot/vim-rspec",       event = "VeryLazy" },
@@ -56,4 +56,16 @@ return {
   { "kdheepak/lazygit.nvim",     cmd = "LazyGit", },
   { "AndrewRadev/splitjoin.vim", keys = { "gS", "gJ" }, event = "BufReadPre", },
   { "folke/persistence.nvim",    opts = {} },
+  {
+    "mistricky/codesnap.nvim",
+    build = "make",
+    keys = {
+      { "<leader>bp", "<cmd>CodeSnap<cr>",     mode = "x", desc = "Save selected code snapshot into clipboard" },
+      { "<leader>bP", "<cmd>CodeSnapSave<cr>", mode = "x", desc = "Save selected code snapshot in ~/Pictures" },
+    },
+    opts = {
+      save_path = "~/Pictures",
+      has_breadcrumbs = true,
+    },
+  },
 }
