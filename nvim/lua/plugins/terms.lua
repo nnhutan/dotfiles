@@ -21,7 +21,5 @@ return {
     },
     autochdir = false,
   },
-  keys = {
-    -- { 'n', '<c-t>', ':ToggleTerm<CR>' },
-  },
+  keys = { { '<c-t>', '<cmd>ToggleTerm direction=float<CR>', mode = 'n', desc = "Terminal" }, },
 }

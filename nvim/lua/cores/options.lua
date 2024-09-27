@@ -24,7 +24,7 @@ opt.foldcolumn = "1"
 opt.cmdheight = 0
 opt.scrolloff = 8
 opt.termguicolors = true
-opt.updatetime = 200
+opt.updatetime = 100
 opt.signcolumn = "yes"
 opt.laststatus = 3
 opt.smartcase = true
@@ -37,7 +37,7 @@ opt.smoothscroll = true
 opt.breakindent = true
 opt.linebreak = true
 opt.virtualedit = "block"
-opt.wrap = false
+opt.wrap = true
 opt.sessionoptions:append("localoptions")
 opt.writebackup = false
 opt.foldlevel = 99
@@ -51,7 +51,6 @@ opt.foldtext = ""
 
 g.mapleader = " "
 g.hidden = false
--- g.matchup_matchparen_offscreen = { method = "status" }
 g.loaded_ruby_provider = 0
 g.nocompatible = true
 g.ttyfast = true

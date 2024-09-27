@@ -1,49 +1,95 @@
+local util = require 'lspconfig.util'
+local function organize_imports()
+  local params = {
+    command = "_typescript.organizeImports",
+    arguments = { vim.api.nvim_buf_get_name(0) },
+    title = ""
+  }
+  vim.lsp.buf.execute_command(params)
+end
 return
 {
   servers = {
-    html = {},
-    cssls = {},
-    clangd = {},
-    marksman = {},
-    yamlls = {},
-    emmet_ls = {},
-    jsonls = {},
+    html = { mason = false, },
+    cssls = { mason = false, },
+    clangd = { mason = false, },
+    yamlls = { mason = false },
+    emmet_ls = { mason = false, },
+    jsonls = { mason = false },
+    eslint = { mason = false, },
     solargraph = {
-      mason = false,
-    },
-    sorbet = {
-      mason = false,
-    },
-    ruby_lsp = {
-      mason = false,
+      mason = true,
       init_options = {
-        enableExperimentalFeatures = true,
-        featuresConfiguration = {
-          inlayHint = {
-            enableAll = true
-          }
-        },
-        enabledFeatures = {
-          "codeActions",
-          "diagnostics",
-          "documentHighlights",
-          "documentLink",
-          "documentSymbols",
-          "foldingRanges",
-          "formatting",
-          "hover",
-          "inlayHint",
-          -- "onTypeFormatting",
-          "selectionRanges",
-          "semanticHighlighting",
-          "completion",
-          "codeLens",
-          "definition",
-          "workspaceSymbol"
+        cmd = { os.getenv("HOME") .. "/.rbenv/shims/solargraph", 'stdio' },
+        -- formatting = false,
+        settings = {
+          -- solargraph = {
+          --   format = false,
+          --   autoformat = false,
+          --   formatting = false,
+          --   completion = true,
+          --   diagnostic = false,
+          --   folding = true,
+          --   references = true,
+          --   rename = true,
+          --   symbols = true,
+          --   diagnostics = false,
+          --   hover = true,
+          --   definitions = true,
+          -- }
         }
       }
     },
-    tsserver = { init_options = { preferences = { quotePreference = "single" } } },
+    -- sorbet = { mason = false, },
+    -- ruby_lsp = {
+    --   mason = true,
+    --   init_options = {
+    --     cmd = { os.getenv("HOME") .. "/.rbenv/shims/ruby-lsp" },
+    --     enableExperimentalFeatures = true,
+    --     featuresConfiguration = { inlayHint = { enableAll = true }, },
+    --     enabledFeatures = {
+    --       'codeActions',
+    --       'diagnostics',
+    --       'documentHighlights',
+    --       'documentLink',
+    --       'documentSymbols',
+    --       'foldingRanges',
+    --       'formatting',
+    --       'hover',
+    --       'inlayHint',
+    --       'onTypeFormatting',
+    --       'selectionRanges',
+    --       'semanticHighlighting',
+    --       'completion',
+    --       'codeLens',
+    --       'definition',
+    --       'workspaceSymbol'
+    --     },
+    --   }
+    -- },
+    ts_ls = {
+      mason = false,
+      init_options = {
+        preferences = {
+          disableSuggestions = false,
+          quotePreference = "single",
+          includeInlayEnumMemberValueHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+          includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayVariableTypeHints = true,
+          formatting = false
+        },
+        -- commands = {
+        --   OrganizeImports = {
+        --     organize_imports,
+        --     description = "Organize Imports"
+        --   }
+        -- }
+      }
+    },
     lua_ls = {
       mason = false,
       single_file_support = true,
@@ -76,6 +122,7 @@ return
             castNumberToInteger = true,
           },
           diagnostics = {
+            globals = { 'vim' },
             disable = { "incomplete-signature-doc", "trailing-space" },
             -- enable = false,
             groupSeverity = {
@@ -111,6 +158,5 @@ return
       },
     },
   },
-  setup = {
-  },
+  setup = {},
 }

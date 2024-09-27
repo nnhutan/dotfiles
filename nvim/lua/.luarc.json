@@ -68,5 +68,8 @@
         "incomplete-signature-doc",
         "trailing-space",
         "undefined-field"
+    ],
+    "diagnostics.globals": [
+        "vim"
     ]
 }

@@ -1,4 +1,4 @@
-import = ["/Users/lixibox/.config/alacritty/catppuccin-mocha.toml"]
+import = ["~/.config/alacritty/catppuccin-mocha.toml"]
 live_config_reload = true
 
 # [colors.normal]
@@ -17,23 +17,23 @@ shape = "Block"
 TERM = "xterm-256color"
 
 [font]
-size = 16
+size = 12
 
 [font.bold]
 family = "JetBrainsMono Nerd Font"
-style = "Regular"
+style = "Medium"
 
 [font.bold_italic]
 family = "JetBrainsMono Nerd Font"
-style = "Italic"
+style = "Medium Italic"
 
 [font.normal]
 family = "JetBrainsMono Nerd Font"
-style = "ExtraLight"
+style = "Light"
 
 [font.italic]
 family = "JetBrainsMono Nerd Font"
-style = "ExtraLight Italic"
+style = "Light Italic"
 
 [[keyboard.bindings]]
 chars = "\u0002"
@@ -87,16 +87,16 @@ history = 1000
 [window]
 decorations = "buttonless"
 dynamic_padding = true
-startup_mode = "Windowed"
+startup_mode = "Maximized"
 
-[window.dimensions]
-columns = 192
-lines = 48 
-
-[window.position]
-x = 95 
-y = 140 
+# [window.dimensions]
+# columns = 192
+# lines = 48 
+#
+# [window.position]
+# x = 95 
+# y = 140 
 
 [window.padding]
 x = 0
-y = 0
+y = 0 

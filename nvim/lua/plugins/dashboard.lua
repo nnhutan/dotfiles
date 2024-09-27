@@ -21,7 +21,7 @@ return {
           },
           config = {
             project = {
-              enable = true,
+              enable = false,
               limit = 4,
               action = function(path)
                 require("projections.switcher").switch(path)

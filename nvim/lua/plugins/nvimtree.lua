@@ -1,7 +1,7 @@
 return {
   "nvim-tree/nvim-tree.lua",
   cmd = { "NvimTreeToggle", "NvimTreeFocus" },
-  enabled = false,
+  enabled = true,
   config =
       function(_, opts)
         require("nvim-tree").setup({
@@ -78,5 +78,7 @@ return {
             },
           },
         })
+
+        vim.keymap.set("n", "<leader>bt", "<cmd>NvimTreeFocus<CR>", { noremap = true, silent = true })
       end
 }

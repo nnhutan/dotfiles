@@ -5,7 +5,7 @@ map("n", "[t", "<cmd> tabprevious <CR>", { desc = "Prev tabs group" })
 map("n", ";", ":", { desc = "enter command mode", nowait = true })
 map("n", "<Esc>", "<cmd> noh <CR>", { desc = "Clear highlights" })
 map("n", "|", "<cmd>vsplit<cr>", { desc = "Vertical Split" })
-map("n", "\\", "<cmd>split<cr>", { desc = "Horizontal Split" })
+map("n", "<c-\\>", "<cmd>split<cr>", { desc = "Horizontal Split" })
 map("n", "<C-h>", "<C-w>h", { desc = "Window left" })
 map("n", "<C-l>", "<C-w>l", { desc = "Window right" })
 map("n", "<C-j>", "<C-w>j", { desc = "Window down" })
@@ -25,44 +25,20 @@ map("n", "<Up>", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { desc = "Move 
 map("n", "<Down>", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { desc = "Move down", expr = true })
 map("n", "L", "<cmd>bnext<CR>", { desc = "Goto next buffer" })
 map("n", "H", "<cmd>bprevious<CR>", { desc = "Goto prev buffer" })
-map("n", "<leader>ff", "<cmd> Telescope find_files <CR>", { desc = "Find files" })
-map("n", "<leader>fw", "<cmd> Telescope live_grep <CR>", { desc = "Find words" })
-map("n", "<leader>fb", "<cmd> Telescope buffers <CR>", { desc = "Find buffers" })
-map("n", "<leader>fo", "<cmd> Telescope oldfiles <CR>", { desc = "Find oldfiles" })
-map("n", "<leader>fz", "<cmd> Telescope current_buffer_fuzzy_find <CR>", { desc = "Find in current buffer" })
-map("n", "<leader>fN", "<cmd> Telescope notify <CR>", { desc = "Notifications" })
-map("n", "<leader>ft", "<cmd> Telescope colorscheme <CR>", { desc = "Theme" })
-map("n", "<leader>gc", "<cmd> Telescope git_commits <CR>", { desc = "Git commits" })
-map("n", "<leader>gt", "<cmd> Telescope git_status <CR>", { desc = "Git status" })
 map("n", "<leader>gg", "<cmd> LazyGit <CR>", { desc = "LazyGit" })
-map("n", "<leader>fa", "<cmd> Telescope marks <CR>", { desc = "telescope bookmarks" })
 map("n", "<leader>fp", "<cmd>lua require('utils').CopyFilePath('p')<CR>", { desc = "Path relative to CWD" })
 map("n", "<leader>fh", "<cmd>lua require('utils').CopyFilePath('h')<CR>", { desc = "Path relative to Home" })
 map("n", "<leader>fP", "<cmd>lua require('utils').CopyFilePath('P')<CR>", { desc = "Absolute path" })
 map("n", "<leader>fe", "<cmd>lua require('utils').CopyFilePath('e')<CR>", { desc = "Extension only" })
 map("n", "<leader>fn", "<cmd>lua require('utils').CopyFilePath('f')<CR>", { desc = "Filename" })
 map("n", "<leader>Ss", '<cmd>lua require("persistence").load()<cr>', { desc = "Load current session" })
-map("n", "<leader>a", '<cmd>lua require("persistence").load()<cr>', { desc = "Load current session" })
+map("n", "<leader>A", '<cmd>lua require("persistence").load()<cr>', { desc = "Load current session" })
 map("n", "<leader>Sl", '<cmd>lua require("persistence").load({ last = true })<cr>', { desc = "Load last session" })
 map("n", "<leader>Sq", '<cmd>lua require("persistence").stop()<cr>', { desc = "Stop persistence" })
 map("n", "<leader>gD", "<cmd>wincmd p | q<cr>", { desc = "Close git diff" })
 map("n", "<leader>j", "<cmd>HopWord<cr>", { desc = "Jump to word" })
 map("n", "<leader>s", "<cmd>Spectre<cr>", { desc = "Search panel" })
 map("n", "<leader>lt", "<cmd>Trouble<cr>", { desc = "Code problems" })
-map("n", "<leader>G", "<cmd>ChatGPT<CR>", { desc = "ChatGPT" })
-map("n", "<leader>kc", "<cmd>ChatGPT<CR>", { desc = "ChatGPT" })
-map("n", "<leader>ke", "<cmd>ChatGPTEditWithInstruction<CR>", { desc = "Edit with instruction" })
-map("n", "<leader>kg", "<cmd>ChatGPTRun grammar_correction<CR>", { desc = "Grammar Correction" })
-map("n", "<leader>kt", "<cmd>ChatGPTRun translate<CR>", { desc = "Translate" })
-map("n", "<leader>kk", "<cmd>ChatGPTRun keywords<CR>", { desc = "Keywords" })
-map("n", "<leader>kd", "<cmd>ChatGPTRun docstring<CR>", { desc = "Docstring" })
-map("n", "<leader>ka", "<cmd>ChatGPTRun add_tests<CR>", { desc = "Add Tests" })
-map("n", "<leader>ko", "<cmd>ChatGPTRun optimize_code<CR>", { desc = "Optimize Code" })
-map("n", "<leader>ks", "<cmd>ChatGPTRun summarize<CR>", { desc = "Summarize" })
-map("n", "<leader>kf", "<cmd>ChatGPTRun fix_bugs<CR>", { desc = "Fix Bugs" })
-map("n", "<leader>kx", "<cmd>ChatGPTRun explain_code<CR>", { desc = "Explain Code" })
-map("n", "<leader>kr", "<cmd>ChatGPTRun roxygen_edit<CR>", { desc = "Roxygen Edit" })
-map("n", "<leader>kl", "<cmd>ChatGPTRun code_readability_analysis<CR>", { desc = "Code Readability Analysis" })
 map("n", '<leader>tn', '<cmd>lua require(ntest).run.run()<cr>', { desc = "Nearest" })
 map("n", '<leader>tf', '<cmd>lua require(ntest).run.run(vim.fn.expand("%"))<cr>', { desc = "File" })
 map("n", '<leader>tS', '<cmd>lua require(ntest).run.stop()<cr>', { desc = "Stop" })
@@ -103,15 +79,10 @@ map("n", "<leader>c", function()
   end
 end, { desc = "Delete Buffer" })
 
-map("n", "<leader>lf", function()
-    vim.lsp.buf.format { async = true }
-  end,
-  { desc = "LSP formatting", })
-map("n", "<leader>ld", function()
-  vim.diagnostic.open_float({ border = "rounded" })
-end, { desc = "Floating diagnostic", })
+map("n", "<leader>lf", function() vim.lsp.buf.format { async = true } end, { desc = "LSP formatting", })
+map("n", "<leader>ld", function() vim.diagnostic.open_float({ border = "rounded" }) end,
+  { desc = "Floating diagnostic", })
 map("n", "<leader>ls", function()
-  -- require("telescope.builtin").lsp_document_symbols()
   local aerial_avail, _ = pcall(require, "aerial")
   if aerial_avail then
     require("telescope").extensions.aerial.aerial()
@@ -125,14 +96,17 @@ end, { desc = "Search workspace symbols", })
 map("n", "<leader>lS", function()
   require("aerial").toggle()
 end, { desc = "Symbols outline", })
-map("n", "<leader>fF", "<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>", { desc = "Find files (all)", })
-map("n", "<leader>fW", function()
-  require("telescope.builtin").live_grep({
-    additional_args = function(args)
-      return vim.list_extend(args, { "--hidden", "--no-ignore" })
-    end,
-  })
-end, { desc = "Find words (all)", })
+map("n", "<leader>fF", "<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>",
+  { desc = "Find files (all)", })
+map("n", "<leader>fW", "<cmd> Telescope live_grep follow=true no_ignore=true hidden=true <CR>",
+  { desc = "Find words (all)", })
+-- map("n", "<leader>fW", function()
+--   require("telescope.builtin").live_grep({
+--     additional_args = function(args)
+--       return vim.list_extend(args, { "--hidden", "--no-ignore" })
+--     end,
+--   })
+-- end, { desc = "Find words (all)", })
 map("n", "<leader>fs", function() require("utils").FuzzyFindFiles() end, { desc = "Grep string", })
 map("n", "]g", function()
   if vim.wo.diff then
@@ -152,10 +126,8 @@ map("n", "[g", function()
   end)
   return "<Ignore>"
 end, { desc = "Jump to prev hunk", expr = true })
-map("n", "<leader>gp", function() require("gitsigns").preview_hunk() end, { desc = "Preview hunk" })
-map("n", "<leader>gl", function() package.loaded.gitsigns.blame_line() end, { desc = "Blame line" })
-map("n", "<leader>gd", function() require("gitsigns").diffthis() end, { desc = "Git diff" })
-map("n", "<leader>un", function() require("notify").dismiss({ silent = true, pending = true }) end, { desc = "Dismiss all Notifications" })
+map("n", "<leader>un", function() require("notify").dismiss({ silent = true, pending = true }) end,
+  { desc = "Dismiss all Notifications" })
 map("n", "<leader>ut", function()
   local current_theme = vim.g.colors_name
   -- catppuccin-*
@@ -171,23 +143,35 @@ map("n", "<leader>ut", function()
     os.execute("tmux set -g @catppuccin_flavour '" .. palette .. "' && tmux source-file ~/.tmux.conf")
     -- store the palette in the env
     vim.env.CATPPUCCINO_FLAVOUR = palette
+
+    -- update alacritty/alacritty.toml
+    local file = io.open("/Users/nhutan/dotfiles/alacritty/alacritty.toml", "r")
+
+    -- Read all lines from the file and store them in a table
+    local lines = {}
+    for line in file:lines() do
+      table.insert(lines, line)
+    end
+
+    -- Close the file
+    file:close()
+
+    -- Modify the first line
+    lines[1] = 'import = ["~/.config/alacritty/catppuccin-' .. palette .. '.toml"]'
+
+    -- Open the file in write mode
+    file = io.open("/Users/nhutan/dotfiles/alacritty/alacritty.toml", "w")
+
+    -- Write the modified lines back to the file
+    for _, line in ipairs(lines) do
+      file:write(line, "\n")
+    end
+
+    -- Close the file
+    file:close()
   end
 end)
 
-map("v", "<c-t>", "<cmd>ToggleTerm direction=float<CR>", { desc = "Terminal" })
-map("v", "<c-b>w", "<cmd>ToggleTerm direction=float<CR>", { desc = "Terminal" })
-map("v", "<leader>ke", "<cmd>ChatGPTEditWithInstruction<CR>", { desc = "Edit with instruction" })
-map("v", "<leader>kg", "<cmd>ChatGPTRun grammar_correction<CR>", { desc = "Grammar Correction" })
-map("v", "<leader>kt", "<cmd>ChatGPTRun translate<CR>", { desc = "Translate" })
-map("v", "<leader>kk", "<cmd>ChatGPTRun keywords<CR>", { desc = "Keywords" })
-map("v", "<leader>kd", "<cmd>ChatGPTRun docstring<CR>", { desc = "Docstring" })
-map("v", "<leader>ka", "<cmd>ChatGPTRun add_tests<CR>", { desc = "Add Tests" })
-map("v", "<leader>ko", "<cmd>ChatGPTRun optimize_code<CR>", { desc = "Optimize Code" })
-map("v", "<leader>ks", "<cmd>ChatGPTRun summarize<CR>", { desc = "Summarize" })
-map("v", "<leader>kf", "<cmd>ChatGPTRun fix_bugs<CR>", { desc = "Fix Bugs" })
-map("v", "<leader>kx", "<cmd>ChatGPTRun explain_code<CR>", { desc = "Explain Code" })
-map("v", "<leader>kr", "<cmd>ChatGPTRun roxygen_edit<CR>", { desc = "Roxygen Edit" })
-map("v", "<leader>kl", "<cmd>ChatGPTRun code_readability_analysis<CR>", { desc = "Code Readability Analysis" })
 map("v", "<Up>", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { desc = "Move up", expr = true })
 map("v", "<Down>", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { desc = "Move down", expr = true })
 map("v", "<", "<gv", { desc = "Indent line" })

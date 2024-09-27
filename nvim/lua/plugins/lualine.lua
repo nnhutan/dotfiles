@@ -12,7 +12,7 @@ end
 
 local function LSP_status()
   if rawget(vim, "lsp") then
-    for _, client in ipairs(vim.lsp.get_active_clients()) do
+    for _, client in ipairs(vim.lsp.get_clients()) do
       if client.attached_buffers[stbufnr()] and client.name ~= "null-ls" and client.name ~= "copilot" then
         return (vim.o.columns > 100 and "󰄭  " .. client.name) or "󰄭  LSP"
       end
@@ -48,7 +48,7 @@ return
 {
   "nvim-lualine/lualine.nvim",
   event = "VeryLazy",
-  dependencies = { 'nvim-tree/nvim-web-devicons', 'catppuccin/nvim' },
+  dependencies = { 'nvim-tree/nvim-web-devicons' },
   config =
       function()
         local C = require("catppuccin.palettes").get_palette()

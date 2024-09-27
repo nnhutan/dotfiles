@@ -5,7 +5,7 @@ return
   dependencies = {
     "olimorris/neotest-rspec",
     "nvim-lua/plenary.nvim",
-    "antoinemadec/FixCursorHold.nvim",
+    -- "antoinemadec/FixCursorHold.nvim",
     "nvim-treesitter/nvim-treesitter"
   },
   config =

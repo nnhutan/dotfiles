@@ -21,18 +21,18 @@ return {
     --
     -- null_ls.register(haml_formatter)
 
-    null_ls.setup({
-      sources = {
-        null_ls.builtins.diagnostics.haml_lint.with {
-          env = {
-            RUBYOPT = "-W0",
-          },
-          diagnostic_config = {
-            update_in_insert = false,
-          },
-          method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
-        },
-      },
-    })
+    -- null_ls.setup({
+    --   sources = {
+    --     null_ls.builtins.diagnostics.haml_lint.with {
+    --       env = {
+    --         RUBYOPT = "-W0",
+    --       },
+    --       diagnostic_config = {
+    --         update_in_insert = false,
+    --       },
+    --       method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
+    --     },
+    --   },
+    -- })
   end,
 }

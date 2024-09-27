@@ -1,7 +1,7 @@
 return {
   "RRethy/vim-illuminate",
   event = "BufReadPre",
-  enabled = false,
+  -- enabled = false,
   config =
       function()
         -- default configuration
@@ -13,7 +13,7 @@ return {
             'regex',
           },
           -- delay: delay in milliseconds
-          delay = 100,
+          delay = 150,
           -- filetype_overrides: filetype specific overrides.
           -- The keys are strings to represent the filetype while the values are tables that
           -- supports the same keys passed to .configure except for filetypes_denylist and filetypes_allowlist
@@ -23,6 +23,7 @@ return {
             'dirbuf',
             'dirvish',
             'fugitive',
+            'haml'
           },
           -- filetypes_allowlist: filetypes to illuminate, this is overridden by filetypes_denylist
           -- You must set filetypes_denylist = {} to override the defaults to allow filetypes_allowlist to take effect

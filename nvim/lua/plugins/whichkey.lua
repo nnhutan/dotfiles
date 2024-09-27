@@ -4,19 +4,19 @@ return {
   cmd = "WhichKey",
   config = function(_, opts)
     require("which-key").setup(opts)
-    require("which-key").register({
-      b = { name = "Buffer" },
-      g = { name = "Git" },
-      f = { name = "Find" },
-      l = { name = "LSP" },
-      t = { name = "Test" },
-      p = { name = "Others" },
-      S = { name = "Session" },
-      k = { name = "GPT" },
-      h = { name = "Harpoon" },
-      e = { name = "Explorer" },
-      o = { name = "Focus file" },
-      [" "] = { name = "Projects" },
-    }, { prefix = "<leader>" })
+    require("which-key").add({
+      { "<leader>S", group = "Session" },
+      { "<leader>b", group = "Buffer" },
+      { "<leader>e", group = "Explorer" },
+      { "<leader>f", group = "Find" },
+      { "<leader>g", group = "Git" },
+      { "<leader>h", group = "Harpoon" },
+      { "<leader>k", group = "GPT" },
+      { "<leader>l", group = "LSP" },
+      { "<leader>o", group = "Focus file" },
+      { "<leader>p", group = "Others" },
+      { "<leader>t", group = "Test" },
+      { "<leader>a", group = "Copilot" },
+    })
   end
 }
