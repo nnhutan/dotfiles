@@ -7,7 +7,7 @@ return {
     local ucolors = require('catppuccin.utils.colors')
     require("catppuccin").setup({
       compile_path = vim.fn.stdpath "cache" .. "/catppuccin",
-      flavour = vim.env.THEME_FLAVOUR or "mocha", -- latte, frappe, macchiato, mocha
+      flavour = vim.env.THEME_FLAVOUR or "latte", -- latte, frappe, macchiato, mocha
       background = {                              -- :h background
         light = "latte",
         dark = "mocha",
@@ -32,20 +32,20 @@ return {
       highlight_overrides = {
         all = function(colors)
           return {
-            BufferLineIndicatorSelected = { fg = colors.pink },
-            BufferLineIndicator = { fg = colors.base },
-            BufferLineIndicatorVisible = { bg = colors.crust },
-            BufferLineModifiedVisible = { bg = colors.crust, fg = colors.green },
-
+            -- BufferLineIndicatorSelected = { fg = colors.pink },
+            -- BufferLineIndicator = { fg = colors.base },
+            -- BufferLineIndicatorVisible = { bg = colors.crust },
+            -- BufferLineModifiedVisible = { bg = colors.crust, fg = colors.green },
+            --
             CursorLine = { bg = ucolors.darken(colors.crust, 0.1, colors.mantle) },
-
-            TabLineSel = { bg = colors.pink },
-            TroubleNormal = { fg = colors.text, bg = colors.mantle },
-
+            --
+            -- TabLineSel = { bg = colors.pink },
+            -- TroubleNormal = { fg = colors.text, bg = colors.mantle },
+            --
             Visual = { bg = ucolors.darken(colors.blue, 0.1, colors.base) }, -- Visual Mode
-            WinBar = { fg = colors.overlay0 },
-            Special = { fg = colors.overlay0 },
-            CurSearch = { bg = colors.mauve, fg = colors.mantle },
+            -- WinBar = { fg = colors.overlay0 },
+            -- Special = { fg = colors.overlay0 },
+            -- CurSearch = { bg = colors.mauve, fg = colors.mantle },
           }
         end,
       },
@@ -75,6 +75,7 @@ return {
         },
         harpoon = true,
         vimwiki = true,
+        snacks = true,
         mini = {
           enabled = true,
           indentscope_color = "",

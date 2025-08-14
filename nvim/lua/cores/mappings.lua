@@ -37,7 +37,6 @@ map("n", "<leader>Sl", '<cmd>lua require("persistence").load({ last = true })<cr
 map("n", "<leader>Sq", '<cmd>lua require("persistence").stop()<cr>', { desc = "Stop persistence" })
 map("n", "<leader>gD", "<cmd>wincmd p | q<cr>", { desc = "Close git diff" })
 map("n", "<leader>j", "<cmd>HopWord<cr>", { desc = "Jump to word" })
-map("n", "<leader>s", "<cmd>Spectre<cr>", { desc = "Search panel" })
 map("n", "<leader>lt", "<cmd>Trouble<cr>", { desc = "Code problems" })
 map("n", '<leader>tn', '<cmd>lua require(ntest).run.run()<cr>', { desc = "Nearest" })
 map("n", '<leader>tf', '<cmd>lua require(ntest).run.run(vim.fn.expand("%"))<cr>', { desc = "File" })
@@ -47,38 +46,6 @@ map("n", '<leader>tx', '<cmd>lua require(ntest).output_panel.clear()<cr>', { des
 map("n", '<leader>to', '<cmd>lua require(ntest).output.open({ enter = true }) <cr>', { desc = "Result" })
 map("n", '<leader>ts', '<cmd>lua require(ntest).summary.toggle()<cr>', { desc = "Summary" })
 map("n", '<leader>tw', '<cmd>lua require(ntest).watch.toggle(vim.fn.expand("%"))<cr>', { desc = "Watch" })
-map("n", "<leader>bC", function()
-  local bufs = vim.api.nvim_list_bufs()
-  for _, i in ipairs(bufs) do
-    require("mini.bufremove").delete(i)
-  end
-end
-, { desc = "Close all buffers", })
-map("n", "<leader>bc", function()
-  local bufs = vim.api.nvim_list_bufs()
-  local current = vim.fn.bufnr()
-  for _, i in ipairs(bufs) do
-    if i ~= current then
-      require("mini.bufremove").delete(i)
-    end
-  end
-end
-, { desc = "Close all buffers except current" })
-map("n", "<leader>c", function()
-  local bd = require("mini.bufremove").delete
-  if vim.bo.modified then
-    local choice = vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
-    if choice == 1 then -- Yes
-      vim.cmd.write()
-      bd(0)
-    elseif choice == 2 then -- No
-      bd(0, true)
-    end
-  else
-    bd(0)
-  end
-end, { desc = "Delete Buffer" })
-
 map("n", "<leader>lf", function() vim.lsp.buf.format { async = true } end, { desc = "LSP formatting", })
 map("n", "<leader>ld", function() vim.diagnostic.open_float({ border = "rounded" }) end,
   { desc = "Floating diagnostic", })
@@ -100,13 +67,6 @@ map("n", "<leader>fF", "<cmd> Telescope find_files follow=true no_ignore=true hi
   { desc = "Find files (all)", })
 map("n", "<leader>fW", "<cmd> Telescope live_grep follow=true no_ignore=true hidden=true <CR>",
   { desc = "Find words (all)", })
--- map("n", "<leader>fW", function()
---   require("telescope.builtin").live_grep({
---     additional_args = function(args)
---       return vim.list_extend(args, { "--hidden", "--no-ignore" })
---     end,
---   })
--- end, { desc = "Find words (all)", })
 map("n", "<leader>fs", function() require("utils").FuzzyFindFiles() end, { desc = "Grep string", })
 map("n", "]g", function()
   if vim.wo.diff then
@@ -126,8 +86,6 @@ map("n", "[g", function()
   end)
   return "<Ignore>"
 end, { desc = "Jump to prev hunk", expr = true })
-map("n", "<leader>un", function() require("notify").dismiss({ silent = true, pending = true }) end,
-  { desc = "Dismiss all Notifications" })
 map("n", "<leader>ut", function()
   local current_theme = vim.g.colors_name
   -- catppuccin-*

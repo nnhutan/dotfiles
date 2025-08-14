@@ -67,14 +67,16 @@ return {
                 require("telescope.actions").select_default(prompt_bufnr)
                 require("telescope.builtin").resume()
               end,
-              ["<C-q>"] = require("telescope.actions").send_selected_to_qflist + require("telescope.actions").open_qflist,
+              ["<C-q>"] = require("telescope.actions").send_selected_to_qflist + require("telescope.actions")
+              .open_qflist,
             },
             n = {
               ["<C-o>"] = function(prompt_bufnr)
                 require("telescope.actions").select_default(prompt_bufnr)
                 require("telescope.builtin").resume()
               end,
-              ["<C-q>"] = require("telescope.actions").send_selected_to_qflist + require("telescope.actions").open_qflist,
+              ["<C-q>"] = require("telescope.actions").send_selected_to_qflist + require("telescope.actions")
+              .open_qflist,
               ["q"] = require("telescope.actions").close,
             },
           },
@@ -156,7 +158,6 @@ return {
       map("n", "<leader>fb", "<cmd> Telescope buffers <CR>", { desc = "Find buffers" })
       map("n", "<leader>fo", "<cmd> Telescope oldfiles <CR>", { desc = "Find oldfiles" })
       map("n", "<leader>fz", "<cmd> Telescope current_buffer_fuzzy_find <CR>", { desc = "Find in current buffer" })
-      map("n", "<leader>fN", "<cmd> Telescope notify <CR>", { desc = "Notifications" })
       map("n", "<leader>ft", "<cmd> Telescope colorscheme <CR>", { desc = "Theme" })
       map("n", "<leader>gc", "<cmd> Telescope git_commits <CR>", { desc = "Git commits" })
       map("n", "<leader>gt", "<cmd> Telescope git_status <CR>", { desc = "Git status" })

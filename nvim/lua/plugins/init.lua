@@ -1,7 +1,27 @@
 return {
   { "nvim-lua/plenary.nvim",      lazy = true, },
-  -- { "wakatime/vim-wakatime",      lazy = false },
-  { "nvim-pack/nvim-spectre",     cmd = "Spectre" },
+  {
+    "MagicDuck/grug-far.nvim",
+    opts = { headerMaxWidth = 80 },
+    cmd = "GrugFar",
+    keys = {
+      {
+        "<leader>s",
+        function()
+          local grug = require("grug-far")
+          local ext = vim.bo.buftype == "" and vim.fn.expand("%:e")
+          grug.open({
+            transient = true,
+            prefills = {
+              filesFilter = ext and ext ~= "" and "*." .. ext or nil,
+            },
+          })
+        end,
+        mode = { "n", "v" },
+        desc = "Search and Replace",
+      },
+    },
+  },
   { "echasnovski/mini.bufremove", event = "BufReadPre" },
   {
     "windwp/nvim-ts-autotag",
@@ -34,7 +54,6 @@ return {
       vim.g.matchup_matchparen_deferred_show_delay = 150
     end,
   },
-  -- { "sindrets/diffview.nvim",     event = "VeryLazy" },
   -- { "mattn/emmet-vim",          event = "VeryLazy" },
   { "rhysd/clever-f.vim",       event = "VeryLazy" },
   { "mg979/vim-visual-multi",   event = "VeryLazy",    branch = "master" },
@@ -43,7 +62,39 @@ return {
     "max397574/better-escape.nvim",
     event = "InsertEnter",
     config = function()
-      require("better_escape").setup()
+      require("better_escape").setup {
+        timeout = vim.o.timeoutlen,
+        default_mappings = false,
+        mappings = {
+          i = {
+            j = {
+              -- These can all also be functions
+              k = "<Esc>",
+              j = "<Esc>",
+            },
+          },
+          c = {
+            j = {
+              k = "<Esc>",
+              j = "<Esc>",
+            },
+          },
+          t = {
+            j = {
+              k = "<C-\\><C-n>",
+            },
+          },
+          v = {
+            j = {},
+            k = {},
+          },
+          s = {
+            j = {
+              k = "<Esc>",
+            },
+          },
+        },
+      }
     end,
   },
   {
@@ -56,7 +107,21 @@ return {
           basic = true,
           extra = false,
         },
-        -- options = { mode = "window" },
+        options = {
+          -- mode = "window",
+          -- delay = 1,
+          max_delta = {
+            -- Maximum distance for line movements before scroll
+            -- animation is skipped. Set to `false` to disable
+            line = 100,
+            -- Maximum distance for column movements before scroll
+            -- animation is skipped. Set to `false` to disable
+            column = false,
+            -- Maximum duration for a movement (in ms). Automatically scales the
+            -- delay and step size
+            time = 1000,
+          },
+        },
       }
     end,
   },
@@ -101,7 +166,6 @@ return {
       has_line_number = true,
     },
   },
-  -- { 'Bekaboo/dropbar.nvim',    dependencies = { 'nvim-telescope/telescope-fzf-native.nvim' } },
   { "tpope/vim-dotenv",        event = "BufReadPre", },
   { 'tpope/vim-projectionist', lazy = false },
   {
@@ -113,10 +177,6 @@ return {
       "SmiteshP/nvim-navic",
       "nvim-tree/nvim-web-devicons", -- optional dependency
     },
-    -- opts = {
-    --   -- configurations go here
-    --   create_autocmd = false,
-    -- },
     config = function()
       require("barbecue").setup({
         -- configurations go here
@@ -139,18 +199,38 @@ return {
     end,
   },
   -- {
-  --   "tris203/precognition.nvim",
-  --   event = "VeryLazy",
-  --   opts = {},
-  -- },
-  -- {
-  --   "m4xshen/hardtime.nvim",
-  --   event = "VeryLazy",
-  --   dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
-  --   opts = {}
+  --   "LunarVim/bigfile.nvim",
+  --   lazy = false,
   -- },
   {
-    "LunarVim/bigfile.nvim",
-    lazy = false,
-  }
+    "echasnovski/mini.icons",
+    lazy = true,
+    opts = {
+      file = {
+        [".keep"] = { glyph = "󰊢", hl = "MiniIconsGrey" },
+        ["devcontainer.json"] = { glyph = "", hl = "MiniIconsAzure" },
+      },
+      filetype = {
+        dotenv = { glyph = "", hl = "MiniIconsYellow" },
+      },
+    },
+    init = function()
+      package.preload["nvim-web-devicons"] = function()
+        require("mini.icons").mock_nvim_web_devicons()
+        return package.loaded["nvim-web-devicons"]
+      end
+    end,
+  },
+  -- {
+  --   "supermaven-inc/supermaven-nvim",
+  --   config = function()
+  --     require("supermaven-nvim").setup({
+  --       keymaps = {
+  --         accept_suggestion = "<c-h>",
+  --         clear_suggestion = "<C-]>",
+  --         accept_word = "<C-j>",
+  --       },
+  --     })
+  --   end,
+  -- }
 }

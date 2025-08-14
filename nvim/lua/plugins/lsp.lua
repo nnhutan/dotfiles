@@ -8,14 +8,23 @@ return {
   {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
+    dependencies = { 'saghen/blink.cmp' },
     config = function()
       local lsp_zero = require('lsp-zero')
       lsp_zero.extend_lspconfig()
       --
       lsp_zero.on_attach(function(client, bufnr)
         lsp_zero.default_keymaps({ buffer = bufnr, noremap = true })
+
+        if client.name == "eslint" then
+          client.server_capabilities.documentFormattingProvider = true
+        elseif client.name == "ts_ls" then
+          client.server_capabilities.documentFormattingProvider = false
+        end
+
         local map = vim.keymap.set
         map("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, noremap = true, desc = 'Go to definition' })
+        map("n", "gr", vim.lsp.buf.references, { buffer = bufnr, noremap = true, desc = 'References' })
         map("n", "<leader>k>", vim.lsp.buf.signature_help, { buffer = bufnr, noremap = true, desc = 'Signature help' })
         map("n", "<space>lr", vim.lsp.buf.rename, { buffer = bufnr, noremap = true, desc = 'Rename' })
         map({ "n", "v" }, "<space>la", vim.lsp.buf.code_action, { buffer = bufnr, noremap = true, desc = 'Code actions' })
@@ -84,7 +93,7 @@ return {
           "emmet_ls",
           "jsonls",
           "eslint",
-          "solargraph",
+          "ruby_lsp",
           "ts_ls",
         },
         handlers = {
@@ -119,6 +128,14 @@ return {
           --     -- handlers = handlers,
           --   })
           -- end,
+          -- ruby_lsp = function()
+          --   require('lspconfig').ruby_lsp.setup({
+          --     cmd_env = { BUNDLE_GEMFILE = vim.fn.getenv('GLOBAL_GEMFILE') },
+          --     cmd = {
+          --       "rbenv local (cat .ruby-version)", "ruby-lsp"
+          --     }
+          --   })
+          -- end,
           ts_ls = function()
             require('lspconfig').ts_ls.setup({
               capabilities = capabilities,
@@ -140,5 +157,24 @@ return {
           end
         }
       })
+
+      -- local configs = require 'lspconfig.configs'
+      -- if not configs.fuzzy_ls then
+      --   configs.fuzzy_ls = {
+      --     default_config = {
+      --       cmd = { 'fuzzy' },
+      --       filetypes = { 'ruby' },
+      --       root_dir = function(fname)
+      --         return lspconfig.util.find_git_ancestor(fname)
+      --       end,
+      --       settings = {},
+      --       init_options = {
+      --         allocationType = "ram",
+      --         indexGems = true,
+      --         reportDiagnostics = true
+      --       },
+      --     },
+      --   }
+      -- end
     end
   } }

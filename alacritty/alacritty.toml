@@ -1,4 +1,4 @@
-import = ["~/.config/alacritty/catppuccin-mocha.toml"]
+import = ["~/.config/alacritty/catppuccin-latte.toml"]
 live_config_reload = true
 
 # [colors.normal]
@@ -44,6 +44,12 @@ mods = "Command"
 [[keyboard.bindings]]
 chars = "\u0002w"
 key = "E"
+mode = "~Vi|~Search"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u0002T"
+key = "t"
 mode = "~Vi|~Search"
 mods = "Command"
 

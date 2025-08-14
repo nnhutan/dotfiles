@@ -41,12 +41,12 @@ return {
               },
             },
             suggestion = {
-              enabled = true,
+              -- enabled = false,
               auto_trigger = true,
               debounce = 75,
               keymap = {
                 accept = "<C-l>",
-                accept_word = false,
+                accept_word = "<C-h>",
                 accept_line = false,
                 next = "<C-j>",
                 prev = "<C-k>",
@@ -59,42 +59,57 @@ return {
           })
         end
   },
-  {
-    "jonahgoldwastaken/copilot-status.nvim",
-    dependencies = { "zbirenbaum/copilot.lua" },
-    event = "BufReadPost",
-    config =
-        function()
-          require("copilot_status").setup({
-            icons = {
-              idle = " ",
-              offline = " ",
-              warning = " ",
-              error = " ",
-              loading = " ",
-            },
-            debug = false,
-          })
-        end
-  },
+  -- {
+  --   "jonahgoldwastaken/copilot-status.nvim",
+  --   dependencies = { "zbirenbaum/copilot.lua" },
+  --   event = "BufReadPost",
+  --   config =
+  --       function()
+  --         require("copilot_status").setup({
+  --           icons = {
+  --             idle = " ",
+  --             offline = " ",
+  --             warning = " ",
+  --             error = " ",
+  --             loading = " ",
+  --           },
+  --           debug = false,
+  --         })
+  --       end
+  -- },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
     event = "VeryLazy",
-    branch = "canary",
+    branch = "main",
     dependencies = {
       { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
       { "nvim-lua/plenary.nvim" },  -- for curl, log wrapper
     },
-    opts = {
-      debug = true,
-      question_header = '  User ',
-      answer_header = '  Copilot ',
-      error_header = '  Error ',
-      separator = ' ',
-      prompts = prompts,
-      show_help = false,
-      auto_follow_cursor = false,
-    },
+    build = "make tiktoken",
+    opts = function()
+      local user = vim.env.USER or "User"
+      user = user:sub(1, 1):upper() .. user:sub(2)
+      return {
+        debug = true,
+        auto_insert_mode = true,
+        model = "claude-3.5-sonnet",
+        question_header = "  " .. user .. " ",
+        answer_header = "  Copilot ",
+        error_header = '  Error ',
+        prompts = prompts,
+        show_help = false,
+        auto_follow_cursor = false,
+        chat_autocomplete = true,
+        -- window = {
+        --   width = 0.4,
+        -- },
+        separator = ' ',
+        selection = function(source)
+          local select = require("CopilotChat.select")
+          return select.visual(source) or select.buffer(source)
+        end,
+      }
+    end,
     keys = {
       -- Show help actions with telescope
       {
@@ -205,7 +220,7 @@ return {
       -- Use unnamed register for the selection
       opts.selection = select.unnamed
 
-      -- Override the git prompts message
+      -- -- Override the git prompts message
       opts.prompts.Commit = {
         prompt = "Write commit message for the change with commitizen convention",
         selection = select.gitdiff,
@@ -219,8 +234,8 @@ return {
 
       chat.setup(opts)
       -- Setup the CMP integration
-      require("CopilotChat.integrations.cmp").setup()
-
+      -- require("CopilotChat.integrations.cmp").setup()
+      --
       vim.api.nvim_create_user_command("CopilotChatVisual", function(args)
         chat.ask(args.args, { selection = select.visual })
       end, { nargs = "*", range = true })

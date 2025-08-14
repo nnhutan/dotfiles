@@ -134,7 +134,7 @@ return
               { "encoding" },
               { file_type,                                   color = { fg = C.blue, } },
               { LSP_status,                                  color = { fg = C.blue, } },
-              { 'require("copilot_status").status_string()', color = { fg = C.blue, }, padding = { left = 0, right = 1 } },
+              -- { 'require("copilot_status").status_string()', color = { fg = C.blue, }, padding = { left = 0, right = 1 } },
             },
             lualine_y = {
               { "location", padding = { left = 0, right = 1 } }

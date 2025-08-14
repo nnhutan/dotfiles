@@ -4,7 +4,7 @@ local M = {}
 -- Get from alot of sources: LazyVim, Astronvim, Nvchad, etc. Thanks!
 
 function M.FuzzyFindFiles()
-  local input_string = vim.fn.input("Search For > ")
+  local input_string = vim.fn.input("Search For")
   if input_string == "" then
     return
   end
